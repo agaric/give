@@ -1,0 +1,51 @@
+# Schema for the configuration files of the Give module.
+
+give.form.*:
+  type: config_entity
+  label: 'Give form'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    recipients:
+      type: sequence
+      label: 'Recipients'
+      sequence:
+        type: email
+        label: 'Email address'
+    reply:
+      type: text
+      label: 'Auto-reply'
+    weight:
+      type: integer
+      label: 'Weight'
+
+give.settings:
+  type: config_object
+  label: 'Give settings'
+  mapping:
+    default_form:
+      type: string
+      label: 'Default form identifier'
+    flood:
+      type: mapping
+      label: 'Flood control'
+      mapping:
+        limit:
+          type: integer
+          label: 'Limit'
+        interval:
+          type: integer
+          label: 'Interval'
+    api_key_stripe:
+      type: string
+      label: 'Stripe API key'
+    api_key_dwolla:
+      type: string
+      label: 'Dwolla API key'
+    send_receipt:
+      type: boolean
+      label: 'Send a receipt if e-mail address provided'

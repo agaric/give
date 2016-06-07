@@ -1,0 +1,11 @@
+create and edit give forms:
+  title: 'Create and edit give (donation) forms'
+access give forms:
+  title: 'Give money through forms accepting donations'
+administer give:
+  title: 'Administer give (donation) settings'
+  description: 'Provide API information for Stripe and Dwolla.'
+  restrict access: true
+view give submissions:
+  title: 'view give (donation) submissions'
+  restrict access: true

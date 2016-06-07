@@ -1,0 +1,23 @@
+<?php
+
+namespace Drupal\give;
+
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Entity\EntityAccessControlHandler;
+use Drupal\Core\Session\AccountInterface;
+
+/**
+ * Defines the access control handler for the message form entity type.
+ *
+ * @see \Drupal\give\Entity\Donation.
+ */
+class GiveDonationAccessControlHandler extends EntityAccessControlHandler {
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function checkCreateAccess(AccountInterface $account, array $context, $entity_bundle = NULL) {
+    return AccessResult::allowedIfHasPermission($account, 'access give forms');
+  }
+
+}

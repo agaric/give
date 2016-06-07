@@ -1,0 +1,4 @@
+entity.give_form.edit_form:
+  title: 'Edit'
+  route_name: entity.give_form.edit_form
+  base_route: entity.give_form.edit_form

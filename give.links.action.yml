@@ -1,0 +1,6 @@
+contact.form_add:
+  route_name: give.form_add
+  title: 'Add donation form'
+  weight: 1
+  appears_on:
+    - entity.give_form.collection

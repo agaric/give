@@ -1,0 +1,10 @@
+entity.give_form.collection:
+  title: 'Donation forms'
+  parent: system.admin_structure
+  description: 'Create and manage donation (give) forms.'
+  route_name: entity.give_form.collection
+give.site_page:
+  title: Give
+  route_name: give.site_page
+  menu_name: main
+  enabled: 0

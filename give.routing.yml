@@ -1,0 +1,46 @@
+entity.give_form.delete_form:
+  path: '/admin/structure/give/manage/{give_form}/delete'
+  defaults:
+    _entity_form: 'give_form.delete'
+    _title: 'Delete'
+  requirements:
+    _entity_access: 'give_form.delete'
+
+entity.give_form.collection:
+  path: '/admin/structure/give'
+  defaults:
+    _entity_list: 'give_form'
+    _title: 'Give (donation) forms'
+  requirements:
+    _permission: 'administer give forms'
+
+give.form_add:
+  path: '/admin/structure/give/add'
+  defaults:
+    _entity_form: 'give_form.add'
+    _title: 'Add give (donation) form'
+  requirements:
+    _permission: 'administer give forms'
+
+entity.give_form.edit_form:
+  path: '/admin/structure/give/manage/{give_form}'
+  defaults:
+    _entity_form: 'give_form.edit'
+    _title: 'Edit give form'
+  requirements:
+    _entity_access: 'give_form.update'
+
+give.site_page:
+  path: '/give'
+  defaults:
+    _title: 'Give'
+    _controller: '\Drupal\give\Controller\GiveController::giveSitePage'
+    give_form: NULL
+
+entity.give_form.canonical:
+  path: '/give/{give_form}'
+  defaults:
+    _title: 'Give'
+    _controller: '\Drupal\give\Controller\GiveController::giveSitePage'
+  requirements:
+    _entity_access: 'give_form.view'
