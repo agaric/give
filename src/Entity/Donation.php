@@ -43,6 +43,20 @@ class Donation extends ContentEntityBase implements DonationInterface {
   /**
    * {@inheritdoc}
    */
+  public function getLabel() {
+    return $this->get('label');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setLabel($label) {
+    $this->set('label', $label);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getDonorName() {
     return $this->get('name')->value;
   }
@@ -127,7 +141,8 @@ class Donation extends ContentEntityBase implements DonationInterface {
       ->setLabel(t("The donor's email"))
       ->setDescription(t('The email of the person that is sending the give donation.'));
 
-    // The label of the give donation (will be automatically created from other parts).
+    // The label of the give donation (will be automatically created from other
+    //parts; see DonationForm::buildEntity()).
     $fields['label'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Label'))
       ->setRequired(TRUE);

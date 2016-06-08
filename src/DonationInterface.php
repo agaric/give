@@ -65,7 +65,7 @@ interface DonationInterface extends ContentEntityInterface {
    * @param string $label
    *   The donation label.
    */
-  public function setLabel($subject);
+  public function setLabel($label);
 
   /**
    * Returns the donation amount.
