@@ -2,7 +2,10 @@
 
 namespace Drupal\give;
 
+use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Datetime\DateFormatterInterface;
+use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Flood\FloodInterface;
@@ -153,6 +156,47 @@ class DonationForm extends ContentEntityForm {
       '#submit' => array('::submitForm', '::preview'),
     );
     return $elements;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildEntity(array $form, FormStateInterface $form_state) {
+    /** @var \Drupal\give\DonationInterface $donation */
+    $donation = parent::buildEntity($form, $form_state);
+    if (!$form_state->isValueEmpty('date') && $form_state->getValue('date') instanceof DrupalDateTime) {
+      $donation->setCreatedTime($form_state->getValue('date')->getTimestamp());
+    }
+    else {
+      $donation->setCreatedTime(REQUEST_TIME);
+    }
+
+    // We always build the donation's label from the donor's name and e-mail,
+    // the amount of the donation, and the subject field if present.
+    $label = $donation->getGiveForm->get('label') . ' : ';
+    if ($donation->getDonorName()) {
+      $label .= $donation->getDonorName() . ' ';
+    }
+    if ($donation->getDonorMail()) {
+      $label .= '(' . $donation->getDonorMail() . ') ';
+    }
+
+    $subject = '';
+    if ($donation->hasField('field_subject')) {
+      // The subject may be in any format, so:
+      // 1) Filter it into HTML
+      // 2) Strip out all HTML tags
+      // 3) Convert entities back to plain-text.
+      $subject_text = $donation->field_subject->processed;
+      $subject = Unicode::truncate(trim(Html::decodeEntities(strip_tags($subject_text))), 29, TRUE, TRUE);
+    }
+    if ($subject) {
+      $label .= ': ' . $subject;
+    }
+
+    $donation->setLabel($label);
+
+    return $donation;
   }
 
   /**
