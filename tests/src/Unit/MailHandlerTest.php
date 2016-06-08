@@ -1,16 +1,16 @@
 <?php
 
-namespace Drupal\Tests\contact\Unit;
+namespace Drupal\Tests\give\Unit;
 
-use Drupal\contact\MailHandler;
-use Drupal\contact\MessageInterface;
+use Drupal\give\MailHandler;
+use Drupal\give\DonationInterface;
 use Drupal\Core\Language\Language;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Tests\UnitTestCase;
 
 /**
- * @coversDefaultClass \Drupal\contact\MailHandler
- * @group contact
+ * @coversDefaultClass \Drupal\give\MailHandler
+ * @group give
  */
 class MailHandlerTest extends UnitTestCase {
 
@@ -36,18 +36,18 @@ class MailHandlerTest extends UnitTestCase {
   protected $mailManager;
 
   /**
-   * Contact mail messages service.
+   * Give mail donations service.
    *
-   * @var \Drupal\contact\MailHandlerInterface|\PHPUnit_Framework_MockObject_MockObject
+   * @var \Drupal\give\MailHandlerInterface|\PHPUnit_Framework_MockObject_MockObject
    */
-  protected $contactMailHandler;
+  protected $giveMailHandler;
 
   /**
-   * The contact form entity.
+   * The give form entity.
    *
-   * @var \Drupal\contact\ContactFormInterface|\PHPUnit_Framework_MockObject_MockObject
+   * @var \Drupal\give\GiveFormInterface|\PHPUnit_Framework_MockObject_MockObject
    */
-  protected $contactForm;
+  protected $giveForm;
 
   /**
    * The entity manager service.
@@ -79,7 +79,7 @@ class MailHandlerTest extends UnitTestCase {
       ->willReturn($this->userStorage);
 
     $string_translation = $this->getStringTranslationStub();
-    $this->contactMailHandler = new MailHandler($this->mailManager, $this->languageManager, $this->logger, $string_translation, $this->entityManager);
+    $this->giveMailHandler = new MailHandler($this->mailManager, $this->languageManager, $this->logger, $string_translation, $this->entityManager);
     $language = new Language(array('id' => 'en'));
 
     $this->languageManager->expects($this->any())
@@ -94,22 +94,22 @@ class MailHandlerTest extends UnitTestCase {
   /**
    * Tests the children() method with an invalid key.
    *
-   * @expectedException \Drupal\contact\MailHandlerException
-   * @expectedExceptionMessage Unable to determine message recipient
+   * @expectedException \Drupal\give\MailHandlerException
+   * @expectedExceptionDonation Unable to determine donation recipient
    *
-   * @covers ::sendMailMessages
+   * @covers ::sendMailDonations
    */
   public function testInvalidRecipient() {
-    $message = $this->getMock('\Drupal\contact\MessageInterface');
-    $message->expects($this->once())
+    $donation = $this->getMock('\Drupal\give\DonationInterface');
+    $donation->expects($this->once())
       ->method('isPersonal')
       ->willReturn(TRUE);
-    $message->expects($this->once())
+    $donation->expects($this->once())
       ->method('getPersonalRecipient')
       ->willReturn(NULL);
-    $message->expects($this->once())
-      ->method('getContactForm')
-      ->willReturn($this->getMock('\Drupal\contact\ContactFormInterface'));
+    $donation->expects($this->once())
+      ->method('getGiveForm')
+      ->willReturn($this->getMock('\Drupal\give\GiveFormInterface'));
     $sender = $this->getMock('\Drupal\Core\Session\AccountInterface');
     $this->userStorage->expects($this->any())
       ->method('load')
@@ -121,17 +121,17 @@ class MailHandlerTest extends UnitTestCase {
     $sender->expects($this->once())
       ->method('isAnonymous')
       ->willReturn(FALSE);
-    $this->contactMailHandler->sendMailMessages($message, $sender);
+    $this->giveMailHandler->sendMailDonations($donation, $sender);
   }
 
   /**
-   * Tests the sendMailMessages method.
+   * Tests the sendMailDonations method.
    *
-   * @dataProvider getSendMailMessages
+   * @dataProvider getSendMailDonations
    *
-   * @covers ::sendMailMessages
+   * @covers ::sendMailDonations
    */
-  public function testSendMailMessages(MessageInterface $message, AccountInterface $sender, $results) {
+  public function testSendMailDonations(DonationInterface $donation, AccountInterface $sender, $results) {
     $this->logger->expects($this->once())
       ->method('notice');
     $this->mailManager->expects($this->any())
@@ -149,17 +149,17 @@ class MailHandlerTest extends UnitTestCase {
     $this->userStorage->expects($this->any())
       ->method('load')
       ->willReturn(clone $sender);
-    $this->contactMailHandler->sendMailMessages($message, $sender);
+    $this->giveMailHandler->sendMailDonations($donation, $sender);
   }
 
   /**
-   * Data provider for ::testSendMailMessages.
+   * Data provider for ::testSendMailDonations.
    */
-  public function getSendMailMessages() {
+  public function getSendMailDonations() {
     $data = array();
     $recipients = array('admin@drupal.org', 'user@drupal.org');
     $default_result = array(
-      'module' => 'contact',
+      'module' => 'give',
       'key' => '',
       'to' => implode(', ', $recipients),
       'langcode' => 'en',
@@ -167,28 +167,28 @@ class MailHandlerTest extends UnitTestCase {
       'from' => 'anonymous@drupal.org',
     );
     $results = array();
-    $message = $this->getAnonymousMockMessage($recipients, '');
+    $donation = $this->getAnonymousMockDonation($recipients, '');
     $sender = $this->getMockSender();
     $result = array(
       'key' => 'page_mail',
       'params' => array(
-        'contact_message' => $message,
+        'give_donation' => $donation,
         'sender' => $sender,
-        'contact_form' => $message->getContactForm(),
+        'give_form' => $donation->getGiveForm(),
       ),
     );
     $results[] = $result + $default_result;
-    $data[] = array($message, $sender, $results);
+    $data[] = array($donation, $sender, $results);
 
     $results = array();
-    $message = $this->getAnonymousMockMessage($recipients, 'reply');
+    $donation = $this->getAnonymousMockDonation($recipients, 'reply');
     $sender = $this->getMockSender();
     $result = array(
       'key' => 'page_mail',
       'params' => array(
-        'contact_message' => $message,
+        'give_donation' => $donation,
         'sender' => $sender,
-        'contact_form' => $message->getContactForm(),
+        'give_form' => $donation->getGiveForm(),
       ),
     );
     $results[] = $result + $default_result;
@@ -196,34 +196,34 @@ class MailHandlerTest extends UnitTestCase {
     $result['to'] = 'anonymous@drupal.org';
     $result['from'] = NULL;
     $results[] = $result + $default_result;
-    $data[] = array($message, $sender, $results);
+    $data[] = array($donation, $sender, $results);
 
     $results = array();
-    $message = $this->getAnonymousMockMessage($recipients, '', TRUE);
+    $donation = $this->getAnonymousMockDonation($recipients, '', TRUE);
     $sender = $this->getMockSender();
     $result = array(
       'key' => 'page_mail',
       'params' => array(
-        'contact_message' => $message,
+        'give_donation' => $donation,
         'sender' => $sender,
-        'contact_form' => $message->getContactForm(),
+        'give_form' => $donation->getGiveForm(),
       ),
     );
     $results[] = $result + $default_result;
     $result['key'] = 'page_copy';
     $result['to'] = 'anonymous@drupal.org';
     $results[] = $result + $default_result;
-    $data[] = array($message, $sender, $results);
+    $data[] = array($donation, $sender, $results);
 
     $results = array();
-    $message = $this->getAnonymousMockMessage($recipients, 'reply', TRUE);
+    $donation = $this->getAnonymousMockDonation($recipients, 'reply', TRUE);
     $sender = $this->getMockSender();
     $result = array(
       'key' => 'page_mail',
       'params' => array(
-        'contact_message' => $message,
+        'give_donation' => $donation,
         'sender' => $sender,
-        'contact_form' => $message->getContactForm(),
+        'give_form' => $donation->getGiveForm(),
       ),
     );
     $results[] = $result + $default_result;
@@ -233,39 +233,39 @@ class MailHandlerTest extends UnitTestCase {
     $result['key'] = 'page_autoreply';
     $result['from'] = NULL;
     $results[] = $result + $default_result;
-    $data[] = array($message, $sender, $results);
+    $data[] = array($donation, $sender, $results);
 
     //For authenticated user.
     $results = array();
-    $message = $this->getAuthenticatedMockMessage();
+    $donation = $this->getAuthenticatedMockDonation();
     $sender = $this->getMockSender(FALSE, 'user@drupal.org');
     $result = array(
-      'module' => 'contact',
+      'module' => 'give',
       'key' => 'user_mail',
       'to' => 'user2@drupal.org',
       'langcode' => 'en',
       'params' => array(
-        'contact_message' => $message,
+        'give_donation' => $donation,
         'sender' => $sender,
-        'recipient' => $message->getPersonalRecipient(),
+        'recipient' => $donation->getPersonalRecipient(),
       ),
       'from' => 'user@drupal.org',
     );
     $results[] = $result;
-    $data[] = array($message, $sender, $results);
+    $data[] = array($donation, $sender, $results);
 
     $results = array();
-    $message = $this->getAuthenticatedMockMessage(TRUE);
+    $donation = $this->getAuthenticatedMockDonation(TRUE);
     $sender = $this->getMockSender(FALSE, 'user@drupal.org');
     $result = array(
-      'module' => 'contact',
+      'module' => 'give',
       'key' => 'user_mail',
       'to' => 'user2@drupal.org',
       'langcode' => 'en',
       'params' => array(
-        'contact_message' => $message,
+        'give_donation' => $donation,
         'sender' => $sender,
-        'recipient' => $message->getPersonalRecipient(),
+        'recipient' => $donation->getPersonalRecipient(),
       ),
       'from' => 'user@drupal.org',
     );
@@ -274,7 +274,7 @@ class MailHandlerTest extends UnitTestCase {
     $result['key'] = 'user_copy';
     $result['to'] = $result['from'];
     $results[] = $result;
-    $data[] = array($message, $sender, $results);
+    $data[] = array($donation, $sender, $results);
 
     return $data;
   }
@@ -315,7 +315,7 @@ class MailHandlerTest extends UnitTestCase {
   }
 
   /**
-   * Builds a mock message from anonymous user.
+   * Builds a mock donation from anonymous user.
    *
    * @param array $recipients
    *   An array of recipient email addresses.
@@ -324,44 +324,44 @@ class MailHandlerTest extends UnitTestCase {
    * @param bool $copy_sender
    *   TRUE if a copy should be sent, FALSE if not.
    *
-   * @return \Drupal\contact\MessageInterface|\PHPUnit_Framework_MockObject_MockObject
-   *   Mock message for testing.
+   * @return \Drupal\give\DonationInterface|\PHPUnit_Framework_MockObject_MockObject
+   *   Mock donation for testing.
    */
-  protected function getAnonymousMockMessage($recipients, $auto_reply, $copy_sender = FALSE) {
-    $message = $this->getMock('\Drupal\contact\MessageInterface');
-    $message->expects($this->any())
+  protected function getAnonymousMockDonation($recipients, $auto_reply, $copy_sender = FALSE) {
+    $donation = $this->getMock('\Drupal\give\DonationInterface');
+    $donation->expects($this->any())
       ->method('getSenderName')
       ->willReturn('Anonymous');
-    $message->expects($this->once())
+    $donation->expects($this->once())
       ->method('getSenderMail')
       ->willReturn('anonymous@drupal.org');
-    $message->expects($this->any())
+    $donation->expects($this->any())
       ->method('isPersonal')
       ->willReturn(FALSE);
-    $message->expects($this->once())
+    $donation->expects($this->once())
       ->method('copySender')
       ->willReturn($copy_sender);
-    $message->expects($this->any())
-      ->method('getContactForm')
-      ->willReturn($this->getMockContactForm($recipients, $auto_reply));
-    return $message;
+    $donation->expects($this->any())
+      ->method('getGiveForm')
+      ->willReturn($this->getMockGiveForm($recipients, $auto_reply));
+    return $donation;
   }
 
   /**
-   * Builds a mock message from authenticated user.
+   * Builds a mock donation from authenticated user.
    *
    * @param bool $copy_sender
    *   TRUE if a copy should be sent, FALSE if not.
    *
-   * @return \Drupal\contact\MessageInterface|\PHPUnit_Framework_MockObject_MockObject
-   *   Mock message for testing.
+   * @return \Drupal\give\DonationInterface|\PHPUnit_Framework_MockObject_MockObject
+   *   Mock donation for testing.
    */
-  protected function getAuthenticatedMockMessage($copy_sender = FALSE) {
-    $message = $this->getMock('\Drupal\contact\MessageInterface');
-    $message->expects($this->any())
+  protected function getAuthenticatedMockDonation($copy_sender = FALSE) {
+    $donation = $this->getMock('\Drupal\give\DonationInterface');
+    $donation->expects($this->any())
       ->method('isPersonal')
       ->willReturn(TRUE);
-    $message->expects($this->once())
+    $donation->expects($this->once())
       ->method('copySender')
       ->willReturn($copy_sender);
     $recipient = $this->getMock('\Drupal\user\UserInterface');
@@ -374,36 +374,36 @@ class MailHandlerTest extends UnitTestCase {
     $recipient->expects($this->once())
       ->method('getPreferredLangcode')
       ->willReturn('en');
-    $message->expects($this->any())
+    $donation->expects($this->any())
       ->method('getPersonalRecipient')
       ->willReturn($recipient);
-    $message->expects($this->any())
-      ->method('getContactForm')
-      ->willReturn($this->getMockContactForm('user2@drupal.org', FALSE));
-    return $message;
+    $donation->expects($this->any())
+      ->method('getGiveForm')
+      ->willReturn($this->getMockGiveForm('user2@drupal.org', FALSE));
+    return $donation;
   }
 
   /**
-   * Builds a mock message on given scenario.
+   * Builds a mock donation on given scenario.
    *
    * @param array $recipients
    *   An array of recipient email addresses.
    * @param string $auto_reply
-   *   An auto-reply message to send to the message author.
+   *   An auto-reply donation to send to the donation author.
    *
-   * @return \Drupal\contact\ContactFormInterface|\PHPUnit_Framework_MockObject_MockObject
-   *   Mock message for testing.
+   * @return \Drupal\give\GiveFormInterface|\PHPUnit_Framework_MockObject_MockObject
+   *   Mock donation for testing.
    */
-  protected function getMockContactForm($recipients, $auto_reply) {
-    $contact_form = $this->getMock('\Drupal\contact\ContactFormInterface');
-    $contact_form->expects($this->once())
+  protected function getMockGiveForm($recipients, $auto_reply) {
+    $give_form = $this->getMock('\Drupal\give\GiveFormInterface');
+    $give_form->expects($this->once())
       ->method('getRecipients')
       ->willReturn($recipients);
-    $contact_form->expects($this->once())
+    $give_form->expects($this->once())
       ->method('getReply')
       ->willReturn($auto_reply);
 
-    return $contact_form;
+    return $give_form;
   }
 
 }

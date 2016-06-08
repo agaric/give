@@ -1,16 +1,16 @@
 <?php
 
-namespace Drupal\Tests\contact\Kernel;
+namespace Drupal\Tests\give\Kernel;
 
 use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
 
 /**
- * Tests the message entity class.
+ * Tests the donation entity class.
  *
- * @group contact
- * @see \Drupal\contact\Entity\Message
+ * @group give
+ * @see \Drupal\give\Entity\Donation
  */
-class MessageEntityTest extends EntityKernelTestBase {
+class DonationEntityTest extends EntityKernelTestBase {
 
   /**
    * Modules to enable.
@@ -19,53 +19,53 @@ class MessageEntityTest extends EntityKernelTestBase {
    */
   public static $modules = array(
     'system',
-    'contact',
+    'give',
     'field',
     'user',
-    'contact_test',
+    'give_test',
   );
 
   protected function setUp() {
     parent::setUp();
-    $this->installConfig(array('contact', 'contact_test'));
+    $this->installConfig(array('give', 'give_test'));
   }
 
   /**
    * Test some of the methods.
    */
-  public function testMessageMethods() {
-    $message_storage = $this->container->get('entity.manager')->getStorage('contact_message');
-    $message = $message_storage->create(array('contact_form' => 'feedback'));
+  public function testDonationMethods() {
+    $donation_storage = $this->container->get('entity.manager')->getStorage('give_donation');
+    $donation = $donation_storage->create(array('give_form' => 'feedback'));
 
     // Check for empty values first.
-    $this->assertEqual($message->getMessage(), '');
-    $this->assertEqual($message->getSenderName(), '');
-    $this->assertEqual($message->getSenderMail(), '');
-    $this->assertFalse($message->copySender());
+    $this->assertEqual($donation->getDonation(), '');
+    $this->assertEqual($donation->getSenderName(), '');
+    $this->assertEqual($donation->getSenderMail(), '');
+    $this->assertFalse($donation->copySender());
 
     // Check for default values.
-    $this->assertEqual('feedback', $message->getContactForm()->id());
-    $this->assertFalse($message->isPersonal());
+    $this->assertEqual('feedback', $donation->getGiveForm()->id());
+    $this->assertFalse($donation->isPersonal());
 
     // Set some values and check for them afterwards.
-    $message->setMessage('welcome_message');
-    $message->setSenderName('sender_name');
-    $message->setSenderMail('sender_mail');
-    $message->setCopySender(TRUE);
+    $donation->setDonation('welcome_donation');
+    $donation->setSenderName('sender_name');
+    $donation->setSenderMail('sender_mail');
+    $donation->setCopySender(TRUE);
 
-    $this->assertEqual($message->getMessage(), 'welcome_message');
-    $this->assertEqual($message->getSenderName(), 'sender_name');
-    $this->assertEqual($message->getSenderMail(), 'sender_mail');
-    $this->assertTrue($message->copySender());
+    $this->assertEqual($donation->getDonation(), 'welcome_donation');
+    $this->assertEqual($donation->getSenderName(), 'sender_name');
+    $this->assertEqual($donation->getSenderMail(), 'sender_mail');
+    $this->assertTrue($donation->copySender());
 
     $no_access_user = $this->createUser(['uid' => 2]);
-    $access_user = $this->createUser(['uid' => 3], ['access site-wide contact form']);
-    $admin = $this->createUser(['uid' => 4], ['administer contact forms']);
+    $access_user = $this->createUser(['uid' => 3], ['access site-wide give form']);
+    $admin = $this->createUser(['uid' => 4], ['administer give forms']);
 
-    $this->assertFalse(\Drupal::entityManager()->getAccessControlHandler('contact_message')->createAccess(NULL, $no_access_user));
-    $this->assertTrue(\Drupal::entityManager()->getAccessControlHandler('contact_message')->createAccess(NULL, $access_user));
-    $this->assertTrue($message->access('edit', $admin));
-    $this->assertFalse($message->access('edit', $access_user));
+    $this->assertFalse(\Drupal::entityManager()->getAccessControlHandler('give_donation')->createAccess(NULL, $no_access_user));
+    $this->assertTrue(\Drupal::entityManager()->getAccessControlHandler('give_donation')->createAccess(NULL, $access_user));
+    $this->assertTrue($donation->access('edit', $admin));
+    $this->assertFalse($donation->access('edit', $access_user));
   }
 
 }

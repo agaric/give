@@ -1,30 +1,30 @@
 <?php
 
-namespace Drupal\contact;
+namespace Drupal\give;
 
 use Drupal\Core\Session\AccountInterface;
 
 /**
- * Provides an interface for assembly and dispatch of contact mail messages.
+ * Provides an interface for assembly and dispatch of give donation email
+ * notices.
  */
 interface MailHandlerInterface {
 
   /**
-   * Sends mail messages as appropriate for a given Message form submission.
+   * Sends mail donations as appropriate for a given Donation form submission.
    *
-   * Can potentially send up to three messages as follows:
-   * - To the configured recipient;
-   * - Auto-reply to the sender; and
-   * - Carbon copy to the sender.
+   * Can potentially send up to two emails as follows:
+   * - To the configured recipient(s); and
+   * - Auto-reply receipt to the donor.
    *
-   * @param \Drupal\contact\MessageInterface $message
-   *   Submitted message entity.
+   * @param \Drupal\give\DonationInterface $donation
+   *   Submitted donation entity.
    * @param \Drupal\Core\Session\AccountInterface $sender
-   *   User that submitted the message entity form.
+   *   User that submitted the donation entity form.
    *
-   * @throws \Drupal\contact\MailHandlerException
-   *   When unable to determine message recipient.
+   * @throws \Drupal\give\MailHandlerException
+   *   When unable to determine donation recipient.
    */
-  public function sendMailMessages(MessageInterface $message, AccountInterface $sender);
+  public function sendMailDonations(DonationInterface $donation, AccountInterface $sender);
 
 }

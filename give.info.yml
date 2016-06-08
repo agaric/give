@@ -1,6 +1,6 @@
 name: Give
 type: module
-description: Gives people a few easy ways to donate money online.
+description: Gives people a few easy ways to donate money on your site.
 core: 8.x
 package: Give
 configure: entity.give_form.collection

@@ -1,0 +1,103 @@
+<?php
+
+/**
+ * @file
+ * Enables the use of donation forms to give money on your site..
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\user\Entity\User;
+
+/**
+ * Implements hook_help().
+ */
+function give_help($route_name, RouteMatchInterface $route_match) {
+
+  switch ($route_name) {
+    case 'help.page.give':
+      $menu_page = \Drupal::moduleHandler()->moduleExists('menu_ui') ? \Drupal::url('entity.menu.collection') : '#';
+      $block_page = \Drupal::moduleHandler()->moduleExists('block') ? \Drupal::url('block.admin_display') : '#';
+      $give_page = \Drupal::url('entity.give_form.collection');
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The Give module allows visitors to donate to you with credit/debit card or bank transfer using donation forms you can configure. For more information, see the <a href=":give">online documentation for the Give module</a>.', array(':give' => 'https://www.drupal.org/project/give')) . '</p>';
+      $output .= '<h3>' . t('Uses') . '</h3>';
+      $output .= '<dl>';
+      $output .= '<dt>' . t('Configuring give (donation) forms') . '</dt>';
+      $output .= '<dd>' . t('On the <a href=":give_admin">Give forms page</a>, you can configure the fields and display of the donation forms. Each give form has a machine name, a label, and zero or more defined recipients to receive notification when someone donates (or tries to donate).', array(':give_admin' => $give_page)) . '</dd>';
+      $output .= '<dt>' . t('Linking to give (donation) forms') . '</dt>';
+      $output .= '<dd>' . t('One give form can be designated as the default donation form. If you choose to designate a default form, the <em>Give</em> menu link in the <em>Main</em> menu will link to it. You can modify this link from the <a href=":menu-settings">Menus page</a> if you have the Menu UI module installed. You can also create links to other give forms; the URL for each form you have set up has format <em>give/machine_name_of_form</em>.', array(':menu-settings' => $menu_page)) . '</p>';
+      $output .= '<dt>' . t('Adding fields to give forms') . '</dt>';
+      $output .= '<dd>' . t('From the <a href=":give_admin">Give forms page</a>, you can configure the fields to be shown on different give forms, including their labels and help text. If you would like other content (such as text or images) to appear on a donation form, use a block. You can create and edit blocks on the <a href=":blocks">Block layout page</a>, if the Block module is installed. Another possibility is to embed donation forms in content with an entity reference field, or in paragraphs with the contributed <a href=":paragraphs">Paragraphs module</a>.', array(':blocks' => $block_page, ':give_admin' => $give_page, ':paragraphs' => 'https://www.drupal.org/project/paragraphs')) . '</dd>';
+      $output .= '</dl>';
+      return $output;
+
+  }
+}
+
+/**
+ * Implements hook_entity_extra_field_info().
+ */
+function give_entity_extra_field_info() {
+  $fields = array();
+  foreach (array_keys(entity_get_bundles('give_donation')) as $bundle) {
+    $fields['give_donation'][$bundle]['form']['name'] = array(
+      'label' => t('Donor name'),
+      'description' => t('Text'),
+      'weight' => -50,
+    );
+    $fields['give_donation'][$bundle]['form']['mail'] = array(
+      'label' => t('Donor e-mail'),
+      'description' => t('Email'),
+      'weight' => -40,
+    );
+    $fields['give_donation'][$bundle]['form']['copy'] = array(
+      'label' => t('Recurring donation'),
+      'description' => t('Option'),
+      'weight' => 50,
+    );
+  }
+  return $fields;
+}
+
+/**
+ * Implements hook_mail().
+ */
+function give_mail($key, &$message, $params) {
+  $give_donation = $params['give_donation'];
+  /** @var $donor \Drupal\user\UserInterface */
+  $donor = $params['donor'];
+  $language = \Drupal::languageManager()->getLanguage($message['langcode']);
+
+  $variables = array(
+    '@site-name' => \Drupal::config('system.site')->get('name'),
+    '@subject' => $give_donation->getSubject(),
+    '@form' => !empty($params['give_form']) ? $params['give_form']->label() : NULL,
+    '@form-url' => \Drupal::url('<current>', [], ['absolute' => TRUE, 'language' => $language]),
+    '@donor-name' => $donor->getDisplayName(),
+  );
+  if ($donor->isAuthenticated()) {
+    $variables['@sender-url'] = $donor->url('canonical', array('absolute' => TRUE, 'language' => $language));
+  }
+  else {
+    $variables['@donor-url'] = $params['doner']->getEmail();
+  }
+
+  $options = array('langcode' => $language->getId());
+
+  switch ($key) {
+    case 'page_mail':
+      $message['subject'] .= t('[@form] @subject', $variables, $options);
+      $message['body'][] = t("@donor-name (@donor-url) gave a donation through form @form-url.", $variables, $options);
+      $build = entity_view($give_donation, 'mail');
+      $message['body'][] = \Drupal::service('renderer')->renderPlain($build);
+      break;
+
+    case 'page_autoreply':
+      $message['subject'] .= t('[@form] @subject', $variables, $options);
+      $message['body'][] = $params['give_form']->getReply();
+      break;
+
+  }
+}

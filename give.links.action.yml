@@ -1,4 +1,4 @@
-contact.form_add:
+give.form_add:
   route_name: give.form_add
   title: 'Add donation form'
   weight: 1
