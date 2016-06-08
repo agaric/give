@@ -52,7 +52,7 @@ function give_entity_extra_field_info() {
       'description' => t('Email'),
       'weight' => -40,
     );
-    $fields['give_donation'][$bundle]['form']['copy'] = array(
+    $fields['give_donation'][$bundle]['form']['recurring'] = array(
       'label' => t('Recurring donation'),
       'description' => t('Option'),
       'weight' => 50,

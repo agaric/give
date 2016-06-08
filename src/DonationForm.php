@@ -131,19 +131,6 @@ class DonationForm extends ContentEntityForm {
       $form['mail']['#plain_text'] = $user->getEmail();
     }
 
-    // The user give form has a preset recipient.
-    if ($donation->isPersonal()) {
-      $form['recipient'] = array(
-        '#type' => 'item',
-        '#title' => $this->t('To'),
-        '#value' => $donation->getPersonalRecipient()->id(),
-        'name' => array(
-          '#theme' => 'username',
-          '#account' => $donation->getPersonalRecipient(),
-        ),
-      );
-    }
-
     $form['copy'] = array(
       '#type' => 'checkbox',
       '#title' => $this->t('Send yourself a copy'),
@@ -211,13 +198,9 @@ class DonationForm extends ContentEntityForm {
     drupal_set_donation($this->t('Your donation has been sent.'));
 
     // To avoid false error donations caused by flood control, redirect away from
-    // the give form; either to the giveed user account or the front page.
-    if ($donation->isPersonal() && $user->hasPermission('access user profiles')) {
-      $form_state->setRedirectUrl($donation->getPersonalRecipient()->urlInfo());
-    }
-    else {
-      $form_state->setRedirect('<front>');
-    }
+    // the give form to the front page.
+    $form_state->setRedirect('<front>');
+
     // Save the donation. In core this is a no-op but should contrib wish to
     // implement donation storage, this will make the task of swapping in a real
     // storage controller straight-forward.

@@ -36,13 +36,6 @@ class Donation extends ContentEntityBase implements DonationInterface {
   /**
    * {@inheritdoc}
    */
-  public function isPersonal() {
-    return $this->bundle() == 'personal';
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getGiveForm() {
     return $this->get('give_form')->entity;
   }
@@ -50,43 +43,29 @@ class Donation extends ContentEntityBase implements DonationInterface {
   /**
    * {@inheritdoc}
    */
-  public function getSenderName() {
+  public function getDonorName() {
     return $this->get('name')->value;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setSenderName($sender_name) {
-    $this->set('name', $sender_name);
+  public function setDonorName($donor_name) {
+    $this->set('name', $donor_name);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getSenderMail() {
+  public function getDonorMail() {
     return $this->get('mail')->value;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setSenderMail($sender_mail) {
-    $this->set('mail', $sender_mail);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getSubject() {
-    return $this->get('subject')->value;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setSubject($subject) {
-    $this->set('subject', $subject);
+  public function setDonorMail($donor_mail) {
+    $this->set('mail', $donor_mail);
   }
 
   /**
@@ -106,24 +85,15 @@ class Donation extends ContentEntityBase implements DonationInterface {
   /**
    * {@inheritdoc}
    */
-  public function copySender() {
-    return (bool)$this->get('copy')->value;
+  public function recurring() {
+    return (bool)$this->get('recurring')->value;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setCopySender($inform) {
-    $this->set('copy', (bool) $inform);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getPersonalRecipient() {
-    if ($this->isPersonal()) {
-      return $this->get('recipient')->entity;
-    }
+  public function setRecurring($recurring) {
+    $this->set('recurring', (bool) $recurring);
   }
 
   /**
@@ -150,46 +120,27 @@ class Donation extends ContentEntityBase implements DonationInterface {
       ));
 
     $fields['name'] = BaseFieldDefinition::create('string')
-      ->setLabel(t("The sender's name"))
+      ->setLabel(t("The donor's name"))
       ->setDescription(t('The name of the person that is sending the give donation.'));
 
     $fields['mail'] = BaseFieldDefinition::create('email')
-      ->setLabel(t("The sender's email"))
+      ->setLabel(t("The donor's email"))
       ->setDescription(t('The email of the person that is sending the give donation.'));
 
-    // The subject of the give donation.
-    $fields['subject'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Subject'))
-      ->setRequired(TRUE)
-      ->setSetting('max_length', 100)
-      ->setDisplayOptions('form', array(
-        'type' => 'string_textfield',
-        'weight' => -10,
-      ))
-      ->setDisplayConfigurable('form', TRUE);
+    // The label of the give donation (will be automatically created from other parts).
+    $fields['label'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Label'))
+      ->setRequired(TRUE);
 
     // The text of the give donation.
-    $fields['donation'] = BaseFieldDefinition::create('string_long')
+    $fields['donation'] = BaseFieldDefinition::create('integer')
       ->setLabel(t('Donation'))
-      ->setRequired(TRUE)
-      ->setDisplayOptions('form', array(
-        'type' => 'string_textarea',
-        'weight' => 0,
-        'settings' => array(
-          'rows' => 12,
-        ),
-      ))
-      ->setDisplayConfigurable('form', TRUE)
-      ->setDisplayOptions('view', array(
-        'type' => 'string',
-        'weight' => 0,
-        'label' => 'above',
-      ))
-      ->setDisplayConfigurable('view', TRUE);
+      ->setDescription('The amount of the donation, in cents.')
+      ->setRequired(TRUE);
 
-    $fields['copy'] = BaseFieldDefinition::create('boolean')
-      ->setLabel(t('Copy'))
-      ->setDescription(t('Whether to send a copy of the donation to the sender.'));
+    $fields['recurring'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Recurring'))
+      ->setDescription(t('Whether the donation should recur monthly.'));
 
     $fields['recipient'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Recipient ID'))

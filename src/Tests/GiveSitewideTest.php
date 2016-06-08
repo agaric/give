@@ -42,8 +42,8 @@ class GiveSitewideTest extends WebTestBase {
   function testSiteWideGive() {
     // Create and log in administrative user.
     $admin_user = $this->drupalCreateUser(array(
-      'access site-wide give form',
-      'administer give forms',
+      'access give forms',
+      'administer give',
       'administer users',
       'administer account settings',
       'administer give_message fields',
@@ -69,29 +69,14 @@ class GiveSitewideTest extends WebTestBase {
     $this->drupalGet('admin/structure/give');
     // Default form exists.
     $this->assertLinkByHref('admin/structure/give/manage/tzedakah/delete');
-    // User form could not be changed or deleted.
-    // Cannot use ::assertNoLinkByHref as it does partial url matching and with
-    // field_ui enabled admin/structure/give/manage/personal/fields exists.
-    // @todo: See https://www.drupal.org/node/2031223 for the above.
-    $edit_link = $this->xpath('//a[@href=:href]', array(
-      ':href' => \Drupal::url('entity.give_form.edit_form', array('give_form' => 'personal'))
-    ));
-    $this->assertTrue(empty($edit_link), format_string('No link containing href %href found.',
-      array('%href' => 'admin/structure/give/manage/personal')
-    ));
-    $this->assertNoLinkByHref('admin/structure/give/manage/personal/delete');
-
-    $this->drupalGet('admin/structure/give/manage/personal');
-    $this->assertResponse(403);
 
     // Delete old forms to ensure that new forms are used.
     $this->deleteGiveForms();
     $this->drupalGet('admin/structure/give');
-    $this->assertText('Personal', 'Personal form was not deleted');
     $this->assertNoLinkByHref('admin/structure/give/manage/tzedakah');
 
     // Ensure that the give form won't be shown without forms.
-    user_role_grant_permissions(RoleInterface::ANONYMOUS_ID, array('access site-wide give form'));
+    user_role_grant_permissions(RoleInterface::ANONYMOUS_ID, array('access give forms'));
     $this->drupalLogout();
     $this->drupalGet('give');
     $this->assertResponse(404);
@@ -181,27 +166,24 @@ class GiveSitewideTest extends WebTestBase {
     $this->drupalLogout();
 
     // Check to see that anonymous user cannot see give page without permission.
-    user_role_revoke_permissions(RoleInterface::ANONYMOUS_ID, array('access site-wide give form'));
+    user_role_revoke_permissions(RoleInterface::ANONYMOUS_ID, array('access give forms'));
     $this->drupalGet('give');
     $this->assertResponse(403);
 
     // Give anonymous user permission and see that page is viewable.
-    user_role_grant_permissions(RoleInterface::ANONYMOUS_ID, array('access site-wide give form'));
+    user_role_grant_permissions(RoleInterface::ANONYMOUS_ID, array('access give forms'));
     $this->drupalGet('give');
     $this->assertResponse(200);
 
     // Submit give form with invalid values.
-    $this->submitGive('', $recipients[0], $this->randomMachineName(16), $id, $this->randomMachineName(64));
+    $this->submitGive('', $recipients[0], $id, $this->random, 50);
     $this->assertText(t('Your name field is required.'));
 
-    $this->submitGive($this->randomMachineName(16), '', $this->randomMachineName(16), $id, $this->randomMachineName(64));
+    $this->submitGive($this->randomMachineName(16), '', $id, 50);
     $this->assertText(t('Your email address field is required.'));
 
-    $this->submitGive($this->randomMachineName(16), $invalid_recipients[0], $this->randomMachineName(16), $id, $this->randomMachineName(64));
+    $this->submitGive($this->randomMachineName(16), $invalid_recipients[0], $id, 50);
     $this->assertRaw(t('The email address %mail is not valid.', array('%mail' => 'invalid')));
-
-    $this->submitGive($this->randomMachineName(16), $recipients[0], '', $id, $this->randomMachineName(64));
-    $this->assertText(t('Subject field is required.'));
 
     $this->submitGive($this->randomMachineName(16), $recipients[0], $this->randomMachineName(16), $id, '');
     $this->assertText(t('Message field is required.'));
