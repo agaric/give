@@ -92,19 +92,11 @@ interface DonationInterface extends ContentEntityInterface {
   public function recurring();
 
   /**
-   * Sets if the donor should receive a copy of this email or not.
+   * Sets if the donor should give the same donation on a monthly basis or not.
    *
    * @param bool $recur
-   *   TRUE if a copy should be sent, FALSE if not.
+   *   TRUE if a donation should recur monthly, FALSE if not.
    */
   public function setRecurring($recur);
 
 }
-
-  /**
-   * Returns the user this donation is being sent to.
-   *
-   * @return \Drupal\user\UserInterface
-   *   The user entity of the recipient, NULL if this is not a personal donation.
-   */
-  public function getPersonalRecipient();

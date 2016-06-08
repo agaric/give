@@ -134,12 +134,9 @@ class DonationForm extends ContentEntityForm {
       $form['mail']['#plain_text'] = $user->getEmail();
     }
 
-    $form['copy'] = array(
+    $form['recurring'] = array(
       '#type' => 'checkbox',
-      '#title' => $this->t('Send yourself a copy'),
-      // Do not allow anonymous users to send themselves a copy, because it can
-      // be abused to spam people.
-      '#access' => $user->isAuthenticated(),
+      '#title' => $this->t('Give this same donation every month'),
     );
     return $form;
   }
