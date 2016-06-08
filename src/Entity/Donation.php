@@ -133,19 +133,14 @@ class Donation extends ContentEntityBase implements DonationInterface {
       ->setRequired(TRUE);
 
     // The text of the give donation.
-    $fields['donation'] = BaseFieldDefinition::create('integer')
-      ->setLabel(t('Donation'))
-      ->setDescription('The amount of the donation, in cents.')
+    $fields['amount'] = BaseFieldDefinition::create('integer')
+      ->setLabel(t('Donation amount'))
+      ->setDescription('The amount of the donation, in cents USD.')
       ->setRequired(TRUE);
 
     $fields['recurring'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Recurring'))
       ->setDescription(t('Whether the donation should recur monthly.'));
-
-    $fields['recipient'] = BaseFieldDefinition::create('entity_reference')
-      ->setLabel(t('Recipient ID'))
-      ->setDescription(t('The ID of the recipient user for personal give donations.'))
-      ->setSetting('target_type', 'user');
 
     return $fields;
   }

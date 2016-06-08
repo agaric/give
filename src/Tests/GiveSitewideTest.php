@@ -85,9 +85,6 @@ class GiveSitewideTest extends WebTestBase {
     $this->drupalGet('give');
     $this->assertResponse(200);
     $this->assertText(t('The give form has not been configured.'));
-    // Test access personal form via site-wide give page.
-    $this->drupalGet('give/personal');
-    $this->assertResponse(403);
 
     // Add forms.
     // Test invalid recipients.
