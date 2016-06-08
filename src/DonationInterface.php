@@ -18,92 +18,88 @@ interface DonationInterface extends ContentEntityInterface {
   public function getGiveForm();
 
   /**
-   * Returns the name of the sender.
+   * Returns the name of the donor.
    *
    * @return string
-   *   The name of the donation sender.
+   *   The name of the donation donor.
    */
-  public function getSenderName();
+  public function getDonorName();
 
   /**
-   * Sets the name of the donation sender.
+   * Sets the name of the donation donor.
    *
-   * @param string $sender_name
-   *   The name of the donation sender.
+   * @param string $donor_name
+   *   The name of the donation donor.
    */
-  public function setSenderName($sender_name);
+  public function setDonorName($donor_name);
 
   /**
-   * Returns the email address of the sender.
-   *
-   * @return string
-   *   The email address of the donation sender.
-   */
-  public function getSenderMail();
-
-  /**
-   * Sets the email address of the sender.
-   *
-   * @param string $sender_mail
-   *   The email address of the donation sender.
-   */
-  public function setSenderMail($sender_mail);
-
-  /**
-   * Returns the donation subject.
+   * Returns the email address of the donor.
    *
    * @return string
-   *   The donation subject.
+   *   The email address of the donation donor.
    */
-  public function getSubject();
+  public function getDonorMail();
 
   /**
-   * Sets the subject for the email.
+   * Sets the email address of the donor.
    *
-   * @param string $subject
-   *   The donation subject.
+   * @param string $donor_mail
+   *   The email address of the donation donor.
    */
-  public function setSubject($subject);
+  public function setDonorMail($donor_mail);
 
   /**
-   * Returns the donation body.
+   * Returns the donation label.
    *
    * @return string
+   *   The donation label.
+   */
+  public function getLabel();
+
+  /**
+   * Sets the label for the donation.
+   *
+   * Set automatically.  See DonationForm::buildEntity().
+   *
+   * @param string $label
+   *   The donation label.
+   */
+  public function setLabel($subject);
+
+  /**
+   * Returns the donation amount.
+   *
+   * @return integer
    *   The donation body.
    */
-  public function getDonation();
+  public function getAmount();
 
   /**
-   * Sets the email donation to send.
+   * Sets the email donation amount.
    *
    * @param string $donation
-   *   The donation body.
+   *   The donation amount in USD cents.
    */
-  public function setDonation($donation);
+  public function setAmount($amount);
 
   /**
-   * Returns TRUE if a copy should be sent to the sender.
+   * Returns TRUE if the donation should recur monthly.
    *
    * @return bool
-   *   TRUE if a copy should be sent, FALSE if not.
+   *   TRUE if the donation should recur monthly, FALSE if not.
    */
-  public function copySender();
+  public function recurring();
 
   /**
-   * Sets if the sender should receive a copy of this email or not.
+   * Sets if the donor should receive a copy of this email or not.
    *
-   * @param bool $inform
+   * @param bool $recur
    *   TRUE if a copy should be sent, FALSE if not.
    */
-  public function setCopySender($inform);
+  public function setRecurring($recur);
 
-  /**
-   * Returns TRUE if this is the personal give form.
-   *
-   * @return bool
-   *   TRUE if the donation bundle is personal.
-   */
-  public function isPersonal();
+}
 
   /**
    * Returns the user this donation is being sent to.
@@ -112,5 +108,3 @@ interface DonationInterface extends ContentEntityInterface {
    *   The user entity of the recipient, NULL if this is not a personal donation.
    */
   public function getPersonalRecipient();
-
-}
