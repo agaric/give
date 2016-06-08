@@ -94,7 +94,7 @@ function give_mail($key, &$message, $params) {
       $message['body'][] = \Drupal::service('renderer')->renderPlain($build);
       break;
 
-    case 'page_autoreply':
+    case 'page_receipt':
       $message['subject'] .= t('[@form] @subject', $variables, $options);
       $message['body'][] = $params['give_form']->getReply();
       break;
