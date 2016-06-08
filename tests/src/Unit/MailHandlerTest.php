@@ -164,7 +164,7 @@ class MailHandlerTest extends UnitTestCase {
     $donation = $this->getAnonymousMockDonation($recipients, '');
     $donor = $this->getMockDonor();
     $result = array(
-      'key' => 'page_mail',
+      'key' => 'donation_notice',
       'params' => array(
         'give_donation' => $donation,
         'donor' => $donor,
@@ -178,7 +178,7 @@ class MailHandlerTest extends UnitTestCase {
     $donation = $this->getAnonymousMockDonation($recipients, 'reply');
     $donor = $this->getMockDonor();
     $result = array(
-      'key' => 'page_mail',
+      'key' => 'donation_notice',
       'params' => array(
         'give_donation' => $donation,
         'donor' => $donor,
@@ -186,7 +186,7 @@ class MailHandlerTest extends UnitTestCase {
       ),
     );
     $results[] = $result + $default_result;
-    $result['key'] = 'page_receipt';
+    $result['key'] = 'donation_receipt';
     $result['to'] = 'anonymous@drupal.org';
     $result['from'] = NULL;
     $results[] = $result + $default_result;
@@ -196,7 +196,7 @@ class MailHandlerTest extends UnitTestCase {
     $donation = $this->getAnonymousMockDonation($recipients, '', TRUE);
     $donor = $this->getMockDonor();
     $result = array(
-      'key' => 'page_mail',
+      'key' => 'donation_notice',
       'params' => array(
         'give_donation' => $donation,
         'donor' => $donor,
@@ -210,7 +210,7 @@ class MailHandlerTest extends UnitTestCase {
     $donation = $this->getAnonymousMockDonation($recipients, 'reply', TRUE);
     $donor = $this->getMockDonor();
     $result = array(
-      'key' => 'page_mail',
+      'key' => 'donation_notice',
       'params' => array(
         'give_donation' => $donation,
         'donor' => $donor,
@@ -218,7 +218,7 @@ class MailHandlerTest extends UnitTestCase {
       ),
     );
     $results[] = $result + $default_result;
-    $result['key'] = 'page_receipt';
+    $result['key'] = 'donation_receipt';
     $result['from'] = NULL;
     $results[] = $result + $default_result;
     $data[] = array($donation, $donor, $results);

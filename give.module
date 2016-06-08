@@ -72,13 +72,13 @@ function give_mail($key, &$message, $params) {
 
   $variables = array(
     '@site-name' => \Drupal::config('system.site')->get('name'),
-    '@subject' => $give_donation->getSubject(),
+    '@label' => $give_donation->getLabel(),
     '@form' => !empty($params['give_form']) ? $params['give_form']->label() : NULL,
     '@form-url' => \Drupal::url('<current>', [], ['absolute' => TRUE, 'language' => $language]),
     '@donor-name' => $donor->getDisplayName(),
   );
   if ($donor->isAuthenticated()) {
-    $variables['@sender-url'] = $donor->url('canonical', array('absolute' => TRUE, 'language' => $language));
+    $variables['@donor-url'] = $donor->url('canonical', array('absolute' => TRUE, 'language' => $language));
   }
   else {
     $variables['@donor-url'] = $params['doner']->getEmail();
@@ -87,15 +87,15 @@ function give_mail($key, &$message, $params) {
   $options = array('langcode' => $language->getId());
 
   switch ($key) {
-    case 'page_mail':
-      $message['subject'] .= t('[@form] @subject', $variables, $options);
+    case 'donation_notice':
+      $message['subject'] .= t('[@form] @label', $variables, $options);
       $message['body'][] = t("@donor-name (@donor-url) gave a donation through form @form-url.", $variables, $options);
       $build = entity_view($give_donation, 'mail');
       $message['body'][] = \Drupal::service('renderer')->renderPlain($build);
       break;
 
-    case 'page_receipt':
-      $message['subject'] .= t('[@form] @subject', $variables, $options);
+    case 'donation_receipt':
+      $message['subject'] .= t('[@form] @label', $variables, $options);
       $message['body'][] = $params['give_form']->getReply();
       break;
 

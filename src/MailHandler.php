@@ -101,9 +101,9 @@ class MailHandler implements MailHandlerInterface {
     // Send email to the recipient(s).
     $this->mailManager->mail('give', 'form_mail', $to, $recipient_langcode, $params, $sender_cloned->getEmail());
 
-    // If configured, send an auto-reply, using the current language.
+    // If configured, send an auto-reply receipt, using the current language.
     if ($give_form->getReply()) {
-      $this->mailManager->mail('give', 'page_autoreply', $sender_cloned->getEmail(), $current_langcode, $params);
+      $this->mailManager->mail('give', 'donation_receipt', $sender_cloned->getEmail(), $current_langcode, $params);
     }
 
     $this->logger->notice('%sender-name (@sender-from) gave via %give_form.', array(
