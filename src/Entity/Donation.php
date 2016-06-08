@@ -71,15 +71,15 @@ class Donation extends ContentEntityBase implements DonationInterface {
   /**
    * {@inheritdoc}
    */
-  public function getDonation() {
-    return $this->get('donation')->value;
+  public function getAmount() {
+    return $this->get('amount')->value;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setDonation($donation) {
-    $this->set('donation', $donation);
+  public function setAmount($amount) {
+    $this->set('amount', $amount);
   }
 
   /**
