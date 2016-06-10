@@ -18,7 +18,7 @@ class GiveFormListBuilder extends ConfigEntityListBuilder {
   public function buildHeader() {
     $header['form'] = t('Form');
     $header['recipients'] = t('Recipients');
-    $header['selected'] = t('Selected');
+    $header['selected'] = t('Default');
     return $header + parent::buildHeader();
   }
 
