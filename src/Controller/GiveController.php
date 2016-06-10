@@ -74,13 +74,13 @@ class GiveController extends ControllerBase {
       }
     }
 
-    $message = $this->entityManager()
-      ->getStorage('give_message')
+    $donation = $this->entityManager()
+      ->getStorage('give_donation')
       ->create(array(
         'give_form' => $give_form->id(),
       ));
 
-    $form = $this->entityFormBuilder()->getForm($message);
+    $form = $this->entityFormBuilder()->getForm($donation);
     $form['#title'] = $give_form->label();
     $form['#cache']['contexts'][] = 'user.permissions';
     $this->renderer->addCacheableDependency($form, $config);

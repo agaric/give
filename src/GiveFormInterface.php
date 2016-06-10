@@ -18,10 +18,10 @@ interface GiveFormInterface extends ConfigEntityInterface {
   public function getRecipients();
 
   /**
-   * Returns an auto-reply message to send to the message author.
+   * Returns an automatic reply to be sent with donation receipt to the donor.
    *
    * @return string
-   *  An auto-reply message
+   *  Text to be sent with the donation receipt.
    */
   public function getReply();
 
@@ -44,10 +44,10 @@ interface GiveFormInterface extends ConfigEntityInterface {
   public function setRecipients($recipients);
 
   /**
-   * Sets an auto-reply message to send to the message author.
+   * Sets an automatic reply to be sent with donation receipt to the donor.
    *
    * @param string $reply
-   *   The desired reply.
+   *   The desired reply to be sent with the donation receipt.
    *
    * @return $this
    */
