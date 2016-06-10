@@ -146,7 +146,7 @@ class DonationForm extends ContentEntityForm {
    */
   public function actions(array $form, FormStateInterface $form_state) {
     $elements = parent::actions($form, $form_state);
-    $elements['submit']['#value'] = $this->t('Send donation');
+    $elements['submit']['#value'] = $this->t('Give');
     return $elements;
   }
 
