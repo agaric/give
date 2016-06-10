@@ -25,6 +25,6 @@ interface MailHandlerInterface {
    * @throws \Drupal\give\MailHandlerException
    *   When unable to determine donation recipient.
    */
-  public function sendMailDonations(DonationInterface $donation, AccountInterface $sender);
+  public function sendDonationNotice(DonationInterface $donation, AccountInterface $sender);
 
 }

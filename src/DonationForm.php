@@ -228,7 +228,7 @@ class DonationForm extends ContentEntityForm {
   public function save(array $form, FormStateInterface $form_state) {
     $donation = $this->entity;
     $user = $this->currentUser();
-    $this->mailHandler->sendMailDonations($donation, $user);
+    $this->mailHandler->sendDonationNotice($donation, $user);
 
     $this->flood->register('give', $this->config('give.settings')->get('flood.interval'));
     drupal_set_donation($this->t('Your donation has been sent.'));

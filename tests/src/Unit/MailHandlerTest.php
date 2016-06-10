@@ -97,7 +97,7 @@ class MailHandlerTest extends UnitTestCase {
    * @expectedException \Drupal\give\MailHandlerException
    * @expectedExceptionDonation Unable to determine donation recipient
    *
-   * @covers ::sendMailDonations
+   * @covers ::sendDonationNotice
    */
   public function testInvalidRecipient() {
     $donation = $this->getMock('\Drupal\give\DonationInterface');
@@ -115,15 +115,15 @@ class MailHandlerTest extends UnitTestCase {
     $donor->expects($this->once())
       ->method('isAnonymous')
       ->willReturn(FALSE);
-    $this->giveMailHandler->sendMailDonations($donation, $donor);
+    $this->giveMailHandler->sendDonationNotice($donation, $donor);
   }
 
   /**
-   * Tests the sendMailDonations method.
+   * Tests the sendDonationNotice method.
    *
    * @dataProvider getSendMailDonations
    *
-   * @covers ::sendMailDonations
+   * @covers ::sendDonationNotice
    */
   public function testSendMailDonations(DonationInterface $donation, AccountInterface $donor, $results) {
     $this->logger->expects($this->once())
@@ -143,7 +143,7 @@ class MailHandlerTest extends UnitTestCase {
     $this->userStorage->expects($this->any())
       ->method('load')
       ->willReturn(clone $donor);
-    $this->giveMailHandler->sendMailDonations($donation, $donor);
+    $this->giveMailHandler->sendDonationNotice($donation, $donor);
   }
 
   /**

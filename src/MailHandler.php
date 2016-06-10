@@ -70,13 +70,13 @@ class MailHandler implements MailHandlerInterface {
   /**
    * {@inheritdoc}
    */
-  public function sendMailMessages(MessageInterface $message, AccountInterface $sender) {
+  public function sendDonationNotice(DonationInterface $donation, AccountInterface $sender) {
     // Clone the sender, as we make changes to mail and name properties.
     $sender_cloned = clone $this->userStorage->load($sender->id());
     $params = array();
     $current_langcode = $this->languageManager->getCurrentLanguage()->getId();
     $recipient_langcode = $this->languageManager->getDefaultLanguage()->getId();
-    $give_form = $message->getGiveForm();
+    $give_form = $donation->getGiveForm();
 
     if ($sender_cloned->isAnonymous()) {
       // At this point, $sender contains an anonymous user, so we need to take
@@ -86,11 +86,11 @@ class MailHandler implements MailHandlerInterface {
 
       // For the email message, clarify that the sender name is not verified; it
       // could potentially clash with a username on this site.
-      $sender_cloned->name = $this->t('@name (not verified)', array('@name' => $message->getSenderName()));
+      $sender_cloned->name = $this->t('@name (not verified)', array('@name' => $donation->getSenderName()));
     }
 
     // Build email parameters.
-    $params['give_message'] = $message;
+    $params['give_message'] = $donation;
     $params['sender'] = $sender_cloned;
 
     // Send to the form recipient(s), using the site's default language.
