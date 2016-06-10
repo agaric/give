@@ -35,7 +35,7 @@ class DonationEntityTest extends EntityKernelTestBase {
    */
   public function testDonationMethods() {
     $donation_storage = $this->container->get('entity.manager')->getStorage('give_donation');
-    $donation = $donation_storage->create(array('give_form' => 'feedback'));
+    $donation = $donation_storage->create(array('give_form' => 'tzedakah'));
 
    // Check for empty values first.
     $this->assertEqual($donation->getAmount(), 0);
