@@ -70,28 +70,28 @@ class MailHandler implements MailHandlerInterface {
   /**
    * {@inheritdoc}
    */
-  public function sendDonationNotice(DonationInterface $donation, AccountInterface $sender) {
-    // Clone the sender, as we make changes to mail and name properties.
-    $sender_cloned = clone $this->userStorage->load($sender->id());
+  public function sendDonationNotice(DonationInterface $donation, AccountInterface $donor) {
+    // Clone the donor, as we make changes to mail and name properties.
+    $donor_cloned = clone $this->userStorage->load($donor->id());
     $params = array();
     $current_langcode = $this->languageManager->getCurrentLanguage()->getId();
     $recipient_langcode = $this->languageManager->getDefaultLanguage()->getId();
     $give_form = $donation->getGiveForm();
 
-    if ($sender_cloned->isAnonymous()) {
-      // At this point, $sender contains an anonymous user, so we need to take
+    if ($donor_cloned->isAnonymous()) {
+      // At this point, $donor contains an anonymous user, so we need to take
       // over the submitted form values.
-      $sender_cloned->name = $message->getSenderName();
-      $sender_cloned->mail = $message->getSenderMail();
+      $donor_cloned->name = $donation->getDonorName();
+      $donor_cloned->mail = $donation->getDonorMail();
 
-      // For the email message, clarify that the sender name is not verified; it
+      // For the email message, clarify that the donor name is not verified; it
       // could potentially clash with a username on this site.
-      $sender_cloned->name = $this->t('@name (not verified)', array('@name' => $donation->getSenderName()));
+      $donor_cloned->name = $this->t('@name (not verified)', array('@name' => $donation->getDonorName()));
     }
 
     // Build email parameters.
-    $params['give_message'] = $donation;
-    $params['sender'] = $sender_cloned;
+    $params['give_donation'] = $donation;
+    $params['donor'] = $donor_cloned;
 
     // Send to the form recipient(s), using the site's default language.
     $params['give_form'] = $give_form;
@@ -99,16 +99,16 @@ class MailHandler implements MailHandlerInterface {
     $to = implode(', ', $give_form->getRecipients());
 
     // Send email to the recipient(s).
-    $this->mailManager->mail('give', 'form_mail', $to, $recipient_langcode, $params, $sender_cloned->getEmail());
+    $this->mailManager->mail('give', 'form_mail', $to, $recipient_langcode, $params, $donor_cloned->getEmail());
 
     // If configured, send an auto-reply receipt, using the current language.
     if ($give_form->getReply()) {
-      $this->mailManager->mail('give', 'donation_receipt', $sender_cloned->getEmail(), $current_langcode, $params);
+      $this->mailManager->mail('give', 'donation_receipt', $donor_cloned->getEmail(), $current_langcode, $params);
     }
 
-    $this->logger->notice('%sender-name (@sender-from) gave via %give_form.', array(
-      '%sender-name' => $sender_cloned->getUsername(),
-      '@sender-from' => $sender_cloned->getEmail(),
+    $this->logger->notice('%donor-name (@donor-from) gave via %give_form.', array(
+      '%donor-name' => $donor_cloned->getUsername(),
+      '@donor-from' => $donor_cloned->getEmail(),
       '%give_form' => $give_form->label(),
     ));
   }
