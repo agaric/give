@@ -22,7 +22,7 @@ use Drupal\give\GiveFormInterface;
  *   },
  *   config_prefix = "form",
  *   admin_permission = "administer give forms",
- *   bundle_of = "give_message",
+ *   bundle_of = "give_donation",
  *   entity_keys = {
  *     "id" = "id",
  *     "label" = "label"
@@ -66,7 +66,7 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
   protected $recipients = array();
 
   /**
-   * An auto-reply message.
+   * An automatic reply with a receipt for the donation.
    *
    * @var string
    */
