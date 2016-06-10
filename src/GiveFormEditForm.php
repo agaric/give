@@ -63,7 +63,7 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       '#title' => $this->t('Label'),
       '#maxlength' => 255,
       '#default_value' => $give_form->label(),
-      '#description' => $this->t("Example: 'website feedback' or 'product information'."),
+      '#description' => $this->t("Example: 'General donations', 'Renovation fund drive', or 'Annual appeal'."),
       '#required' => TRUE,
     );
     $form['id'] = array(
@@ -79,14 +79,14 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       '#type' => 'textarea',
       '#title' => $this->t('Recipients'),
       '#default_value' => implode(', ', $give_form->getRecipients()),
-      '#description' => $this->t("Example: 'webmaster@example.com' or 'sales@example.com,support@example.com' . To specify multiple recipients, separate each email address with a comma."),
+      '#description' => $this->t("Provide who should be notified when a donation is received. Example: 'donations@example.org' or 'fund@example.org,staff@example.org' . To specify multiple recipients, separate each email address with a comma."),
       '#required' => TRUE,
     );
     $form['reply'] = array(
       '#type' => 'textarea',
-      '#title' => $this->t('Auto-reply'),
+      '#title' => $this->t('Auto-reply with receipt'),
       '#default_value' => $give_form->getReply(),
-      '#description' => $this->t('Optional auto-reply. Leave empty if you do not want to send the user an auto-reply message.'),
+      '#description' => $this->t('Optionally send a receipt confirming the donation (including amount) with this text, which should include your organization name and any relevant tax information. Leave empty if you do not want to send the user an auto-reply message.'),
     );
     $form['weight'] = array(
       '#type' => 'weight',
