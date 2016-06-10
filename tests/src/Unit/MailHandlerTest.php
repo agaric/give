@@ -92,33 +92,6 @@ class MailHandlerTest extends UnitTestCase {
   }
 
   /**
-   * Tests the children() method with an invalid key.
-   *
-   * @expectedException \Drupal\give\MailHandlerException
-   * @expectedExceptionDonation Unable to determine donation recipient
-   *
-   * @covers ::sendDonationNotice
-   */
-  public function testInvalidRecipient() {
-    $donation = $this->getMock('\Drupal\give\DonationInterface');
-    $donation->expects($this->once())
-      ->method('getGiveForm')
-      ->willReturn($this->getMock('\Drupal\give\GiveFormInterface'));
-    $donor = $this->getMock('\Drupal\Core\Session\AccountInterface');
-    $this->userStorage->expects($this->any())
-      ->method('load')
-      ->willReturn($donor);
-    // User IDs 1 and 0 have special implications, use 3 instead.
-    $donor->expects($this->any())
-      ->method('id')
-      ->willReturn(3);
-    $donor->expects($this->once())
-      ->method('isAnonymous')
-      ->willReturn(FALSE);
-    $this->giveMailHandler->sendDonationNotice($donation, $donor);
-  }
-
-  /**
    * Tests the sendDonationNotice method.
    *
    * @dataProvider getSendMailDonations

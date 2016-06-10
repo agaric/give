@@ -21,9 +21,6 @@ interface MailHandlerInterface {
    *   Submitted donation entity.
    * @param \Drupal\Core\Session\AccountInterface $sender
    *   User that submitted the donation entity form.
-   *
-   * @throws \Drupal\give\MailHandlerException
-   *   When unable to determine donation recipient.
    */
   public function sendDonationNotice(DonationInterface $donation, AccountInterface $sender);
 
