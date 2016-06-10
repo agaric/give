@@ -7,7 +7,7 @@ use Drupal\Core\Entity\EntityAccessControlHandler;
 use Drupal\Core\Session\AccountInterface;
 
 /**
- * Defines the access control handler for the message form entity type.
+ * Defines the access control handler for the donation form entity type.
  *
  * @see \Drupal\give\Entity\Donation.
  */
