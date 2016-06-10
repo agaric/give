@@ -46,7 +46,7 @@ class GiveSitewideTest extends WebTestBase {
       'administer give',
       'administer users',
       'administer account settings',
-      'administer give_message fields',
+      'administer give_donation fields',
     ));
     $this->drupalLogin($admin_user);
 
@@ -173,17 +173,17 @@ class GiveSitewideTest extends WebTestBase {
     $this->assertResponse(200);
 
     // Submit give form with invalid values.
-    $this->submitGive('', $recipients[0], $id, $this->random, 50);
+    $this->submitGive('', $recipients[0], $id, $this->random, 500);
     $this->assertText(t('Your name field is required.'));
 
-    $this->submitGive($this->randomMachineName(16), '', $id, 50);
+    $this->submitGive($this->randomMachineName(16), '', $id, 500);
     $this->assertText(t('Your email address field is required.'));
 
-    $this->submitGive($this->randomMachineName(16), $invalid_recipients[0], $id, 50);
+    $this->submitGive($this->randomMachineName(16), $invalid_recipients[0], $id, 500);
     $this->assertRaw(t('The email address %mail is not valid.', array('%mail' => 'invalid')));
 
-    $this->submitGive($this->randomMachineName(16), $recipients[0], $this->randomMachineName(16), $id, '');
-    $this->assertText(t('Message field is required.'));
+    $this->submitGive($this->randomMachineName(16), $recipients[0], $id, '');
+    $this->assertText(t('Amount field is required.'));
 
     // Test give form with no default form selected.
     $this->config('give.settings')
@@ -200,12 +200,12 @@ class GiveSitewideTest extends WebTestBase {
 
     // Submit give form with correct values and check flood interval.
     for ($i = 0; $i < $flood_limit; $i++) {
-      $this->submitGive($this->randomMachineName(16), $recipients[0], $this->randomMachineName(16), $id, $this->randomMachineName(64));
-      $this->assertText(t('Your message has been sent.'));
+      $this->submitGive($this->randomMachineName(16), $recipients[0], $id, 500);
+      $this->assertText(t('Your donation has been sent.'));
     }
     // Submit give form one over limit.
-    $this->submitGive($this->randomMachineName(16), $recipients[0], $this->randomMachineName(16), $id, $this->randomMachineName(64));
-    $this->assertRaw(t('You cannot send more than %number messages in 10 min. Try again later.', array('%number' => $this->config('give.settings')->get('flood.limit'))));
+    $this->submitGive($this->randomMachineName(16), $recipients[0], $id, 500);
+    $this->assertRaw(t('You cannot send more than %number donations in 10 min. Try again later.', array('%number' => $this->config('give.settings')->get('flood.limit'))));
 
     // Test listing controller.
     $this->drupalLogin($admin_user);
@@ -257,11 +257,10 @@ class GiveSitewideTest extends WebTestBase {
 
     // Submit the give form and verify the content.
     $edit = array(
-      'subject[0][value]' => $this->randomMachineName(),
-      'message[0][value]' => $this->randomMachineName(),
+      'amount[0][value]' => 500,
       $field_name . '[0][value]' => $this->randomMachineName(),
     );
-    $this->drupalPostForm(NULL, $edit, t('Send message'));
+    $this->drupalPostForm(NULL, $edit, t('Give'));
     $mails = $this->drupalGetMails();
     $mail = array_pop($mails);
     $this->assertEqual($mail['subject'], t('[@label] @subject', array('@label' => $label, '@subject' => $edit['subject[0][value]'])));
@@ -373,19 +372,16 @@ class GiveSitewideTest extends WebTestBase {
    *   The name of the sender.
    * @param string $mail
    *   The email address of the sender.
-   * @param string $subject
-   *   The subject of the message.
    * @param string $id
-   *   The form ID of the message.
-   * @param string $message
-   *   The message body.
+   *   The form ID of the donation.
+   * @param string $amount
+   *   The amount of the donation in cents USD.
    */
-  function submitGive($name, $mail, $subject, $id, $message) {
+  function submitGive($name, $mail, $id, $amount) {
     $edit = array();
     $edit['name'] = $name;
     $edit['mail'] = $mail;
-    $edit['subject[0][value]'] = $subject;
-    $edit['message[0][value]'] = $message;
+    $edit['amount[0][value]'] = $amount;
     if ($id == $this->config('give.settings')->get('default_form')) {
       $this->drupalPostForm('give', $edit, t('Give'));
     }
