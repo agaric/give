@@ -107,6 +107,7 @@ function give_mail($key, &$message, $params) {
     case 'donation_receipt':
       $message['subject'] .= t('[@form] @label', $variables, $options);
       $message['body'][] = $params['give_form']->getReply();
+      $message['body'][] = '$' . $give_donation->getAmount() / 100;
       break;
 
   }
