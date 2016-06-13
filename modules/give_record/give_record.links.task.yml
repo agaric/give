@@ -1,0 +1,9 @@
+entity.give_donation.forms:
+  title: 'Forms'
+  route_name: entity.give_form.collection
+  base_route: entity.give_form.collection
+
+entity.give_donation.collection:
+  title: 'List'
+  route_name: entity.give_donation.collection
+  base_route: entity.give_form.collection

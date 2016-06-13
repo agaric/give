@@ -1,0 +1,10 @@
+give.form.*.third_party.give_record:
+  type: mapping
+  label: 'Give form redirection'
+  mapping:
+    redirect_uri:
+      type: string
+      label: 'Redirect URI'
+    submit_text:
+      type: label
+      label: 'Submit Text'
