@@ -134,6 +134,12 @@ class DonationForm extends ContentEntityForm {
       $form['mail']['#plain_text'] = $user->getEmail();
     }
 
+    $form['amount'] = array(
+      '#type' => 'textfield',
+      '#title' => $this->t('Amount to give'),
+      '#required' => TRUE,
+    );
+
     $form['recurring'] = array(
       '#type' => 'checkbox',
       '#title' => $this->t('Give this same donation every month'),
