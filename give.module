@@ -10,6 +10,16 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\user\Entity\User;
 
 /**
+ * Denotes that the donation is not completed.
+ */
+const DONATION_NOT_COMPLETED = 0;
+
+/**
+ * Denotes that the donation is completed.
+ */
+const DONATION_COMPLETED = 1;
+
+/**
  * Implements hook_help().
  */
 function give_help($route_name, RouteMatchInterface $route_match) {
