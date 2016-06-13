@@ -99,4 +99,42 @@ interface DonationInterface extends ContentEntityInterface {
    */
   public function setRecurring($recur);
 
+  /**
+   * Gets the donation creation timestamp.
+   *
+   * @return int
+   *   Creation timestamp of the donation.
+   */
+  public function getCreatedTime();
+
+  /**
+   * Sets the donation creation timestamp.
+   *
+   * @param int $timestamp
+   *   The donation creation timestamp.
+   *
+   * @return \Drupal\give\DonationInterface
+   *   The called donation entity.
+   */
+  public function setCreatedTime($timestamp);
+
+  /**
+   * Returns the donation completed status.
+   *
+   * @return bool
+   *   TRUE if the donation is completed.
+   */
+  public function isCompleted();
+
+  /**
+   * Sets the node promoted status.
+   *
+   * @param bool $completed
+   *   TRUE to set this node to promoted, FALSE to set it to not promoted.
+   *
+   * @return \Drupal\give\DonationInterface
+   *   The called donation entity.
+   */
+  public function setCompleted($completed);
+
 }
