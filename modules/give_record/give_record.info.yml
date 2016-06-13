@@ -3,6 +3,7 @@ type: module
 description: 'Provides storage and edit capability for donations; also provides render capability for give forms.'
 # version: VERSION
 core: 8.x
+package: Give
 dependencies:
   - give
   - user
