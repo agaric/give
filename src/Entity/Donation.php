@@ -188,6 +188,26 @@ class Donation extends ContentEntityBase implements DonationInterface {
       ->setLabel(t('Recurring'))
       ->setDescription(t('Whether the donation should recur monthly.'));
 
+    $fields['created'] = BaseFieldDefinition::create('created')
+      ->setLabel(t('Authored on'))
+      ->setDescription(t('The time that the node was created.'));
+
+    $fields['changed'] = BaseFieldDefinition::create('changed')
+      ->setLabel(t('Changed'))
+      ->setDescription(t('The time that the node was last edited.'));
+
+    $fields['complete'] = BaseFieldDefinition::create('boolean')
+      ->setLabel(t('Completed donation'))
+      ->setDefaultValue(FALSE)
+      ->setDisplayOptions('form', array(
+        'type' => 'boolean_checkbox',
+        'settings' => array(
+          'display_label' => TRUE,
+        ),
+        'weight' => 15,
+      ))
+      ->setDisplayConfigurable('form', TRUE);
+
     return $fields;
   }
 
