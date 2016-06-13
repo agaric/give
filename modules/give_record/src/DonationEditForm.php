@@ -14,7 +14,7 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Form controller for contact message edit forms.
+ * Form controller for give donation edit forms.
  */
 class DonationEditForm extends ContentEntityForm {
 
@@ -52,20 +52,32 @@ class DonationEditForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function form(array $form, FormStateInterface $form_state) {
-    /** @var \Drupal\contact\DonationInterface $message */
-    $message = $this->entity;
-    $form = parent::form($form, $form_state, $message);
+    /** @var \Drupal\contact\DonationInterface $donation */
+    $donation = $this->entity;
+    $form = parent::form($form, $form_state, $donation);
 
     $form['name'] = array(
       '#type' => 'textfield',
       '#title' => $this->t('Donor name'),
       '#maxlength' => 255,
-      '#default_value' => $message->getDonorName(),
+      '#default_value' => $donation->getDonorName(),
     );
     $form['mail'] = array(
       '#type' => 'email',
       '#title' => $this->t('Donor email address'),
-      '#default_value' => $message->getDonorMail(),
+      '#default_value' => $donation->getDonorMail(),
+    );
+    $form['amount'] = array(
+      '#type' => 'textfield',
+      '#title' => $this->t('Amount (USD)'),
+      '#default_value' => $donation->getAmount(),
+      '#disabled' => TRUE,
+    );
+    $form['recurring'] = array(
+      '#type' => 'checkbox',
+      '#title' => $this->t('Recurring'),
+      '#default_value' => $donation->recurring(),
+      '#disabled' => TRUE,
     );
 
     return $form;
