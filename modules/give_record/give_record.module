@@ -113,7 +113,7 @@ function give_record_entity_base_field_info_alter(&$fields, EntityTypeInterface 
   if ($entity_type->id() == 'give_donation') {
     // Start at min 3 because donation default weight is 0.
     $i = -3;
-    foreach (array('name', 'mail', 'subject') as $field_name) {
+    foreach (array('name', 'mail', 'amount') as $field_name) {
       $fields[$field_name]->setDisplayConfigurable('view', TRUE);
       $fields[$field_name]->setDisplayOptions('view', array('weight' => $i));
       $i++;
@@ -144,7 +144,7 @@ function give_record_entity_type_alter(array &$entity_types) {
   $entity_types['give_donation']->setStorageClass('\Drupal\Core\Entity\Sql\SqlContentEntityStorage');
   $keys = $entity_types['give_donation']->getKeys();
   $keys['id'] = 'id';
-  $keys['label'] = 'subject';
+  $keys['label'] = 'label';
   $entity_types['give_donation']->set('entity_keys', $keys);
   $entity_types['give_donation']->set('base_table', 'give_donation');
   // Add edit and delete forms.
