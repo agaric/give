@@ -113,6 +113,37 @@ class Donation extends ContentEntityBase implements DonationInterface {
   /**
    * {@inheritdoc}
    */
+  public function getCreatedTime() {
+    return $this->get('created')->value;
+  }
+
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setCreatedTime($timestamp) {
+    $this->set('created', $timestamp);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function isCompleted() {
+    return (bool) $this->get('complete')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setCompleted($completed) {
+    $this->set('complete', $completed ? NODE_PROMOTED : NODE_NOT_PROMOTED);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
     $fields['give_form'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Form ID'))
