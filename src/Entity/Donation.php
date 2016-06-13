@@ -44,7 +44,7 @@ class Donation extends ContentEntityBase implements DonationInterface {
    * {@inheritdoc}
    */
   public function getLabel() {
-    return $this->get('label');
+    return $this->get('label')->value;
   }
 
   /**
