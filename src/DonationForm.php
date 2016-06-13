@@ -171,7 +171,7 @@ class DonationForm extends ContentEntityForm {
 
     // We always build the donation's label from the donor's name and e-mail,
     // the amount of the donation, and the subject field if present.
-    $label = $donation->getGiveForm->get('label') . ' : ';
+    $label = $donation->getGiveForm()->get('label') . ' : ';
     if ($donation->getDonorName()) {
       $label .= $donation->getDonorName() . ' ';
     }
@@ -237,7 +237,7 @@ class DonationForm extends ContentEntityForm {
     $this->mailHandler->sendDonationNotice($donation, $user);
 
     $this->flood->register('give', $this->config('give.settings')->get('flood.interval'));
-    drupal_set_donation($this->t('Your donation has been sent.'));
+    drupal_set_message($this->t('Your donation has been sent.'));
 
     // To avoid false error donations caused by flood control, redirect away from
     // the give form to the front page.
