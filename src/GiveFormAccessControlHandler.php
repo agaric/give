@@ -22,7 +22,9 @@ class GiveFormAccessControlHandler extends EntityAccessControlHandler {
       // Only administrator can delete forms.  @TODO this probably isn't how to handle this permission.
       return AccessResult::allowedIf($account->hasPermission('administer give'))->cachePerPermissions();
     }
+    return AccessResult::allowedIfHasPermission($account, 'access give forms');
 
+    // @TODO - do we want this check instead?  Combined checks?
     return parent::checkAccess($entity, $operation, $account);
   }
 
