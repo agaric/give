@@ -186,7 +186,15 @@ class Donation extends ContentEntityBase implements DonationInterface {
 
     $fields['recurring'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Recurring'))
-      ->setDescription(t('Whether the donation should recur monthly.'));
+      ->setDescription(t('Whether the donation should recur monthly.'))
+      ->setDisplayOptions('form', array(
+        'type' => 'boolean_checkbox',
+        'settings' => array(
+          'display_label' => TRUE,
+        ),
+        'weight' => 15,
+      ))
+      ->setDisplayConfigurable('form', TRUE);
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Authored on'))
@@ -198,15 +206,7 @@ class Donation extends ContentEntityBase implements DonationInterface {
 
     $fields['complete'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Completed donation'))
-      ->setDefaultValue(FALSE)
-      ->setDisplayOptions('form', array(
-        'type' => 'boolean_checkbox',
-        'settings' => array(
-          'display_label' => TRUE,
-        ),
-        'weight' => 15,
-      ))
-      ->setDisplayConfigurable('form', TRUE);
+      ->setDefaultValue(FALSE);
 
     return $fields;
   }
