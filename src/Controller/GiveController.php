@@ -4,6 +4,7 @@ namespace Drupal\give\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\give\GiveFormInterface;
+use Drupal\give\DonationInterface;
 use Drupal\Core\Render\RendererInterface;
 use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -81,6 +82,34 @@ class GiveController extends ControllerBase {
       ));
 
     $form = $this->entityFormBuilder()->getForm($donation);
+    $form['#title'] = $give_form->label();
+    $form['#cache']['contexts'][] = 'user.permissions';
+    $this->renderer->addCacheableDependency($form, $config);
+    return $form;
+  }
+
+  /**
+   * Presents the site-wide give form.
+   *
+   * @param \Drupal\give\GiveFormInterface $give_form
+   *   The give form to use.
+   *
+   * @param \Drupal\give\DonationInterface  $donation
+   *   The donation for which payment is to be processed.
+   *
+   * @return array
+   *   The form as render array as expected by drupal_render().
+   *
+   * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+   *   Exception is thrown when user tries to access non existing donation or
+   *   give form.
+   */
+  public function takeDonation(GiveFormInterface $give_form, DonationInterface $give_donation) {
+    $config = $this->config('give.settings');
+
+    drupal_set_message($this->t("Thank you for your pledge of :amount", array(':amount' => $give_donation->getDollarAmount())));
+
+    $form = $this->entityFormBuilder()->getForm($give_donation);
     $form['#title'] = $give_form->label();
     $form['#cache']['contexts'][] = 'user.permissions';
     $this->renderer->addCacheableDependency($form, $config);

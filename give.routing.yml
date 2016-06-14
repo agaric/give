@@ -44,3 +44,11 @@ entity.give_form.canonical:
     _controller: '\Drupal\give\Controller\GiveController::giveSitePage'
   requirements:
     _entity_access: 'give_form.view'
+
+entity.give_form.donate:
+  path: '/give/{give_form}/{give_donation}'
+  defaults:
+    _title: 'Donate'
+    _controller: '\Drupal\give\Controller\GiveController::takeDonation'
+  requirements:
+    _entity_access: 'give_form.view'
