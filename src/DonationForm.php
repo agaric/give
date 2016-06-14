@@ -215,8 +215,8 @@ class DonationForm extends ContentEntityForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $donation = parent::validateForm($form, $form_state);
 
-    // Check if flood control has been activated for sending emails.
-    if (!$this->currentUser()->hasPermission('administer give forms') && (!$donation->isPersonal() || !$this->currentUser()->hasPermission('administer users'))) {
+    // Check if flood control has been activated for sending donations.
+    if (!$this->currentUser()->hasPermission('administer give forms')) {
       $limit = $this->config('give.settings')->get('flood.limit');
       $interval = $this->config('give.settings')->get('flood.interval');
 
