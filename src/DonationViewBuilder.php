@@ -29,6 +29,7 @@ class DonationViewBuilder extends EntityViewBuilder {
   public function buildComponents(array &$build, array $entities, array $displays, $view_mode) {
     parent::buildComponents($build, $entities, $displays, $view_mode);
 
+    /*
     foreach ($entities as $id => $entity) {
       // Add the donation extra field, if enabled.
       $display = $displays[$entity->bundle()];
@@ -40,6 +41,7 @@ class DonationViewBuilder extends EntityViewBuilder {
         );
       }
     }
+    */
   }
 
   /**

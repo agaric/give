@@ -79,7 +79,8 @@ function give_record_give_donation_redirect_submit(&$form, &$form_state) {
     }
   }
   else {
-    $form_state->setRedirectUrl(Url::fromUri('entity:give_donation/' . $give_donation->id()));
+    // Url::fromUri('entity:give_donation/' . $give_donation->id()) goes to /admin/structure/give/donations/[id]
+    $form_state->setRedirectUrl(Url::fromRoute('entity.give_form.donate', ['give_form' => $give_donation->get('give_form')->target_id, 'give_donation' => $give_donation->id()]));
   }
 }
 
