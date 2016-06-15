@@ -8,3 +8,9 @@ give.site_page:
   route_name: give.site_page
   menu_name: main
   enabled: 0
+
+give.settings:
+  route_name: give.settings
+  title: 'Give donation settings'
+  parent: system.admin_config_services
+  description: 'Give donation processing settings for Stripe and Dwolla.'
