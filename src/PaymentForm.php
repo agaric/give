@@ -116,6 +116,11 @@ class PaymentForm extends ContentEntityForm {
       '#required' => TRUE,
       '#markup' => '<input size="20" maxlength="20" class="form-text" type="text" data-stripe="number">',
       '#allowed_tags' => ['input'],
+      '#states' => [
+        'visible' => [
+          ':input[name="method"]' => ['value' => GIVE_WITH_STRIPE],
+        ],
+      ],
     );
 
     $form['expiration'] = array(
@@ -124,6 +129,11 @@ class PaymentForm extends ContentEntityForm {
       '#required' => TRUE,
       '#markup' => '<input size="2" maxlength="2" type="text" data-stripe="exp_month" class="inline"> <input size="2" maxlength="2" type="text" data-stripe="exp_year" class="inline">',
       '#allowed_tags' => ['input'],
+      '#states' => [
+        'visible' => [
+          ':input[name="method"]' => ['value' => GIVE_WITH_STRIPE],
+        ],
+      ],
     );
 
     $form['cvc'] = array(
@@ -132,6 +142,11 @@ class PaymentForm extends ContentEntityForm {
       '#required' => TRUE,
       '#markup' => '<input size="4" maxlength="4" type="text" data-stripe="cvc" class="inline">',
       '#allowed_tags' => ['input'],
+      '#states' => [
+        'visible' => [
+          ':input[name="method"]' => ['value' => GIVE_WITH_STRIPE],
+        ],
+      ],
     );
 
     $form['name'] = array(
