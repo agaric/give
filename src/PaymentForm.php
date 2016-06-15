@@ -179,6 +179,7 @@ class PaymentForm extends ContentEntityForm {
   public function actions(array $form, FormStateInterface $form_state) {
     $elements = parent::actions($form, $form_state);
     $elements['submit']['#value'] = $this->t('Give');
+    $elements['delete']['#title'] = $this->t('Cancel');
     return $elements;
   }
 
