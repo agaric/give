@@ -108,6 +108,13 @@ class Donation extends ContentEntityBase implements DonationInterface {
   /**
    * {@inheritdoc}
    */
+  public function setDollarAmount($dollar_amount) {
+    $this->setAmount($dollar_amount * 100);
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function recurring() {
     return (bool)$this->get('recurring')->value;
   }
