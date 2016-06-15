@@ -93,7 +93,20 @@ class PaymentForm extends ContentEntityForm {
         GIVE_WITH_STRIPE => $this->t('By credit/debit card'),
         GIVE_WITH_DWOLLA => $this->t('By bank transfer'),
       ),
-      '#weight' => -50,
+      '#weight' => 0,
+    );
+
+    $form['stripe_errors'] = array(
+      '#markup' => '<span class="payment-errors"></span>',
+      '#weight' => 10,
+    );
+
+    $form['number'] = array(
+      '#type' => 'item',
+      '#title' => t('Card number'),
+      '#required' => TRUE,
+      '#markup' => '<input data-drupal-selector="edit-number" id="edit-number" value="" size="20" maxlength="20" class="form-text" type="text" data-stripe="number">',
+      '#allowed_tags' => ['input'],
     );
 
     $form['name'] = array(
@@ -119,11 +132,6 @@ class PaymentForm extends ContentEntityForm {
     $form['recurring'] = array(
       '#type' => 'checkbox',
       '#title' => $this->t('Give this same donation every month'),
-    );
-
-    $form['cc'] = array(
-      '#type' => 'textfield',
-      '#title' => 'Credit Card',
     );
 
     return $form;
