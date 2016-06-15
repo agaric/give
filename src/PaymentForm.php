@@ -96,6 +96,15 @@ class PaymentForm extends ContentEntityForm {
       '#weight' => 0,
     );
 
+    $form['#attached'] = [
+      'library' => ['give/give-stripe-helper'],
+      'drupalSettings' => [
+        'give' => [
+          'stripe_publishable_key' => \Drupal::config('give.settings')->get('stripe_publishable_key'),
+        ]
+      ]
+    ];
+
     $form['stripe_errors'] = array(
       '#markup' => '<span class="payment-errors"></span>',
       '#weight' => 10,
