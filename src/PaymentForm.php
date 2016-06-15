@@ -105,9 +105,18 @@ class PaymentForm extends ContentEntityForm {
       '#type' => 'item',
       '#title' => t('Card number'),
       '#required' => TRUE,
-      '#markup' => '<input data-drupal-selector="edit-number" id="edit-number" value="" size="20" maxlength="20" class="form-text" type="text" data-stripe="number">',
+      '#markup' => '<input size="20" maxlength="20" class="form-text" type="text" data-stripe="number">',
       '#allowed_tags' => ['input'],
     );
+
+    $form['exp_month'] = array(
+      '#type' => 'item',
+      '#title' => t('Expiration (MM YY)'),
+      '#required' => TRUE,
+      '#markup' => '<input size="2" maxlength="2" type="text" data-stripe="exp_month" class="inline"> <input size="2" maxlength="2" type="text" data-stripe="exp_month" class="inline">',
+      '#allowed_tags' => ['input'],
+    );
+
 
     $form['name'] = array(
       '#type' => 'textfield',
