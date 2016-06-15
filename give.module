@@ -101,7 +101,7 @@ function give_mail($key, &$message, $params) {
     $variables['@donor-url'] = $donor->url('canonical', array('absolute' => TRUE, 'language' => $language));
   }
   else {
-    $variables['@donor-url'] = $params['doner']->getEmail();
+    $variables['@donor-url'] = $params['donor']->getEmail();
   }
 
   $options = array('langcode' => $language->getId());
