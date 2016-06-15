@@ -109,14 +109,21 @@ class PaymentForm extends ContentEntityForm {
       '#allowed_tags' => ['input'],
     );
 
-    $form['exp_month'] = array(
+    $form['expiration'] = array(
       '#type' => 'item',
       '#title' => t('Expiration (MM YY)'),
       '#required' => TRUE,
-      '#markup' => '<input size="2" maxlength="2" type="text" data-stripe="exp_month" class="inline"> <input size="2" maxlength="2" type="text" data-stripe="exp_month" class="inline">',
+      '#markup' => '<input size="2" maxlength="2" type="text" data-stripe="exp_month" class="inline"> <input size="2" maxlength="2" type="text" data-stripe="exp_year" class="inline">',
       '#allowed_tags' => ['input'],
     );
 
+    $form['cvc'] = array(
+      '#type' => 'item',
+      '#title' => t('CVC'),
+      '#required' => TRUE,
+      '#markup' => '<input size="4" maxlength="4" type="text" data-stripe="cvc" class="inline">',
+      '#allowed_tags' => ['input'],
+    );
 
     $form['name'] = array(
       '#type' => 'textfield',
