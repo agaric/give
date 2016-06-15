@@ -172,6 +172,9 @@ class DonationForm extends ContentEntityForm {
       $donation->setCreatedTime(REQUEST_TIME);
     }
 
+    // Convert the form unit (dollars) into stored unit (cents) for amount.
+    $donation->setDollarAmount($form_state->getValue('amount'));
+
     // We always build the donation's label from the donor's name and e-mail,
     // the amount of the donation, and the subject field if present.
     $label = $donation->getGiveForm()->get('label') . ' : ';
