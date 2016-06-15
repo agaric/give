@@ -86,9 +86,20 @@ class PaymentForm extends ContentEntityForm {
     $form = parent::form($form, $form_state, $donation);
     $form['#attributes']['class'][] = 'give-form';
 
+    $form['method'] = array(
+      '#type' => 'radios',
+      '#title' => t('Choose donation method'),
+      '#options' => array(
+        GIVE_WITH_STRIPE => $this->t('By credit/debit card'),
+        GIVE_WITH_DWOLLA => $this->t('By bank transfer'),
+      ),
+      '#weight' => -50,
+    );
+
     $form['name'] = array(
       '#type' => 'textfield',
       '#title' => $this->t('Your name'),
+      '#value' => $donation->getDonorName(),
       '#maxlength' => 255,
       '#required' => TRUE,
       '#disabled' => TRUE,
@@ -97,16 +108,13 @@ class PaymentForm extends ContentEntityForm {
       '#type' => 'item',
       '#value' => $donation->getDonorMail(),
       '#required' => FALSE,
-      '#plain_text' => $donation->getDonorName(),
+      '#plain_text' => $donation->getDonorMail(),
     );
     $form['amount'] = array(
-      '#type' => 'number',
-      '#step' => 0.01,
-      '#min' => 1,
-      '#max' => 1000000,
+      '#type' => 'item',
+      '#value' => $donation->getAmount(),
       '#title' => $this->t('Amount you pledged'),
-      '#required' => TRUE,
-      '#default_value' => $donation->getAmount(),
+      '#plain_text' => $donation->getDollarAmount(),
     );
     $form['recurring'] = array(
       '#type' => 'checkbox',
