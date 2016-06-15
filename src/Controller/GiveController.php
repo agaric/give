@@ -109,7 +109,7 @@ class GiveController extends ControllerBase {
 
     drupal_set_message($this->t("Thank you for your pledge of :amount", array(':amount' => $give_donation->getDollarAmount())));
 
-    $form = $this->entityFormBuilder()->getForm($give_donation);
+    $form = $this->entityFormBuilder()->getForm($give_donation, 'payment');
     $form['#title'] = $give_form->label();
     $form['#cache']['contexts'][] = 'user.permissions';
     $this->renderer->addCacheableDependency($form, $config);

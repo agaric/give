@@ -18,7 +18,8 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     "storage" = "Drupal\Core\Entity\ContentEntityNullStorage",
  *     "view_builder" = "Drupal\give\DonationViewBuilder",
  *     "form" = {
- *       "default" = "Drupal\give\DonationForm"
+ *       "default" = "Drupal\give\DonationForm",
+ *       "payment" = "Drupal\give\PaymentForm",
  *     }
  *   },
  *   admin_permission = "administer give forms",
@@ -101,7 +102,7 @@ class Donation extends ContentEntityBase implements DonationInterface {
    */
   public function getDollarAmount() {
     $cents = $this->getAmount();
-    return $this->t("$@amount", array('@amount' => round($cents/100, 2)));
+    return t("$@amount", array('@amount' => round($cents/100, 2)));
   }
 
   /**
