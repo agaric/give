@@ -119,6 +119,25 @@ interface DonationInterface extends ContentEntityInterface {
   public function setCreatedTime($timestamp);
 
   /**
+   * Gets the donation updated timestamp.
+   *
+   * @return int
+   *   Update timestamp of the donation.
+   */
+  public function getUpdatedTime();
+
+  /**
+   * Sets the donation updated timestamp.
+   *
+   * @param int $timestamp
+   *   The donation update timestamp.
+   *
+   * @return \Drupal\give\DonationInterface
+   *   The called donation entity.
+   */
+  public function setUpdatedTime($timestamp);
+
+  /**
    * Returns the donation completed status.
    *
    * @return bool

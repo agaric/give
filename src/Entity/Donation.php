@@ -126,12 +126,26 @@ class Donation extends ContentEntityBase implements DonationInterface {
     return $this->get('created')->value;
   }
 
-
   /**
    * {@inheritdoc}
    */
   public function setCreatedTime($timestamp) {
     $this->set('created', $timestamp);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getUpdatedTime() {
+    return $this->get('changed')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setUpdatedTime($timestamp) {
+    $this->set('changed', $timestamp);
     return $this;
   }
 
