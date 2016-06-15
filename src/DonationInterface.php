@@ -84,6 +84,16 @@ interface DonationInterface extends ContentEntityInterface {
   public function setAmount($amount);
 
   /**
+   * Convert the user-facing amount unit (dollars) into stored unit (cents).
+   */
+  public function setDollarAmount($dollar_amount);
+
+  /**
+   * Display the stored amount (in cents) as user-facing dollars.
+   */
+  public function getDollarAmount();
+
+  /**
    * Returns TRUE if the donation should recur monthly.
    *
    * @return bool
