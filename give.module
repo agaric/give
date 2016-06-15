@@ -20,6 +20,16 @@ const DONATION_NOT_COMPLETED = 0;
 const DONATION_COMPLETED = 1;
 
 /**
+ * Process donation with Stripe.
+ */
+const GIVE_WITH_STRIPE = 1;
+
+/**
+ * Process donation with Dwolla.
+ */
+const GIVE_WITH_DWOLLA = 2;
+
+/**
  * Implements hook_help().
  */
 function give_help($route_name, RouteMatchInterface $route_match) {

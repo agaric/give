@@ -72,9 +72,14 @@ function give_record_form_give_donation_form_alter(&$form, &$form_state, $form_i
 function give_record_give_donation_redirect_submit(&$form, &$form_state) {
   /* @var \Drupal\give\DonationInterface $give_donation */
   $give_donation = $form_state->getFormObject()->getEntity();
-  $give_form = GiveForm::load($give_donation->bundle());
-  if ($redirect_uri = $give_form->getThirdPartySetting('give_record', 'redirect_uri', FALSE)) {
-    $form_state->setRedirectUrl(Url::fromUri($redirect_uri));
+  if ($form['#form_id'] === "give_donation_donate_payment_form") {
+    $give_form = GiveForm::load($give_donation->bundle());
+    if ($redirect_uri = $give_form->getThirdPartySetting('give_record', 'redirect_uri', FALSE)) {
+      $form_state->setRedirectUrl(Url::fromUri($redirect_uri));
+    }
+  }
+  else {
+    $form_state->setRedirectUrl(Url::fromUri('entity:give_donation/' . $give_donation->id()));
   }
 }
 
