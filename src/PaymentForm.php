@@ -167,11 +167,7 @@ class PaymentForm extends ContentEntityForm {
       '#type' => 'item',
       '#value' => $donation->getAmount(),
       '#title' => $this->t('Amount you pledged'),
-      '#plain_text' => $donation->getDollarAmount(),
-    );
-    $form['recurring'] = array(
-      '#type' => 'checkbox',
-      '#title' => $this->t('Give this same donation every month'),
+      '#plain_text' => $donation->recurring() ? $this->t(':amount monthly', [':amount' => $donation->getDollarAmount()]) : $donation->getDollarAmount(),
     );
 
     return $form;
