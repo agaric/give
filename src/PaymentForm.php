@@ -160,6 +160,17 @@ class PaymentForm extends ContentEntityForm {
       ],
     );
 
+    $form['check_or_other_information'] = array(
+      '#type' => 'textarea',
+      '#title' => t('Further information'),
+      '#description' => t('Please ask any questions or explain anything needed to arrange for giving yoru donation.'),
+      '#states' => [
+        'visible' => [
+          ':input[name="method"]' => ['value' => GIVE_WITH_CHECK],
+        ],
+      ],
+    );
+
     $form['name'] = array(
       '#type' => 'textfield',
       '#title' => $this->t('Your name'),
