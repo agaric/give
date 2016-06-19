@@ -92,6 +92,7 @@ class PaymentForm extends ContentEntityForm {
       '#options' => array(
         GIVE_WITH_STRIPE => $this->t('By credit/debit card'),
         GIVE_WITH_DWOLLA => $this->t('By bank transfer'),
+        GIVE_WITH_CHECK => $this->t('By check or other'),
       ),
       '#weight' => 0,
     );
@@ -145,6 +146,16 @@ class PaymentForm extends ContentEntityForm {
       '#states' => [
         'visible' => [
           ':input[name="method"]' => ['value' => GIVE_WITH_STRIPE],
+        ],
+      ],
+    );
+
+    $form['telephone'] = array(
+      '#type' => 'tel',
+      '#title' => t('Telephone number'),
+      '#states' => [
+        'visible' => [
+          ':input[name="method"]' => ['value' => GIVE_WITH_CHECK],
         ],
       ],
     );

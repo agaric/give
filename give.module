@@ -30,6 +30,11 @@ const GIVE_WITH_STRIPE = 1;
 const GIVE_WITH_DWOLLA = 2;
 
 /**
+ * Accept a pledge to pay by check or other.
+ */
+const GIVE_WITH_CHECK = 3;
+
+/**
  * Implements hook_help().
  */
 function give_help($route_name, RouteMatchInterface $route_match) {
