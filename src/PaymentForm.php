@@ -220,6 +220,14 @@ class PaymentForm extends ContentEntityForm {
 
     $user = $this->currentUser();
     $this->mailHandler->sendDonationNotice($donation, $user);
+    drupal_set_message(
+      $this->t("Thank you, :donor_name, for your donation of :amount",
+      array(
+        ':donor_name' => $donation->getDonorName(),
+        ':amount' => $donation->recurring() ? $this->t(':amount monthly', [':amount' => $donation->getDollarAmount()]) : $donation->getDollarAmount()))
+    );
+    drupal_set_message("We have e-mailed a receipt to <em>:mail</em>.", [':mail' => $donation->getDonorMail()]);
+
     drupal_set_message($this->t('Your donation has been sent.'));
 
     // Save the donation. In core this is a no-op but should contrib wish to
