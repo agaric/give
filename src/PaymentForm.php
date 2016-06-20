@@ -171,20 +171,7 @@ class PaymentForm extends ContentEntityForm {
       ],
     );
 
-    $form['name'] = array(
-      '#type' => 'textfield',
-      '#title' => $this->t('Your name'),
-      '#value' => $donation->getDonorName(),
-      '#maxlength' => 255,
-      '#required' => TRUE,
-      '#disabled' => TRUE,
-    );
-    $form['mail'] = array(
-      '#type' => 'item',
-      '#value' => $donation->getDonorMail(),
-      '#required' => FALSE,
-      '#plain_text' => $donation->getDonorMail(),
-    );
+//      '#value' => $donation->getDonorName(),
     $form['amount'] = array(
       '#type' => 'item',
       '#value' => $donation->getAmount(),
