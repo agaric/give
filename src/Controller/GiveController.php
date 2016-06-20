@@ -107,8 +107,6 @@ class GiveController extends ControllerBase {
   public function takeDonation(GiveFormInterface $give_form, DonationInterface $give_donation) {
     $config = $this->config('give.settings');
 
-    drupal_set_message($this->t("Thank you for your pledge of :amount", array(':amount' => $give_donation->getDollarAmount())));
-
     $form = $this->entityFormBuilder()->getForm($give_donation, 'payment');
     $form['#title'] = $give_form->label();
     $form['#cache']['contexts'][] = 'user.permissions';
