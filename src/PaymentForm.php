@@ -86,6 +86,18 @@ class PaymentForm extends ContentEntityForm {
     $form = parent::form($form, $form_state, $donation);
     $form['#attributes']['class'][] = 'give-form';
 
+    $form['thanks'] = array(
+      '#markup' => $this->t(
+        "<h3>Thank you for supporting :sitename, :name!</h3>",
+        [':name' => $donation->getDonorName(), ':sitename' => \Drupal::config('system.site')->get('name')]
+    ));
+    $form['show_amount'] = array(
+      '#type' => 'item',
+      '#value' => $donation->getAmount(),
+      '#title' => $this->t('Amount you pledged'),
+      '#plain_text' => $donation->recurring() ? $this->t(':amount monthly', [':amount' => $donation->getDollarAmount()]) : $donation->getDollarAmount(),
+    );
+
     $form['method'] = array(
       '#type' => 'radios',
       '#title' => t('Choose donation method'),
@@ -163,20 +175,12 @@ class PaymentForm extends ContentEntityForm {
     $form['check_or_other_information'] = array(
       '#type' => 'textarea',
       '#title' => t('Further information'),
-      '#description' => t('Please ask any questions or explain anything needed to arrange for giving yoru donation.'),
+      '#description' => t('Please ask any questions or explain anything needed to arrange for giving your donation.'),
       '#states' => [
         'visible' => [
           ':input[name="method"]' => ['value' => GIVE_WITH_CHECK],
         ],
       ],
-    );
-
-//      '#value' => $donation->getDonorName(),
-    $form['amount'] = array(
-      '#type' => 'item',
-      '#value' => $donation->getAmount(),
-      '#title' => $this->t('Amount you pledged'),
-      '#plain_text' => $donation->recurring() ? $this->t(':amount monthly', [':amount' => $donation->getDollarAmount()]) : $donation->getDollarAmount(),
     );
 
     return $form;
