@@ -90,12 +90,15 @@ class PaymentForm extends ContentEntityForm {
       '#markup' => $this->t(
         "<h3>Thank you for supporting :sitename, :name!</h3>",
         [':name' => $donation->getDonorName(), ':sitename' => \Drupal::config('system.site')->get('name')]
-    ));
+      ),
+      '#weight' => -50,
+    );
     $form['show_amount'] = array(
       '#type' => 'item',
       '#value' => $donation->getAmount(),
       '#title' => $this->t('Amount you pledged'),
       '#plain_text' => $donation->recurring() ? $this->t(':amount monthly', [':amount' => $donation->getDollarAmount()]) : $donation->getDollarAmount(),
+      '#weight' => -40,
     );
 
     $form['method'] = array(
