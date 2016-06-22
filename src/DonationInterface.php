@@ -148,6 +148,22 @@ interface DonationInterface extends ContentEntityInterface {
   public function setUpdatedTime($timestamp);
 
   /**
+   * Returns the Stripe token for the donation.
+   *
+   * @return string
+   *   The token returned by Stripe used to tell Stripe to process the donation.
+   */
+  public function getStripeToken();
+
+  /**
+   * Sets the Stripe token for the donation.
+   *
+   * @param string $token
+   *   The token returned by Stripe used to tell Stripe to process the donation.
+   */
+  public function setStripeToken($token);
+
+  /**
    * Returns the donation completed status.
    *
    * @return bool

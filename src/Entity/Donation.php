@@ -124,6 +124,7 @@ class Donation extends ContentEntityBase implements DonationInterface {
    */
   public function setRecurring($recurring) {
     $this->set('recurring', (bool) $recurring);
+    return $this;
   }
 
   /**
@@ -153,6 +154,21 @@ class Donation extends ContentEntityBase implements DonationInterface {
    */
   public function setUpdatedTime($timestamp) {
     $this->set('changed', $timestamp);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getStripeToken() {
+    return $this->get('stripe_token')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setStripeToken($token) {
+    $this->set('stripe_token', $token);
     return $this;
   }
 
@@ -227,12 +243,16 @@ class Donation extends ContentEntityBase implements DonationInterface {
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['created'] = BaseFieldDefinition::create('created')
-      ->setLabel(t('Authored on'))
+      ->setLabel(t('Created time'))
       ->setDescription(t('The time that the node was created.'));
 
     $fields['changed'] = BaseFieldDefinition::create('changed')
       ->setLabel(t('Changed'))
       ->setDescription(t('The time that the node was last edited.'));
+
+    $fields['stripe_token'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Stripe token'))
+      ->setDescription(t('The token returned by Stripe used to tell Stripe to process the donation.'));
 
     $fields['complete'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Completed donation'))

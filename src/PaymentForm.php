@@ -126,10 +126,16 @@ class PaymentForm extends ContentEntityForm {
       '#weight' => 10,
     );
 
+    $form['stripe_token'] = array(
+      '#type' => 'hidden',
+      '#default_value' => '',
+    );
+
     $form['number'] = array(
       '#type' => 'item',
       '#title' => t('Card number'),
       '#required' => TRUE,
+      '#value' => TRUE, // For items, required is supposed to only show the asterisk, but Drupal is broken.
       '#markup' => '<input size="20" maxlength="20" class="form-text" type="text" data-stripe="number">',
       '#allowed_tags' => ['input'],
       '#states' => [
@@ -143,6 +149,7 @@ class PaymentForm extends ContentEntityForm {
       '#type' => 'item',
       '#title' => t('Expiration (MM YY)'),
       '#required' => TRUE,
+      '#value' => TRUE, // For items, required is supposed to only show the asterisk, but Drupal is broken.
       '#markup' => '<input size="2" maxlength="2" type="text" data-stripe="exp_month" class="inline"> <input size="2" maxlength="2" type="text" data-stripe="exp_year" class="inline">',
       '#allowed_tags' => ['input'],
       '#states' => [
@@ -156,6 +163,7 @@ class PaymentForm extends ContentEntityForm {
       '#type' => 'item',
       '#title' => t('CVC'),
       '#required' => TRUE,
+      '#value' => TRUE, // For items, required is supposed to only show the asterisk, but Drupal is broken.
       '#markup' => '<input size="4" maxlength="4" type="text" data-stripe="cvc" class="inline">',
       '#allowed_tags' => ['input'],
       '#states' => [
@@ -216,6 +224,34 @@ class PaymentForm extends ContentEntityForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $donation = parent::validateForm($form, $form_state);
 
+    // Get the token for use in processing the donation; throw error if missing.
+    if (!$token = $donation->getStripeToken()) {
+      $form_state->setErrorByName('stripe_errors', $this->t("Could not retrieve token from Stripe."));
+      drupal_set_message("Would not retrieve token from Stripe.", 'error');
+    }
+
+    \Stripe\Stripe::setApiKey(\Drupal::config('give.settings')->get('stripe_publishable_key'));
+
+    // Create the charge on Stripe's servers - this will charge the user's card
+    try {
+      $charge = \Stripe\Charge::create(array(
+        "amount" => $donation->getAmount(), // amount in cents, again
+        "currency" => "usd",
+        "source" => $token,
+        "description" => $donation->getLabel(),
+        "metadata" => array(
+          "give_form_id" => $donation->getGiveForm()->id(),
+          "give_form_label" => $donation->getGiveForm()->label(),
+        ),
+      ));
+    } catch(\Stripe\Error\ApiConnection $e) {
+      // Could not connect.
+      $form_state->setErrorByName('stripe_errors', $this->t('Could not connect to stripe.com to process payment.'));
+    } catch(\Stripe\Error\Card $e) {
+      // The card has been declined
+      $form_state->setErrorByName('number', $this->t("Invalid card.", array('%e' => 'e')));
+    }
+
     return $donation;
   }
 
@@ -235,7 +271,7 @@ class PaymentForm extends ContentEntityForm {
     );
     drupal_set_message("We have e-mailed a receipt to <em>:mail</em>.", [':mail' => $donation->getDonorMail()]);
 
-    drupal_set_message($this->t('Your donation has been sent.'));
+    drupal_set_message($this->t('Your donation has been received.  Thank you!'));
 
     // Save the donation. In core this is a no-op but should contrib wish to
     // implement donation storage, this will make the task of swapping in a real

@@ -243,7 +243,6 @@ class DonationForm extends ContentEntityForm {
     $this->mailHandler->sendDonationNotice($donation, $user);
 
     $this->flood->register('give', $this->config('give.settings')->get('flood.interval'));
-    drupal_set_message($this->t('Your donation has been sent.'));
 
     // To avoid false error donations caused by flood control, redirect away from
     // the give form to the front page.
