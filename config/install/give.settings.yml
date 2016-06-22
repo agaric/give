@@ -1,4 +1,6 @@
 default_form: give
+stripe_publishable_key: ''
+stripe_secret_key: ''
 flood:
   limit: 50
   interval: 3600

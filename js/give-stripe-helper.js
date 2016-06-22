@@ -4,7 +4,7 @@
  */
 (function (Drupal, settings, $) {
   if (settings.give.stripe_publishable_key) {
-    // Stripe.setPublishableKey(settings.give.stripe_publishable_key);
+    Stripe.setPublishableKey(settings.give.stripe_publishable_key);
   }
   else {
     alert('This will not be able to take Stripe payments until the Stripe publishable key is set.');
@@ -16,16 +16,15 @@
     $form.find('.submit').prop('disabled', true);
 
     // Request a token from Stripe:
-    // Stripe.card.createToken($form, stripeResponseHandler);
-    testStripeCardCreateToken($form, stripeResponseHandler);
+    Stripe.card.createToken($form, stripeResponseHandler);
+    // testStripeCardCreateToken($form, stripeResponseHandler);
 
     // Prevent the form from being submitted:
     return false;
   });
 
 function stripeResponseHandler(status, response) {
-  alert('oh' + status);
-  // Grab the form:
+
   var $form = $('#give-donation-donate-payment-form');
 
   if (response.error) {

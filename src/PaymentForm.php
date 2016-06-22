@@ -230,7 +230,7 @@ class PaymentForm extends ContentEntityForm {
       drupal_set_message("Would not retrieve token from Stripe.", 'error');
     }
 
-    \Stripe\Stripe::setApiKey(\Drupal::config('give.settings')->get('stripe_publishable_key'));
+    \Stripe\Stripe::setApiKey(\Drupal::config('give.settings')->get('stripe_secret_key'));
 
     // Create the charge on Stripe's servers - this will charge the user's card
     try {
