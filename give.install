@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the give module.
+ */
+
+use Drupal\Core\Field\BaseFieldDefinition;
+
+/**
+ * Add 'stripe_token' field to 'donation' entities.
+ */
+function give_update_8001() {
+  // Install the definition that this field had in
+  // \Drupal\give\Entity\Donation::baseFieldDefinitions()
+  // at the time that this update function was written. If/when code is
+  // deployed that changes that definition, the corresponding module must
+  // implement an update function that invokes
+  // \Drupal::entityDefinitionUpdateManager()->updateFieldStorageDefinition()
+  // with the new definition.
+  $storage_definition = BaseFieldDefinition::create('string')
+    ->setLabel(t('Stripe token'))
+    ->setDescription(t('The token returned by Stripe used to tell Stripe to process the donation.'));
+
+  \Drupal::entityDefinitionUpdateManager()
+    ->installFieldStorageDefinition('stripe_token', 'give_donation', 'give', $storage_definition);
+}
