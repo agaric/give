@@ -183,7 +183,7 @@ class Donation extends ContentEntityBase implements DonationInterface {
    * {@inheritdoc}
    */
   public function setCompleted($completed) {
-    $this->set('complete', $completed ? NODE_PROMOTED : NODE_NOT_PROMOTED);
+    $this->set('complete', $completed ? DONATION_COMPLETED : DONATION_NOT_COMPLETED);
     return $this;
   }
 
