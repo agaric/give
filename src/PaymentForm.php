@@ -244,12 +244,12 @@ class PaymentForm extends ContentEntityForm {
           "give_form_label" => $donation->getGiveForm()->label(),
         ),
       ));
-    } catch(\Stripe\Error\ApiConnection $e) {
-      // Could not connect.
-      $form_state->setErrorByName('stripe_errors', $this->t('Could not connect to stripe.com to process payment.'));
     } catch(\Stripe\Error\Card $e) {
-      // The card has been declined
-      $form_state->setErrorByName('number', $this->t("Invalid card.", array('%e' => 'e')));
+      $form_state->setErrorByName('number', $this->t("The card has been declined. More information: %e", ['%e' => $e->getMessage()]));
+    } catch(\Stripe\Error\ApiConnection $e) {
+      $form_state->setErrorByName('stripe_errors', $this->t('Could not connect to payment processer. More information: %e', ['%e' => $e->getMessage()]));
+    } catch(\Stripe\Error\Base $e) {
+      $form_state->setErrorByName('stripe_errors', $this->t('Unknown error: %e', ['%e' => $e->getMessage()]));
     }
 
     return $donation;
