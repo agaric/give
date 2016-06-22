@@ -252,6 +252,10 @@ class PaymentForm extends ContentEntityForm {
       $form_state->setErrorByName('stripe_errors', $this->t('Unknown error: %e', ['%e' => $e->getMessage()]));
     }
 
+    if ($charge) {
+      $donation->setCompleted();
+    }
+
     return $donation;
   }
 
