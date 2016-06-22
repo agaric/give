@@ -31,6 +31,12 @@ class GiveSettings extends ConfigFormBase {
       '#default_value' => $config->get('stripe_publishable_key'),
       '#description' => $this->t('This is required to take donations via credit or debit card with Stripe.'),
     ];
+    $form['stripe_secret_key'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Stripe secret API key'),
+      '#default_value' => $config->get('stripe_secret_key'),
+      '#description' => $this->t('This is required to take donations via credit or debit card with Stripe.'),
+    ];
 
     return parent::buildForm($form, $form_state);
   }
@@ -69,6 +75,7 @@ class GiveSettings extends ConfigFormBase {
     /** @var \Drupal\Core\Config\Config $config */
     $config = \Drupal::service('config.factory')->getEditable('give.settings');
     $config->set('stripe_publishable_key', $form_state->getValue('stripe_publishable_key'));
+    $config->set('stripe_secret_key', $form_state->getValue('stripe_secret_key'));
     $config->save();
   }
 
