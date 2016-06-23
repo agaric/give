@@ -12,7 +12,7 @@ entity.give_form.collection:
     _entity_list: 'give_form'
     _title: 'Give (donation) forms'
   requirements:
-    _permission: 'administer give'
+    _permission: 'create and edit give forms'
 
 give.form_add:
   path: '/admin/structure/give/add'
@@ -20,7 +20,7 @@ give.form_add:
     _entity_form: 'give_form.add'
     _title: 'Add give (donation) form'
   requirements:
-    _permission: 'administer give forms'
+    _permission: 'create and edit give forms'
 
 entity.give_form.edit_form:
   path: '/admin/structure/give/manage/{give_form}'
