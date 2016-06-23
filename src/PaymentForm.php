@@ -224,6 +224,9 @@ class PaymentForm extends ContentEntityForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $donation = parent::validateForm($form, $form_state);
 
+    if ($form_state['values']['method'] != GIVE_WITH_STRIPE) {
+      return;
+    }
     // Get the token for use in processing the donation; throw error if missing.
     if (!$token = $donation->getStripeToken()) {
       $form_state->setErrorByName('stripe_errors', $this->t("Could not retrieve token from Stripe."));
@@ -232,6 +235,49 @@ class PaymentForm extends ContentEntityForm {
 
     \Stripe\Stripe::setApiKey(\Drupal::config('give.settings')->get('stripe_secret_key'));
 
+    // If the donation is recurring, we create a plan and a customer.
+    if ($donation->recurring()) {
+      try {
+        $plan = \Stripe\Plan::create(array(
+          "id" => $donation->uuid(),
+          "amount" => $donation->getAmount(),
+          "currency" => "usd",
+          "interval" => "month",
+          "name" => $donation->getLabel(),
+        ));
+      } catch(\Stripe\Error\ApiConnection $e) {
+        $form_state->setErrorByName('stripe_errors', $this->t('Could not connect to payment processer. More information: %e', ['%e' => $e->getMessage()]));
+      } catch(\Stripe\Error\Base $e) {
+        $form_state->setErrorByName('stripe_errors', $this->t('Unknown error: %e', ['%e' => $e->getMessage()]));
+      }
+
+      // Create the customer with subscription plan on Stripe's servers - this will charge the user's card
+      try {
+        $plan_id = $plan->_values['id'];
+        $alt_plan_id = $plan->value('id');
+        $customer = \Stripe\Plan::create(array(
+          "plan" => $plan_id,
+          "source" => $token,
+          "metadata" => array(
+            "give_form_id" => $donation->getGiveForm()->id(),
+            "give_form_label" => $donation->getGiveForm()->label(),
+            "email" => $donation->getDonorMail(),
+          ),
+        ));
+      } catch(\Stripe\Error\ApiConnection $e) {
+        $form_state->setErrorByName('stripe_errors', $this->t('Could not connect to payment processer. More information: %e', ['%e' => $e->getMessage()]));
+      } catch(\Stripe\Error\Base $e) {
+        $form_state->setErrorByName('stripe_errors', $this->t('Unknown error: %e', ['%e' => $e->getMessage()]));
+      }
+
+      if ($customer) {
+        $donation->setCompleted();
+      }
+
+      return $donation;
+    }
+
+    // If the donation is *not* recurring, only in this case do we create a charge ourselves.
     // Create the charge on Stripe's servers - this will charge the user's card
     try {
       $charge = \Stripe\Charge::create(array(
@@ -242,6 +288,7 @@ class PaymentForm extends ContentEntityForm {
         "metadata" => array(
           "give_form_id" => $donation->getGiveForm()->id(),
           "give_form_label" => $donation->getGiveForm()->label(),
+          "email" => $donation->getDonorMail(),
         ),
       ));
     } catch(\Stripe\Error\Card $e) {

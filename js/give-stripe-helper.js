@@ -7,20 +7,23 @@
     Stripe.setPublishableKey(settings.give.stripe_publishable_key);
   }
   else {
-    alert('This will not be able to take Stripe payments until the Stripe publishable key is set.');
+    alert('This will not be able to take credit/debit card payments until the Stripe publishable key is set.');
   }
 
   var $form = $('#give-donation-donate-payment-form');
   $form.submit(function(event) {
-    // Disable the submit button to prevent repeated clicks:
-    $form.find('.submit').prop('disabled', true);
+    // Only try to process the card if card method ('1') is selected.
+    if ($('input[name=method').val() == 1) {
+      // Disable the submit button to prevent repeated clicks:
+      $form.find('.submit').prop('disabled', true);
 
-    // Request a token from Stripe:
-    Stripe.card.createToken($form, stripeResponseHandler);
-    // testStripeCardCreateToken($form, stripeResponseHandler);
+      // Request a token from Stripe:
+      Stripe.card.createToken($form, stripeResponseHandler);
+      // testStripeCardCreateToken($form, stripeResponseHandler);
 
-    // Prevent the form from being submitted:
-    return false;
+      // Prevent the form from being submitted:
+      return false;
+    }
   });
 
 function stripeResponseHandler(status, response) {
