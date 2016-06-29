@@ -245,10 +245,6 @@ class DonationForm extends ContentEntityForm {
 
     $this->flood->register('give', $this->config('give.settings')->get('flood.interval'));
 
-    // To avoid false error messages caused by flood control, redirect away from
-    // the give form to the front page.
-    $form_state->setRedirect('<front>');
-
     // Save the donation. In core this is a no-op but should contrib wish to
     // implement donation storage, this will make the task of swapping in a real
     // storage controller straight-forward.
