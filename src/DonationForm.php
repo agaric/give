@@ -245,7 +245,7 @@ class DonationForm extends ContentEntityForm {
 
     $this->flood->register('give', $this->config('give.settings')->get('flood.interval'));
 
-    // To avoid false error donations caused by flood control, redirect away from
+    // To avoid false error messages caused by flood control, redirect away from
     // the give form to the front page.
     $form_state->setRedirect('<front>');
 
