@@ -84,6 +84,8 @@ class PaymentForm extends ContentEntityForm {
   public function form(array $form, FormStateInterface $form_state) {
     $donation = $this->entity;
     $form = parent::form($form, $form_state, $donation);
+    $form['#prefix'] = '<div class="flow">';
+    $form['#suffix'] = '</div>';
     $form['#attributes']['class'][] = 'give-form give-form-payment';
 
     $form['thanks'] = array(
