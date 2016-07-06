@@ -108,7 +108,7 @@ class PaymentForm extends ContentEntityForm {
       '#title' => t('Choose donation method'),
       '#options' => array(
         GIVE_WITH_STRIPE => $this->t('By credit/debit card'),
-        GIVE_WITH_DWOLLA => $this->t('By bank transfer'),
+        // GIVE_WITH_DWOLLA => $this->t('By bank transfer'),
         GIVE_WITH_CHECK => $this->t('By check or other'),
       ),
       '#weight' => 0,
