@@ -42,7 +42,7 @@ class GiveController extends ControllerBase {
   }
 
   /**
-   * Presents the site-wide give form.
+   * Presents the give form.
    *
    * @param \Drupal\give\GiveFormInterface $give_form
    *   The give form to use.
