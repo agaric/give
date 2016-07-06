@@ -82,7 +82,14 @@ function give_record_give_donation_redirect_submit(&$form, &$form_state) {
   }
   else {
     // Url::fromUri('entity:give_donation/' . $give_donation->id()) goes to /admin/structure/give/donations/[id]
-    $form_state->setRedirectUrl(Url::fromRoute('entity.give_form.donate', ['give_form' => $give_donation->get('give_form')->target_id, 'give_donation' => $give_donation->id()]));
+    if (FALSE) { // If the form is meant to submit to its standard location, wherever it is embedded
+      $redirect = Url::fromRoute('entity.give_form.donate', ['give_form' => $give_donation->get('give_form')->target_id, 'give_donation' => $give_donation->id()]);
+    }
+    else { // Keep the form as submitting to the current location, but add a query string so we can load the payment form with donation.
+      $redirect = \Drupal::service('path.validator')->getUrlIfValid($_SERVER['REDIRECT_URL']);
+      $redirect->setOption('query', array('give_donate' => 'yes', 'donation_id' => $give_donation->id()));
+    }
+    $form_state->setRedirectUrl($redirect);
   }
 }
 
