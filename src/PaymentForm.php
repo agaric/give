@@ -86,7 +86,7 @@ class PaymentForm extends ContentEntityForm {
     $form = parent::form($form, $form_state, $donation);
     $form['#prefix'] = '<div class="flow">';
     $form['#suffix'] = '</div>';
-    $form['#attributes']['class'][] = 'give-form give-form-payment';
+    $form['#attributes']['class'][] = 'give-form give-form-payment flow-middle';
 
     $form['thanks'] = array(
       '#markup' => $this->t(
