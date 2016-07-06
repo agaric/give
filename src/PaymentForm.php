@@ -176,8 +176,8 @@ class PaymentForm extends ContentEntityForm {
     );
 
     $form['check_or_other_text'] = array(
-      '#type' => 'markup',
-      '#markup' => $donation->getGiveForm()->getCheckOrOtherText(),
+      '#type' => 'item',
+      '#description' => $donation->getGiveForm()->getCheckOrOtherText(),
       '#states' => [
         'visible' => [
           ':input[name="method"]' => ['value' => GIVE_WITH_CHECK],
