@@ -26,6 +26,15 @@ interface GiveFormInterface extends ConfigEntityInterface {
   public function getReply();
 
   /**
+   * Returns an optional message to show potential givers who select the "Check
+   * or other" donation method.
+   *
+   * @return string
+   *  Text to show for check or other.
+   */
+  public function getCheckOrOtherText();
+
+  /**
    * Returns the weight of this category (used for sorting).
    *
    * @return int
@@ -42,6 +51,15 @@ interface GiveFormInterface extends ConfigEntityInterface {
    * @return $this
    */
   public function setRecipients($recipients);
+
+  /**
+   * Sets an optional message to show potential givers who select the "Check
+   * or other" donation method.
+   *
+   * @return string
+   *  Text to show for check or other.
+   */
+  public function setCheckOrOtherText($text);
 
   /**
    * Sets an automatic reply to be sent with donation receipt to the donor.

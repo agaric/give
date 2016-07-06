@@ -38,6 +38,7 @@ use Drupal\give\GiveFormInterface;
  *     "label",
  *     "recipients",
  *     "reply",
+ *     "check_or_other_text",
  *     "weight",
  *   }
  * )
@@ -73,6 +74,13 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
   protected $reply = '';
 
   /**
+   * An automatic reply with a receipt for the donation.
+   *
+   * @var string
+   */
+  protected $check_or_other_text = '';
+
+  /**
    * The weight of the category.
    *
    * @var int
@@ -106,6 +114,21 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
    */
   public function setReply($reply) {
     $this->reply = $reply;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCheckOrOtherText() {
+    return $this->check_or_other_text;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setCheckOrOtherText($text) {
+    $this->check_or_other_text = $text;
     return $this;
   }
 

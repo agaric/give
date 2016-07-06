@@ -70,6 +70,8 @@ function give_record_form_give_donation_form_alter(&$form, &$form_state, $form_i
  * Implements a Submit Callback for give_donation_form.
  */
 function give_record_give_donation_redirect_submit(&$form, &$form_state) {
+  $current_redirect = $_SERVER['REDIRECT_URL']; // e.g. "/donate"
+  $query_string = $_SERVER['QUERY_STRING'];
   /* @var \Drupal\give\DonationInterface $give_donation */
   $give_donation = $form_state->getFormObject()->getEntity();
   if ($form['#form_id'] === "give_donation_donate_payment_form") {
