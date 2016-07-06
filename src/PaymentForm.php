@@ -175,6 +175,16 @@ class PaymentForm extends ContentEntityForm {
       ],
     );
 
+    $form['check_or_other_text'] = array(
+      '#type' => 'markup',
+      '#markup' => $donation->getGiveForm()->getCheckOrOtherText(),
+      '#states' => [
+        'visible' => [
+          ':input[name="method"]' => ['value' => GIVE_WITH_CHECK],
+        ],
+      ],
+    );
+
     $form['telephone'] = array(
       '#type' => 'tel',
       '#title' => t('Telephone number'),
