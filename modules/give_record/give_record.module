@@ -45,7 +45,7 @@ function give_record_give_form_form_builder($entity_type, GiveFormInterface $giv
 }
 
 /**
- * Implements hook_form_FORM_ID_alter() for give_form_form().
+ * Implements hook_form_FORM_ID_alter() for give_donation_form().
  */
 function give_record_form_give_donation_form_alter(&$form, &$form_state, $form_id) {
   $form['actions']['submit']['#submit'][] = 'give_record_give_donation_redirect_submit';
