@@ -236,7 +236,7 @@ class PaymentForm extends ContentEntityForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $donation = parent::validateForm($form, $form_state);
 
-    if ($form_state['values']['method'] != GIVE_WITH_STRIPE) {
+    if ($form_state->getValue('method') != GIVE_WITH_STRIPE) {
       return;
     }
     // Get the token for use in processing the donation; throw error if missing.
