@@ -33,7 +33,9 @@ function stripeResponseHandler(status, response) {
   if (response.error) {
 
     // Show the errors on the form:
-    $form.find('.payment-errors').text(response.error.message);
+    var pre_span = '<div role="contentinfo" aria-label="Error message" class="messages messages--error"><div role="alert">';
+    var post_span = '</div></div>';
+    $form.find('.payment-errors').text(pre_span + response.error.message + post_span);
     $form.find('.submit').prop('disabled', false); // Re-enable submission
 
   } else { // Token was created!
