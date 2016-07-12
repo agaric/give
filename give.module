@@ -120,10 +120,26 @@ function give_mail($key, &$message, $params) {
       break;
 
     case 'donation_receipt':
-      $message['subject'] .= t('[@form] @label', $variables, $options);
-      $message['body'][] = $params['give_form']->getReply();
-      $message['body'][] = '$' . $give_donation->getAmount() / 100;
+      $message['subject'] .= t('Thank you for your donation to MASS Design Group', $variables, $options);
+
+      $message['body'][] = give_replace_donation_tokens($params['give_form']->getReply(), $give_donation);
       break;
 
   }
+}
+
+/**
+ * Simple no-dependency token replacement.  More robust would be better.
+ */
+function give_replace_donation_tokens($message, \Drupal\give\DonationInterface $donation) {
+  $search_replace = array(
+    '[donor_name]' => $donation->getDonorName(),
+    '[donor_email]' => $donation->getDonorMail(),
+    '[give_label]' => $donation->getGiveForm()->getLabel(),
+    '[dollar_amount]' => $donation->getDollarAmount(),
+    '[recurring]' => $donation->recurring() ? 'recurring ' : '',
+    '[today_date]' => strftime('%B %e, %Y'),
+    '[date]' => strftime('%B %e, %Y', $donation->getUpdatedTime()),
+  );
+  return str_replace(array_keys($search_replace), array_values($search_replace), $message);
 }
