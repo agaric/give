@@ -13,7 +13,7 @@
   var $form = $('#give-donation-donate-payment-form');
   $form.submit(function(event) {
     // Only try to process the card if card method ('1') is selected.
-    if ($('input[name=method').val() == 1) {
+    if ($('input[name=edit-method-1]').val()) {
       // Disable the submit button to prevent repeated clicks:
       $form.find('.submit').prop('disabled', true);
 
