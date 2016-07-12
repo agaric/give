@@ -240,8 +240,6 @@ class DonationForm extends ContentEntityForm {
    */
   public function save(array $form, FormStateInterface $form_state) {
     $donation = $this->entity;
-    $user = $this->currentUser();
-    $this->mailHandler->sendDonationNotice($donation, $user);
 
     $this->flood->register('give', $this->config('give.settings')->get('flood.interval'));
 
