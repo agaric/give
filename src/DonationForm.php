@@ -243,9 +243,7 @@ class DonationForm extends ContentEntityForm {
 
     $this->flood->register('give', $this->config('give.settings')->get('flood.interval'));
 
-    // Save the donation. In core this is a no-op but should contrib wish to
-    // implement donation storage, this will make the task of swapping in a real
-    // storage controller straight-forward.
+    // Saving only has an effect with give_record enabled.
     $donation->save();
   }
 

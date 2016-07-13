@@ -372,9 +372,7 @@ class PaymentForm extends ContentEntityForm {
 
     drupal_set_message($this->t('Your donation has been received.  Thank you!'));
 
-    // Save the donation. In core this is a no-op but should contrib wish to
-    // implement donation storage, this will make the task of swapping in a real
-    // storage controller straight-forward.
+    // Saving only has an effect with give_record enabled.
     $donation->save();
   }
 
