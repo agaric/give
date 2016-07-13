@@ -51,7 +51,6 @@ function stripeResponseHandler(status, response) {
   }
 
   function testStripeCardCreateToken($form, $stripeResponseHandler) {
-    alert('hi stranger');
     var status = 200;
     var response = {
       id: "tok_u5dg20Gra", // Token identifier

@@ -242,7 +242,6 @@ class PaymentForm extends ContentEntityForm {
     // Get the token for use in processing the donation; throw error if missing.
     if (!$token = $donation->getStripeToken()) {
       $form_state->setErrorByName('stripe_errors', $this->t("Could not retrieve token from Stripe."));
-      drupal_set_message("Would not retrieve token from Stripe.", 'error');
     }
 
     \Stripe\Stripe::setApiKey(\Drupal::config('give.settings')->get('stripe_secret_key'));
