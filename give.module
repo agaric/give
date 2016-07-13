@@ -135,7 +135,7 @@ function give_replace_donation_tokens($message, \Drupal\give\DonationInterface $
   $search_replace = array(
     '[donor_name]' => $donation->getDonorName(),
     '[donor_email]' => $donation->getDonorMail(),
-    '[give_label]' => $donation->getGiveForm()->getLabel(),
+    '[give_label]' => $donation->getGiveForm()->label(),
     '[dollar_amount]' => $donation->getDollarAmount(),
     '[recurring]' => $donation->recurring() ? 'recurring ' : '',
     '[today_date]' => strftime('%B %e, %Y'),
