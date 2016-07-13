@@ -251,6 +251,7 @@ class PaymentForm extends ContentEntityForm {
 
     // If the donation is recurring, we create a plan and a customer.
     if ($donation->recurring()) {
+      $plan_already_exists = FALSE;
       try {
         $plan = \Stripe\Plan::create(array(
           "id" => $donation->uuid(),
@@ -261,14 +262,38 @@ class PaymentForm extends ContentEntityForm {
         ));
       } catch(\Stripe\Error\ApiConnection $e) {
         $form_state->setErrorByName('stripe_errors', $this->t('Could not connect to payment processer. More information: %e', ['%e' => $e->getMessage()]));
+      } catch(\Stripe\Error\InvalidRequest $e) {
+        if ($e->getMessage() === 'Plan already exists.') {
+          // The plan already exists and we should use its UUID to create the
+          // customer for the plan and process the donation.
+          // Therefore we won't throw an error.
+          // Yes it would be nice to not read the text of an error message to determine this.
+          // The reason the plan is somewhat likely to already exist is that
+          // we necessarily create the plan before we try to charge the card,
+          // and if charging the card fails we go through this form again.
+          $plan_already_exists = TRUE;
+        }
+        else {
+          $form_state->setErrorByName('stripe_errors', $this->t('Invalid request: %e', ['%e' => $e->getMessage()]));
+        }
       } catch(\Stripe\Error\Base $e) {
-        $form_state->setErrorByName('stripe_errors', $this->t('Unknown error: %e', ['%e' => $e->getMessage()]));
+        $form_state->setErrorByName('stripe_errors', $this->t('Error: %e', ['%e' => $e->getMessage()]));
+      }
+
+      if ($plan_already_exists) {
+        $plan_id = $donation->uuid();
+      }
+      elseif (isset($plan) && $plan) {
+        $plan_id = $plan->id();
+      }
+      else {
+        drupal_set_message(t("Unable to create subscription plan for recurring donation. Could not complete donation."), 'error');
+        return;
       }
 
       // Create the customer with subscription plan on Stripe's servers - this will charge the user's card
       try {
-        $plan_id = $plan->_values['id'];
-        $customer = \Stripe\Plan::create(array(
+        $customer = \Stripe\Customer::create(array(
           "plan" => $plan_id,
           "source" => $token,
           "metadata" => array(
