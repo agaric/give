@@ -266,7 +266,6 @@ class PaymentForm extends ContentEntityForm {
       // Create the customer with subscription plan on Stripe's servers - this will charge the user's card
       try {
         $plan_id = $plan->_values['id'];
-        $alt_plan_id = $plan->value('id');
         $customer = \Stripe\Plan::create(array(
           "plan" => $plan_id,
           "source" => $token,
