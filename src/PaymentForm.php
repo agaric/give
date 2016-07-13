@@ -280,8 +280,11 @@ class PaymentForm extends ContentEntityForm {
         $form_state->setErrorByName('stripe_errors', $this->t('Unknown error: %e', ['%e' => $e->getMessage()]));
       }
 
-      if ($customer) {
+      if (isset($customer) && $customer) {
         $donation->setCompleted();
+      }
+      else {
+        drupal_set_message(t("Could not complete donation."), 'error');
       }
 
       return $donation;
