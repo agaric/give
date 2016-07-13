@@ -343,9 +343,12 @@ class PaymentForm extends ContentEntityForm {
       $form_state->setErrorByName('stripe_errors', $this->t('Error: %e', ['%e' => $e->getMessage()]));
     }
 
-    if ($charge) {
+    if (isset($charge) && $charge) {
       $donation->setCompleted();
       $donation->save();
+    }
+    else {
+      drupal_set_message(t("Could not complete donation."), 'error');
     }
 
     return $donation;
