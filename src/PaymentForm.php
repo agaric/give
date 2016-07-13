@@ -305,7 +305,7 @@ class PaymentForm extends ContentEntityForm {
       } catch(\Stripe\Error\ApiConnection $e) {
         $form_state->setErrorByName('stripe_errors', $this->t('Could not connect to payment processer. More information: %e', ['%e' => $e->getMessage()]));
       } catch(\Stripe\Error\Card $e) {
-        $form_state->setErrorByName('number', $this->t("The card has been declined. More information: %e", ['%e' => $e->getMessage()]));
+        $form_state->setErrorByName('number', $this->t("Could not process card: %e", ['%e' => $e->getMessage()]));
       } catch(\Stripe\Error\Base $e) {
         $form_state->setErrorByName('stripe_errors', $this->t('Error: %e', ['%e' => $e->getMessage()]));
       }
@@ -335,7 +335,7 @@ class PaymentForm extends ContentEntityForm {
         ),
       ));
     } catch(\Stripe\Error\Card $e) {
-      $form_state->setErrorByName('number', $this->t("The card has been declined. More information: %e", ['%e' => $e->getMessage()]));
+      $form_state->setErrorByName('number', $this->t("Could not process card: %e", ['%e' => $e->getMessage()]));
     } catch(\Stripe\Error\ApiConnection $e) {
       $form_state->setErrorByName('stripe_errors', $this->t('Could not connect to payment processer. More information: %e', ['%e' => $e->getMessage()]));
     } catch(\Stripe\Error\Base $e) {
