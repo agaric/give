@@ -174,12 +174,12 @@ interface DonationInterface extends ContentEntityInterface {
   /**
    * Sets the node promoted status.
    *
-   * @param bool $completed
-   *   TRUE to set this node to promoted, FALSE to set it to not promoted.
+   * @param bool $completed (optional)
+   *   TRUE (default) to set this donation to completed, FALSE to set it to not completed.
    *
    * @return \Drupal\give\DonationInterface
    *   The called donation entity.
    */
-  public function setCompleted($completed);
+  public function setCompleted($completed = TRUE);
 
 }
