@@ -311,8 +311,8 @@ class PaymentForm extends ContentEntityForm {
       }
 
       if (isset($customer) && $customer) {
-        $donation->setCompleted();
-        $donation->save();
+        // Below works, unlike $donation->setCompleted().
+        $this->entity->setCompleted();
       }
       else {
         drupal_set_message(t("Could not complete donation."), 'error');
@@ -344,8 +344,8 @@ class PaymentForm extends ContentEntityForm {
     }
 
     if (isset($charge) && $charge) {
-      $donation->setCompleted();
-      $donation->save();
+      // Below works, unlike $donation->setCompleted().
+      $this->entity->setCompleted();
     }
     else {
       drupal_set_message(t("Could not complete donation."), 'error');
