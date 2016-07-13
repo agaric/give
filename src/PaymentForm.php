@@ -235,6 +235,9 @@ class PaymentForm extends ContentEntityForm {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     $donation = parent::validateForm($form, $form_state);
+    if ($donation->isCompleted()) {
+      $form_state->setErrorByName('stripe_errors', $this->t("You have already completed this donation. Thank you! Please initiate a new donation if you wish to donate more."));
+    }
 
     if ($form_state->getValue('method') != GIVE_WITH_STRIPE) {
       return;
