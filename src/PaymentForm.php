@@ -284,7 +284,7 @@ class PaymentForm extends ContentEntityForm {
         $plan_id = $donation->uuid();
       }
       elseif (isset($plan) && $plan) {
-        $plan_id = $plan->id();
+        $plan_id = $plan->_values['id'];
       }
       else {
         drupal_set_message(t("Unable to create subscription plan for recurring donation. Could not complete donation."), 'error');
@@ -312,6 +312,7 @@ class PaymentForm extends ContentEntityForm {
 
       if (isset($customer) && $customer) {
         $donation->setCompleted();
+        $donation->save();
       }
       else {
         drupal_set_message(t("Could not complete donation."), 'error');
@@ -344,6 +345,7 @@ class PaymentForm extends ContentEntityForm {
 
     if ($charge) {
       $donation->setCompleted();
+      $donation->save();
     }
 
     return $donation;
