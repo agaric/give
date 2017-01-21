@@ -36,6 +36,8 @@ give.site_page:
     _title: 'Give'
     _controller: '\Drupal\give\Controller\GiveController::giveSitePage'
     give_form: NULL
+  requirements:
+    _permission: 'access give forms'
 
 entity.give_form.canonical:
   path: '/give/{give_form}'
