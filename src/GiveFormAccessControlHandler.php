@@ -18,8 +18,8 @@ class GiveFormAccessControlHandler extends EntityAccessControlHandler {
    * {@inheritdoc}
    */
   protected function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
-    if ($operation == 'delete') {
-      // Only administrator can delete forms.  @TODO this probably isn't how to handle this permission.
+    if ($operation == 'delete' || $operation == 'update') {
+      // Only administrator can update or delete forms.
       return AccessResult::allowedIf($account->hasPermission('administer give'))->cachePerPermissions();
     }
     return AccessResult::allowedIfHasPermission($account, 'access give forms');
