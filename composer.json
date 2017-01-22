@@ -1,0 +1,13 @@
+{
+  "name": "drupal/give",
+  "description": "Gives people a couple easy ways to donate money on your site.",
+  "type": "drupal-module",
+  "homepage": "https://www.drupal.org/project/give",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/give"
+  },
+  "license": "GPL-2.0+",
+  "require": {
+    "stripe/stripe-php": "^3.14"
+  }
+}
