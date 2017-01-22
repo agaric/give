@@ -18,6 +18,14 @@ interface GiveFormInterface extends ConfigEntityInterface {
   public function getRecipients();
 
   /**
+   * Returns an automatic subject for the donation receipt e-mail.
+   *
+   * @return string
+   *  Subject for the donation receipt e-mail.
+   */
+  public function getSubject();
+
+  /**
    * Returns an automatic reply to be sent with donation receipt to the donor.
    *
    * @return string
@@ -60,6 +68,16 @@ interface GiveFormInterface extends ConfigEntityInterface {
    *  Text to show for check or other.
    */
   public function setCheckOrOtherText($text);
+
+  /**
+   * Sets an automatic subject for the donation receipt e-mail to the donor.
+   *
+   * @param string $subject
+   *   The desired subject for the donation receipt e-mail.
+   *
+   * @return $this
+   */
+  public function setSubject($subject);
 
   /**
    * Sets an automatic reply to be sent with donation receipt to the donor.

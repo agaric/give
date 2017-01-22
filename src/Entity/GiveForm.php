@@ -37,6 +37,7 @@ use Drupal\give\GiveFormInterface;
  *     "id",
  *     "label",
  *     "recipients",
+ *     "subject",
  *     "reply",
  *     "check_or_other_text",
  *     "weight",
@@ -65,6 +66,13 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
    * @var array
    */
   protected $recipients = array();
+
+  /**
+   * An automatic subject with a receipt for the donation.
+   *
+   * @var string
+   */
+  protected $subject = '';
 
   /**
    * An automatic reply with a receipt for the donation.
@@ -99,6 +107,21 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
    */
   public function setRecipients($recipients) {
     $this->recipients = $recipients;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getSubject() {
+    return $subject->subject;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setSubject($reply) {
+    $this->subject = $subject;
     return $this;
   }
 
