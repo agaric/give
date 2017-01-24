@@ -82,6 +82,13 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       '#description' => $this->t("Provide who should be notified when a donation is received. Example: 'donations@example.org' or 'fund@example.org,staff@example.org' . To specify multiple recipients, separate each email address with a comma."),
       '#required' => TRUE,
     );
+    $form['subject'] = array(
+      '#type' => 'textarea',
+      '#title' => $this->t('Subject'),
+      '#default_value' => $give_form->getSubject(),
+      '#description' => $this->t('Subject used for e-mail reply (if Auto-reply with receipt is set below).'),
+      '#required' => TRUE,
+    );
     $form['reply'] = array(
       '#type' => 'textarea',
       '#title' => $this->t('Auto-reply with receipt'),
