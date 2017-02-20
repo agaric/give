@@ -1,8 +1,5 @@
 langcode: en
 status: true
-dependencies:
-  module:
-    - give_record
 third_party_settings:
   give_record:
     redirect_uri: ''
