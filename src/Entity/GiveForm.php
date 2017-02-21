@@ -114,13 +114,13 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
    * {@inheritdoc}
    */
   public function getSubject() {
-    return $subject->subject;
+    return $this->subject;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setSubject($reply) {
+  public function setSubject($subject) {
     $this->subject = $subject;
     return $this;
   }
