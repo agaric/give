@@ -9,7 +9,7 @@ use Drupal\Tests\BrowserTestBase;
  *
  * @group give
  */
-class FormTest extends BrowserTestBase {
+class DonationFormTest extends BrowserTestBase {
 
   /**
    * Admin User.
@@ -26,6 +26,7 @@ class FormTest extends BrowserTestBase {
   public static $modules = [
     'system',
     'give',
+    'give_record',
     'field',
     'user',
     'give_test',
@@ -52,6 +53,7 @@ class FormTest extends BrowserTestBase {
    */
   public function testGivePageAsAuthenticatedUser() {
     $this->drupalLogin($this->adminUser);
+
     $this->drupalGet('/give/tzedakah');
     $this->assertTrue($this->getSession()->getPage()->hasContent("Your email address"));
     $this->assertTrue($this->getSession()->getPage()->hasContent($this->adminUser->getEmail()));
@@ -59,6 +61,21 @@ class FormTest extends BrowserTestBase {
     $this->assertTrue($this->getSession()->getPage()->hasContent($this->adminUser->getUsername()));
     $this->assertTrue($this->getSession()->getPage()->findField('Amount to give'));
     $this->assertTrue($this->getSession()->getPage()->findField('Give this same donation every month'));
+    $this->getSession()->getPage()->fillField('amount', 10);
+    $this->submitForm([], 'edit-submit', 'give-donation-tzedakah-form');
+
+    // Check that all the fields are present in the second step.
+    $this->assertTrue($this->getSession()->getPage()->findField('method'));
+    // The stripe_token field is hidden so we cannot use findField to check if
+    // it exists.
+    $this->getSession()->getPage()->hasContent('name="stripe_token"');
+    $this->assertTrue($this->getSession()->getPage()->findField('stripe_number'));
+    $this->assertTrue($this->getSession()->getPage()->findField('stripe_exp_month'));
+    $this->assertTrue($this->getSession()->getPage()->findField('stripe_exp_year'));
+    $this->assertTrue($this->getSession()->getPage()->findField('stripe_cvc'));
+    $this->assertTrue($this->getSession()->getPage()->findField('Telephone number'));
+    $this->assertTrue($this->getSession()->getPage()->findField('Further information'));
+
     $this->drupalLogout();
   }
 

@@ -138,7 +138,7 @@ class PaymentForm extends ContentEntityForm {
       '#title' => t('Card number'),
       '#required' => TRUE,
       '#value' => TRUE, // For items, required is supposed to only show the asterisk, but Drupal is broken.
-      '#markup' => '<input size="20" maxlength="20" class="form-text" type="text" data-stripe="number">',
+      '#markup' => '<input id="stripe_number" size="20" maxlength="20" class="form-text" type="text" data-stripe="number">',
       '#allowed_tags' => ['input'],
       '#states' => [
         'visible' => [
@@ -152,7 +152,7 @@ class PaymentForm extends ContentEntityForm {
       '#title' => t('Expiration (MM YY)'),
       '#required' => TRUE,
       '#value' => TRUE, // For items, required is supposed to only show the asterisk, but Drupal is broken.
-      '#markup' => '<input size="2" maxlength="2" type="text" data-stripe="exp_month" class="inline"> <input size="2" maxlength="2" type="text" data-stripe="exp_year" class="inline">',
+      '#markup' => '<input id="stripe_exp_month" size="2" maxlength="2" type="text" data-stripe="exp_month" class="inline"> <input id="stripe_exp_year" size="2" maxlength="2" type="text" data-stripe="exp_year" class="inline">',
       '#allowed_tags' => ['input'],
       '#states' => [
         'visible' => [
@@ -166,7 +166,7 @@ class PaymentForm extends ContentEntityForm {
       '#title' => t('CVC'),
       '#required' => TRUE,
       '#value' => TRUE, // For items, required is supposed to only show the asterisk, but Drupal is broken.
-      '#markup' => '<input size="4" maxlength="4" type="text" data-stripe="cvc" class="inline">',
+      '#markup' => '<input id="stripe_cvc" size="4" maxlength="4" type="text" data-stripe="cvc" class="inline">',
       '#allowed_tags' => ['input'],
       '#states' => [
         'visible' => [
