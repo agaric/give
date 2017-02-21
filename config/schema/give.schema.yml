@@ -15,6 +15,7 @@ give.settings:
       label: 'Stripe publishable API key'
     flood:
       type: mapping
+      label: 'flood control'
       mapping:
         limit:
           type: integer
@@ -22,6 +23,13 @@ give.settings:
         interval:
           type: integer
           label: 'Interval'
+    api_key_dwolla:
+          type: string
+          label: 'Dwolla API key'
+    send_receipt:
+      type: boolean
+      label: 'Send a receipt if e-mail address provided'
+
 
 give.form.*:
   type: config_entity
@@ -45,30 +53,9 @@ give.form.*:
     weight:
       type: integer
       label: 'Weight'
-
-give.settings:
-  type: config_object
-  label: 'Give settings'
-  mapping:
-    default_form:
+    check_or_other_text:
       type: string
-      label: 'Default form identifier'
-    flood:
-      type: mapping
-      label: 'Flood control'
-      mapping:
-        limit:
-          type: integer
-          label: 'Limit'
-        interval:
-          type: integer
-          label: 'Interval'
-    api_key_stripe:
+      label: 'Check or other test'
+    subject:
       type: string
-      label: 'Stripe API key'
-    api_key_dwolla:
-      type: string
-      label: 'Dwolla API key'
-    send_receipt:
-      type: boolean
-      label: 'Send a receipt if e-mail address provided'
+      label: 'Subject'
