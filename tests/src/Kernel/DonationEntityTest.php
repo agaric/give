@@ -25,6 +25,9 @@ class DonationEntityTest extends EntityKernelTestBase {
     'give_test',
   );
 
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
     parent::setUp();
     $this->installConfig(array('give', 'give_test'));
