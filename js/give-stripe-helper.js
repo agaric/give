@@ -10,7 +10,7 @@
     alert('This will not be able to take credit/debit card payments until the Stripe publishable key is set.');
   }
 
-  var $form = $('#give-donation-donate-payment-form');
+  var $form = $('.give-donation-form');
   $form.submit(function(event) {
     // Only try to process the card if card method ('1') is selected.
     if ($('input[name=method]:checked').val() == 1) {
@@ -28,7 +28,7 @@
 
 function stripeResponseHandler(status, response) {
 
-  var $form = $('#give-donation-donate-payment-form');
+  var $form = $('.give-donation-form');
 
   if (response.error) {
 
