@@ -13,11 +13,11 @@ use Drupal\give\GiveFormInterface;
  *   label = @Translation("Give form"),
  *   handlers = {
  *     "access" = "Drupal\give\GiveFormAccessControlHandler",
- *     "list_builder" = "Drupal\give\GiveFormListBuilder",
+ *     "list_builder" = "Drupal\give\Form\GiveForm\GiveFormListBuilder",
  *     "give_form" = "\Drupal\give\GiveFormViewBuilder",
  *     "form" = {
- *       "add" = "Drupal\give\GiveFormEditForm",
- *       "edit" = "Drupal\give\GiveFormEditForm",
+ *       "add" = "Drupal\give\Form\GiveForm\GiveFormEditForm",
+ *       "edit" = "Drupal\give\Form\GiveForm\GiveFormEditForm",
  *       "delete" = "Drupal\Core\Entity\EntityDeleteForm"
  *     }
  *   },

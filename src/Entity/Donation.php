@@ -18,7 +18,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     "access" = "Drupal\give\GiveDonationAccessControlHandler",
  *     "view_builder" = "Drupal\give\DonationViewBuilder",
  *     "list_builder" = "Drupal\Core\Entity\EntityListBuilder",
- *     "views_data" = "\Drupal\give\DonationViewsData",
+ *     "views_data" = "Drupal\give\DonationViewsData",
  *     "form" = {
  *       "default" = "Drupal\give\DonationForm",
  *       "payment" = "Drupal\give\PaymentForm",

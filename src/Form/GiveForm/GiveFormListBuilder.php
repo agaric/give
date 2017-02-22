@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\give;
+namespace Drupal\give\Form\GiveForm;
 
 use Drupal\Core\Config\Entity\ConfigEntityListBuilder;
 use Drupal\Core\Entity\EntityInterface;

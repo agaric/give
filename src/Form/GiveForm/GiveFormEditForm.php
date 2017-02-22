@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\give;
+namespace Drupal\give\Form\GiveForm;
 
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
