@@ -155,8 +155,12 @@ class DonationForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function actions(array $form, FormStateInterface $form_state) {
+    /** @var \Drupal\give\Entity\Donation $donation */
+    $donation = $this->entity;
+    /** @var \Drupal\give\Entity\GiveForm $giveForm */
+    $giveForm = $donation->referencedEntities()[0];
     $elements = parent::actions($form, $form_state);
-    $elements['submit']['#value'] = $this->t('Give');
+    $elements['submit']['#value'] = $this->t($giveForm->getSubmitButtonText());
     return $elements;
   }
 

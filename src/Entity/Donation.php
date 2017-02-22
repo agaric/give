@@ -15,7 +15,6 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   label = @Translation("Give donation"),
  *   handlers = {
  *     "access" = "Drupal\give\GiveDonationAccessControlHandler",
- *     "storage" = "Drupal\Core\Entity\ContentEntityNullStorage",
  *     "view_builder" = "Drupal\give\DonationViewBuilder",
  *     "form" = {
  *       "default" = "Drupal\give\DonationForm",

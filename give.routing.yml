@@ -62,3 +62,35 @@ give.settings:
     _title: 'Give (donation processing) settings'
   requirements:
     _permission: 'administer give'
+
+entity.give_donation.canonical:
+  path: '/admin/structure/give/donations/{give_donation}'
+  defaults:
+    _entity_view: 'give_donation'
+    _title: 'View donation'
+  requirements:
+    _permission: 'administer give'
+
+entity.give_donation.edit_form:
+  path: '/admin/structure/give/donations/{give_donation}/edit'
+  defaults:
+    _entity_form: 'give_donation.edit'
+    _title: 'Edit donation'
+  requirements:
+    _permission: 'administer give'
+
+entity.give_donation.delete_form:
+  path: '/admin/structure/give/donations/{give_donation}/delete'
+  defaults:
+    _entity_form: 'give_donation.delete'
+    _title: 'Delete donation'
+  requirements:
+    _permission: 'administer give'
+
+entity.give_donation.collection:
+  path: '/admin/structure/give/donations'
+  defaults:
+    _entity_list: 'give_donation'
+    _title: 'Donations'
+  requirements:
+    _permission: 'administer give'
