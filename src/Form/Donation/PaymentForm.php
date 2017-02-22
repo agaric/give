@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\give;
+namespace Drupal\give\Form\Donation;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;

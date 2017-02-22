@@ -20,9 +20,9 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     "list_builder" = "Drupal\Core\Entity\EntityListBuilder",
  *     "views_data" = "Drupal\give\DonationViewsData",
  *     "form" = {
- *       "default" = "Drupal\give\DonationForm",
- *       "payment" = "Drupal\give\PaymentForm",
- *       "edit" = "Drupal\give\DonationEditForm",
+ *       "default" = "Drupal\give\Form\Donation\DonationForm",
+ *       "payment" = "Drupal\give\Form\DonationPaymentForm",
+ *       "edit" = "Drupal\give\Form\Donation\DonationEditForm",
  *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm"
  *     }
  *   },

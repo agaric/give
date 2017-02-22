@@ -5,7 +5,7 @@
  * Contains \Drupal\give_record\DonationEditForm.
  */
 
-namespace Drupal\give;
+namespace Drupal\give\Form\Donation;
 
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Entity\EntityManagerInterface;
