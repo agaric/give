@@ -5,7 +5,7 @@
  * Contains Drupal\give_record\Plugin\views\field\ContactForm.
  */
 
-namespace Drupal\give_record\Plugin\views\field;
+namespace Drupal\give\Plugin\views\field;
 
 use Drupal\Core\Config\Entity\ConfigEntityStorageInterface;
 use Drupal\views\Plugin\views\field\FieldPluginBase;
