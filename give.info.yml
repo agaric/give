@@ -6,3 +6,4 @@ package: Give
 configure: entity.give_form.collection
 dependencies:
   - field
+  - entity_reference

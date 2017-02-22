@@ -5,7 +5,7 @@
  * Contains \Drupal\give_record\GiveFormViewBuilder.
  */
 
-namespace Drupal\give_record;
+namespace Drupal\give;
 
 use Drupal\Core\Config\Config;
 use Drupal\Core\Entity\EntityFormBuilderInterface;

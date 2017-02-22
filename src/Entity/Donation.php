@@ -2,6 +2,7 @@
 
 namespace Drupal\give\Entity;
 
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\give\DonationInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -16,17 +17,30 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   handlers = {
  *     "access" = "Drupal\give\GiveDonationAccessControlHandler",
  *     "view_builder" = "Drupal\give\DonationViewBuilder",
+ *     "list_builder" = "Drupal\Core\Entity\EntityListBuilder",
+ *     "views_data" = "\Drupal\give\DonationViewsData",
  *     "form" = {
  *       "default" = "Drupal\give\DonationForm",
  *       "payment" = "Drupal\give\PaymentForm",
+ *       "edit" = "Drupal\give\DonationEditForm",
+ *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm"
  *     }
  *   },
+ *   base_table = "give_donation"
  *   admin_permission = "administer give",
  *   entity_keys = {
+ *     "id" = "id",
+ *     "label" = "label"
  *     "bundle" = "give_form",
  *     "uuid" = "uuid",
  *     "langcode" = "langcode"
  *   },
+ *   links = {
+ *     "canonical" = "/admin/structure/give/donations/{give_donation}"
+ *     "edit-form" = "/admin/structure/give/donations/{give_donation}/edit"
+ *     "delete-form" = "/admin/structure/give/donations/{give_donation}/delete"
+ *     "collection" = "/admin/structure/give/donations"
+ *   }
  *   bundle_entity_type = "give_form",
  *   field_ui_base_route = "entity.give_form.edit_form",
  * )

@@ -3,7 +3,6 @@ status: true
 dependencies:
   module:
     - give
-    - give_record
     - user
 id: give_donations
 label: 'Give donations'
