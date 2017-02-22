@@ -9,8 +9,10 @@ use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
  *
  * @group give
  * @see \Drupal\give\Entity\Donation
+ * @see \Drupal\give\Entity\GiveForm
+ *
  */
-class DonationEntityTest extends EntityKernelTestBase {
+class GiveFormAndDonationEntityTest extends EntityKernelTestBase {
 
   /**
    * Modules to enable.
