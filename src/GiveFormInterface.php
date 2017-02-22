@@ -100,12 +100,32 @@ interface GiveFormInterface extends ConfigEntityInterface {
   public function setWeight($weight);
 
   /**
-   * Sets the uri where the user will be redirected after the donate.
+   * Gets the uri where the user will be redirected after the donate.
    */
   public function getRedirectUri();
+
+  /**
+   * Sets the uri where the user will be redirected after the donate.
+   *
+   * @param string $uri
+   *   The uri.
+   *
+   * @return $this
+   */
+  public function setRedirectUri($uri);
 
   /**
    * The text displayed in the submit button in the donation form.
    */
   public function getSubmitButtonText();
+
+  /**
+   * Set the text displayed in the submit button in the donation form.
+   *
+   * @param text $text
+   *   The text displayed in the submit button.
+   *
+   * @return $this
+   */
+  public function setSubmitButtonText($text);
 }

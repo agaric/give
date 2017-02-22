@@ -19,13 +19,12 @@ class GiveFormAccessControlHandler extends EntityAccessControlHandler {
    */
   protected function checkAccess(EntityInterface $entity, $operation, AccountInterface $account) {
     if ($operation == 'delete' || $operation == 'update') {
-      // Only administrator can update or delete forms.
-      return AccessResult::allowedIf($account->hasPermission('administer give'))->cachePerPermissions();
+      // Only administrator or the user with the `create and edit give forms`
+      // can update or delete forms.
+      return AccessResult::allowedIf($account->hasPermission('administer give'))
+        ->orIf(AccessResult::allowedIf($account->hasPermission('create and edit give forms')))->cachePerPermissions();
     }
     return AccessResult::allowedIfHasPermission($account, 'access give forms');
-
-    // @TODO - do we want this check instead?  Combined checks?
-    return parent::checkAccess($entity, $operation, $account);
   }
 
 }

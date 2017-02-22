@@ -21,7 +21,7 @@ use Drupal\give\GiveFormInterface;
  *     }
  *   },
  *   config_prefix = "form",
- *   admin_permission = "administer give forms",
+ *   admin_permission = "administer give",
  *   bundle_of = "give_donation",
  *   entity_keys = {
  *     "id" = "id",
@@ -82,7 +82,8 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
   protected $reply = '';
 
   /**
-   * An automatic reply with a receipt for the donation.
+   * Optional message to show potential givers who select the "Check or other"
+   * donation method.
    *
    * @var string
    */
@@ -195,8 +196,24 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
   /**
    * {@inheritdoc}
    */
+  public function setRedirectUri($uri) {
+    $this->redirectUri = $uri;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getSubmitButtonText() {
     return $this->submitButtonText;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setSubmitButtonText($text) {
+    $this->submitButtonText = $text;
+    return $this;
   }
 
 }

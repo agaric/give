@@ -22,7 +22,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *       "payment" = "Drupal\give\PaymentForm",
  *     }
  *   },
- *   admin_permission = "administer give forms",
+ *   admin_permission = "administer give",
  *   entity_keys = {
  *     "bundle" = "give_form",
  *     "uuid" = "uuid",
