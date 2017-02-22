@@ -8,3 +8,46 @@ give.form.*.third_party.give_record:
     submit_text:
       type: label
       label: 'Submit Text'
+
+give_record.form.donate:
+  type: config_entity
+  label: 'Give form'
+  mapping:
+    id:
+      type: string
+      label: 'ID'
+    label:
+      type: label
+      label: 'Label'
+    recipients:
+      type: sequence
+      label: 'Recipients'
+      sequence:
+        type: email
+        label: 'Email address'
+    reply:
+      type: text
+      label: 'Auto-reply'
+    weight:
+      type: integer
+      label: 'Weight'
+    check_or_other_text:
+      type: string
+      label: 'Check or other test'
+    subject:
+      type: string
+      label: 'Subject'
+    third_party_settings:
+      type: mapping
+      label: 'Third party settings'
+      mapping:
+        give_record:
+          type: mapping
+          label: 'Give Record'
+          mapping:
+            redirect_uri:
+              type: 'string'
+              label: 'Redirect URI'
+            submit_text:
+              type: 'string'
+              label: 'Submit Text'

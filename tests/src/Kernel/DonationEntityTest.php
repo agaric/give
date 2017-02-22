@@ -25,6 +25,9 @@ class DonationEntityTest extends EntityKernelTestBase {
     'give_test',
   );
 
+  /**
+   * {@inheritdoc}
+   */
   protected function setUp() {
     parent::setUp();
     $this->installConfig(array('give', 'give_test'));
@@ -59,7 +62,7 @@ class DonationEntityTest extends EntityKernelTestBase {
 
     $no_access_user = $this->createUser(['uid' => 2]);
     $access_user = $this->createUser(['uid' => 3], ['access give forms']);
-    $admin = $this->createUser(['uid' => 4], ['administer give']);
+    $admin = $this->createUser(['uid' => 4], ['administer give forms']);
 
     $this->assertFalse(\Drupal::entityManager()->getAccessControlHandler('give_donation')->createAccess(NULL, $no_access_user));
     $this->assertTrue(\Drupal::entityManager()->getAccessControlHandler('give_donation')->createAccess(NULL, $access_user));

@@ -104,14 +104,28 @@ class MailHandlerTest extends UnitTestCase {
     $this->mailManager->expects($this->any())
       ->method('mail')
       ->willReturnCallback(
-        function($module, $key, $to, $langcode, $params, $from) use (&$results) {
+        function ($module, $key, $to, $langcode, $params, $from) use (&$results) {
           $result = array_shift($results);
-          $this->assertEquals($module, $result['module']);
-          $this->assertEquals($key, $result['key']);
-          $this->assertEquals($to, $result['to']);
-          $this->assertEquals($langcode, $result['langcode']);
-          $this->assertArrayEquals($params, $result['params']);
-          $this->assertEquals($from, $result['from']);
+          // sendDonationNotices sends two emails, one to the admin and one
+          // to the user, lets test both.
+          if ($to == 'admin@drupal.org') {
+            $this->assertEquals($module, $result['module']);
+            // @todo Is this key used?
+            $this->assertEquals($key, 'form_mail');
+            $this->assertEquals($to, "admin@drupal.org");
+            $this->assertEquals($langcode, $result['langcode']);
+            $this->assertArrayEquals($params, $result['params']);
+            // The admin receive the mail from the donor.
+            $this->assertEquals($from, $result['to']);
+          }
+          elseif ($to == 'user@drupal.org') {
+            $this->assertEquals($module, $result['module']);
+            $this->assertEquals($key, $result['key']);
+            $this->assertEquals($to, $result['to']);
+            $this->assertEquals($langcode, $result['langcode']);
+            $this->assertArrayEquals($params, $result['params']);
+            $this->assertEquals($from, $result['from']);
+          }
         });
     $this->userStorage->expects($this->any())
       ->method('load')
@@ -196,7 +210,7 @@ class MailHandlerTest extends UnitTestCase {
     $results[] = $result + $default_result;
     $data[] = array($donation, $donor, $results);
 
-    //For authenticated user.
+    // For authenticated user.
     $results = array();
     $donation = $this->getAuthenticatedMockDonation();
     $donor = $this->getMockDonor(FALSE, 'user@drupal.org');
@@ -326,7 +340,7 @@ class MailHandlerTest extends UnitTestCase {
       ->willReturn('en');
     $donation->expects($this->any())
       ->method('getGiveForm')
-      ->willReturn($this->getMockGiveForm('user2@drupal.org', FALSE));
+      ->willReturn($this->getMockGiveForm(['user2@drupal.org'], FALSE));
     return $donation;
   }
 
