@@ -38,6 +38,11 @@ class DonationFormTest extends BrowserTestBase {
   protected function setUp() {
     parent::setUp();
 
+    $config = \Drupal::service('config.factory')->getEditable('give.settings');
+    $config->set('stripe_publishable_key', $this->randomString())
+      ->set('stripe_secret_key', $this->randomString())
+      ->save();
+
     // Create and login administrative user.
     $this->adminUser = $this->drupalCreateUser(
       [
@@ -62,7 +67,7 @@ class DonationFormTest extends BrowserTestBase {
     $this->assertTrue($this->getSession()->getPage()->findField('Amount to give'));
     $this->assertTrue($this->getSession()->getPage()->findField('Give this same donation every month'));
     $this->getSession()->getPage()->fillField('amount', 10);
-    $this->submitForm([], 'edit-submit', 'give-donation-tzedakah-form');
+    $this->submitForm([], 'edit-submit');
 
     // Check that all the fields are present in the second step.
     $this->assertTrue($this->getSession()->getPage()->findField('method'));
@@ -75,6 +80,22 @@ class DonationFormTest extends BrowserTestBase {
     $this->assertTrue($this->getSession()->getPage()->findField('stripe_cvc'));
     $this->assertTrue($this->getSession()->getPage()->findField('Telephone number'));
     $this->assertTrue($this->getSession()->getPage()->findField('Further information'));
+
+    // Test the "By check or other" donation method.
+    $this->getSession()->getPage()->fillField('method', "3");
+    $this->getSession()->getPage()->fillField('Telephone number', '123456789');
+    $this->getSession()->getPage()->fillField('Further information', '123456789');
+    $this->submitForm([], 'Give');
+    $this->assertTrue($this>$this->getSession()->getPage()->hasContent('Your donation has been received.  Thank you!'));
+
+    // Test the "By credit/debit card" donation method.
+    // We haven't a real stripe token so we are going to fake one.
+//    $this->getSession()->getPage()->find('css', 'input[name="stripe_token"]')->setValue($this->randomString());
+//    $this->getSession()->getPage()->fillField('stripe_number', "1234123412341234");
+//    $this->getSession()->getPage()->fillField('stripe_exp_month', "01");
+//    $this->getSession()->getPage()->fillField('stripe_exp_year', "19");
+//    $this->getSession()->getPage()->fillField('stripe_cvc', "123");
+//    $this->assertTrue($this->getSession()->getPage()->findField());
 
     $this->drupalLogout();
   }
