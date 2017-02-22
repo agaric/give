@@ -47,15 +47,21 @@ give.form.*:
       sequence:
         type: email
         label: 'Email address'
+    subject:
+          type: string
+          label: 'Subject'
     reply:
       type: text
       label: 'Auto-reply'
-    weight:
-      type: integer
-      label: 'Weight'
     check_or_other_text:
       type: string
       label: 'Check or other test'
-    subject:
+    weight:
+      type: integer
+      label: 'Weight'
+    redirect_uri:
       type: string
-      label: 'Subject'
+      label: 'Redirect page'
+    submit_text:
+      type: string
+      label: 'Submit button text'

@@ -96,6 +96,20 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
   protected $weight = 0;
 
   /**
+   * The uri where the user will go after to donate.
+   *
+   * @var string
+   */
+  protected $redirectUri = '/';
+
+  /**
+   * The text displayed in the Submit Button.
+   *
+   * @var string
+   */
+  protected $submitButtonText = 'Give';
+
+  /**
    * {@inheritdoc}
    */
   public function getRecipients() {
@@ -168,6 +182,21 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
   public function setWeight($weight) {
     $this->weight = $weight;
     return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   * @todo create a hook_update for set this values from old installations.
+   */
+  public function getRedirectUri() {
+    return $this->redirectUri;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getSubmitButtonText() {
+    return $this->submitButtonText;
   }
 
 }

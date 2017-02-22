@@ -15,36 +15,6 @@ use Drupal\Core\Url;
 use Drupal\give\Entity\GiveForm;
 
 /**
- * Implements hook_form_FORM_ID_alter() for give_form_form().
- */
-function give_record_form_give_form_form_alter(&$form, FormStateInterface $form_state) {
-  /** @var \Drupal\give\GiveFormInterface $give_form */
-  $give_form = $form_state->getFormObject()->getEntity();
-  $form['give_record_uri'] = [
-    '#type' => 'textfield',
-    '#title' => t('Redirect Page'),
-    '#description' => t('Input the Uri (entity:node/NODE-ID) of the Page to redirect the form after Submit.'),
-    '#default_value' => $give_form->getThirdPartySetting('give_record', 'redirect_uri', FALSE),
-  ];
-  $form['give_record_submit_text'] = [
-    '#type' => 'textfield',
-    '#title' => t('Submit button text'),
-    '#description' => t("Override the submit button's default <em>Give</em> text."),
-    '#default_value' => $give_form->getThirdPartySetting('give_record', 'submit_text', 'Give'),
-  ];
-  $form['#entity_builders'][] = 'give_record_give_form_form_builder';
-}
-/**
- * Entity builder for the give form edit form with third party options.
- *
- * @see give_record_test_form_give_form_edit_form_alter()
- */
-function give_record_give_form_form_builder($entity_type, GiveFormInterface $give_form, &$form, FormStateInterface $form_state) {
-  $give_form->setThirdPartySetting('give_record', 'redirect_uri', $form_state->getValue('give_record_uri'));
-  $give_form->setThirdPartySetting('give_record', 'submit_text', $form_state->getValue('give_record_submit_text'));
-}
-
-/**
  * Implements hook_form_FORM_ID_alter() for give_donation_form().
  */
 function give_record_form_give_donation_form_alter(&$form, &$form_state, $form_id) {

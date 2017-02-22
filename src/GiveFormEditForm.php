@@ -55,6 +55,7 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
 
+    /** @var \Drupal\give\Entity\GiveForm $give_form */
     $give_form = $this->entity;
     $default_form = $this->config('give.settings')->get('default_form');
 
@@ -112,6 +113,20 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       '#title' => $this->t('Make this the default form'),
       '#default_value' => ($default_form && $default_form === $give_form->id()),
     );
+
+    // @todo Migrate this to the new schema in a hook_update.
+    $form['give_record_uri'] = [
+      '#type' => 'textfield',
+      '#title' => t('Redirect Page'),
+      '#description' => t('Input the Uri (entity:node/NODE-ID) of the Page to redirect the form after Submit.'),
+      '#default_value' => $give_form->getRedirectUri(),
+    ];
+    $form['give_record_submit_text'] = [
+      '#type' => 'textfield',
+      '#title' => t('Submit button text'),
+      '#description' => t("Override the submit button's default <em>Give</em> text."),
+      '#default_value' => $give_form->getSubmitButtonText(),
+    ];
 
     return $form;
   }
