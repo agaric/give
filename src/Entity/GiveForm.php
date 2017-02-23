@@ -14,7 +14,7 @@ use Drupal\give\GiveFormInterface;
  *   handlers = {
  *     "access" = "Drupal\give\GiveFormAccessControlHandler",
  *     "list_builder" = "Drupal\give\Form\GiveForm\GiveFormListBuilder",
- *     "give_form" = "\Drupal\give\GiveFormViewBuilder",
+ *     "view_builder" = "\Drupal\give\GiveFormViewBuilder",
  *     "form" = {
  *       "add" = "Drupal\give\Form\GiveForm\GiveFormEditForm",
  *       "edit" = "Drupal\give\Form\GiveForm\GiveFormEditForm",
