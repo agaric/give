@@ -52,7 +52,7 @@ class DonationEditForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function form(array $form, FormStateInterface $form_state) {
-    /** @var \Drupal\contact\DonationInterface $donation */
+    /** @var \Drupal\give\DonationInterface $donation */
     $donation = $this->entity;
     $form = parent::form($form, $form_state, $donation);
 
@@ -70,7 +70,7 @@ class DonationEditForm extends ContentEntityForm {
     $form['amount'] = array(
       '#type' => 'textfield',
       '#title' => $this->t('Amount (USD)'),
-      '#default_value' => $donation->getAmount(),
+      '#default_value' => round($donation->getAmount()/100, 2),
       '#disabled' => TRUE,
     );
     $form['recurring'] = array(
