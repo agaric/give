@@ -58,7 +58,7 @@ entity.give_form.donate:
 give.settings:
   path: '/admin/config/services/give'
   defaults:
-    _form:  '\Drupal\give\Form\GiveSettings'
+    _form:  '\Drupal\give\Form\GiveForm\GiveSettings'
     _title: 'Give (donation processing) settings'
   requirements:
     _permission: 'administer give'

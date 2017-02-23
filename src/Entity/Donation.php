@@ -21,7 +21,7 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *     "views_data" = "Drupal\give\DonationViewsData",
  *     "form" = {
  *       "default" = "Drupal\give\Form\Donation\DonationForm",
- *       "payment" = "Drupal\give\Form\DonationPaymentForm",
+ *       "payment" = "Drupal\give\Form\Donation\PaymentForm",
  *       "edit" = "Drupal\give\Form\Donation\DonationEditForm",
  *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm"
  *     }
