@@ -13,6 +13,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\give\MailHandlerInterface;
+use Drupal\Core\Url;
 
 /**
  * Form controller for give donation forms.
@@ -248,8 +249,10 @@ class DonationForm extends ContentEntityForm {
 
     $this->flood->register('give', $this->config('give.settings')->get('flood.interval'));
 
-    // Saving only has an effect with give_record enabled.
-    $donation->save();
+    if ($donation->save() == SAVED_NEW) {
+      // Redirect to th second step.
+      $form_state->setRedirectUrl(Url::fromRoute('entity.give_form.donate', ['give_form' => $donation->get('give_form')->target_id, 'give_donation' => $donation->id()]));
+    }
   }
 
 }
