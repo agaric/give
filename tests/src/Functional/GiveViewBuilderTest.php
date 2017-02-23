@@ -5,14 +5,14 @@
  * Contains \Drupal\give_record\Tests\GiveViewBuilderTest.
  */
 
-namespace Drupal\give_record\Tests;
+namespace Drupal\Tests\give\Functional;
 
 /**
  * Tests adding give form as entity reference and viewing them through UI.
  *
- * @group give_record
+ * @group give
  */
-class GiveViewBuilderTest extends GiveStorageTestBase {
+class GiveViewBuilderTest extends GiveTestBase {
 
   /**
    * Modules to enable.
@@ -25,7 +25,6 @@ class GiveViewBuilderTest extends GiveStorageTestBase {
     'give',
     'field_ui',
     'give_test',
-    'give_record',
   ];
 
   /**

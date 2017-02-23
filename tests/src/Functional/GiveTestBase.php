@@ -4,14 +4,16 @@
  * Contains \Drupal\give_record\Tests\GiveRecordTestBase.
  */
 
-namespace Drupal\give_record\Tests;
+namespace Drupal\Tests\give\Functional;
 
-use Drupal\simpletest\WebTestBase;
+use Drupal\Tests\BrowserTestBase;
 
 /**
  * Defines a base-class for contact-storage tests.
+ *
+ * @group give
  */
-abstract class GiveRecordTestBase extends WebTestBase {
+abstract class GiveTestBase extends BrowserTestBase {
 
   /**
    * Adds a form.
@@ -37,8 +39,9 @@ abstract class GiveRecordTestBase extends WebTestBase {
     $edit['recipients'] = $recipients;
     $edit['reply'] = $reply;
     $edit['selected'] = ($selected ? TRUE : FALSE);
+    $edit['subject'] = $this->randomString();
     $edit += $third_party_settings;
-    $this->drupalPostForm('admin/structure/give/add', $edit, t('Save'));
+    $this->drupalPostForm('admin/structure/give/add', $edit, "edit-submit");
   }
 
   /**
@@ -57,13 +60,14 @@ abstract class GiveRecordTestBase extends WebTestBase {
     $edit = [];
     $edit['name'] = $name;
     $edit['mail'] = $mail;
-    $edit['amount[0][value]'] = $amount;
-    if ($id == $this->config('give.settings')->get('default_form')) {
-      $this->drupalPostForm('give', $edit, t('Give'));
-    }
-    else {
+    $edit['amount'] = $amount;
+    // @todo fix this.
+//    if ($id == $this->config('give.settings')->get('default_form')) {
+//      $this->drupalPostForm('give', $edit, t('Give'));
+//    }
+//    else {
       $this->drupalPostForm('give/' . $id, $edit, t('Give'));
-    }
+    //}
   }
 
 }
