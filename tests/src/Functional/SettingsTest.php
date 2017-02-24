@@ -25,6 +25,7 @@ class SettingsTest extends BrowserTestBase {
    */
   public static $modules = [
     'system',
+    'views',
     'give',
     'field',
     'user',

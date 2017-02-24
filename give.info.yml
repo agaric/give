@@ -6,3 +6,4 @@ package: Give
 configure: give.settings
 dependencies:
   - field
+  - entity_reference

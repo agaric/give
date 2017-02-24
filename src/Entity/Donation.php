@@ -2,6 +2,7 @@
 
 namespace Drupal\give\Entity;
 
+use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\give\DonationInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -15,18 +16,30 @@ use Drupal\Core\Field\BaseFieldDefinition;
  *   label = @Translation("Give donation"),
  *   handlers = {
  *     "access" = "Drupal\give\GiveDonationAccessControlHandler",
- *     "storage" = "Drupal\Core\Entity\ContentEntityNullStorage",
  *     "view_builder" = "Drupal\give\DonationViewBuilder",
+ *     "list_builder" = "Drupal\Core\Entity\EntityListBuilder",
+ *     "views_data" = "Drupal\give\DonationViewsData",
  *     "form" = {
- *       "default" = "Drupal\give\DonationForm",
- *       "payment" = "Drupal\give\PaymentForm",
+ *       "default" = "Drupal\give\Form\Donation\DonationForm",
+ *       "payment" = "Drupal\give\Form\Donation\PaymentForm",
+ *       "edit" = "Drupal\give\Form\Donation\DonationEditForm",
+ *       "delete" = "Drupal\Core\Entity\ContentEntityDeleteForm"
  *     }
  *   },
- *   admin_permission = "administer give forms",
+ *   base_table = "give_donation",
+ *   admin_permission = "administer give",
  *   entity_keys = {
+ *     "id" = "id",
+ *     "label" = "label",
  *     "bundle" = "give_form",
  *     "uuid" = "uuid",
  *     "langcode" = "langcode"
+ *   },
+ *   links = {
+ *     "canonical" = "/admin/structure/give/donations/{give_donation}",
+ *     "edit-form" = "/admin/structure/give/donations/{give_donation}/edit",
+ *     "delete-form" = "/admin/structure/give/donations/{give_donation}/delete",
+ *     "collection" = "/admin/structure/give/donations"
  *   },
  *   bundle_entity_type = "give_form",
  *   field_ui_base_route = "entity.give_form.edit_form",
@@ -191,6 +204,24 @@ class Donation extends ContentEntityBase implements DonationInterface {
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
+
+    $fields['id'] = BaseFieldDefinition::create('integer')
+      ->setLabel(t('Donation ID'))
+      ->setDescription(t('The donation ID.'))
+      ->setReadOnly(TRUE)
+      // Explicitly set this to 'give' so that
+      // ContentEntityDatabaseStorage::usesDedicatedTable() doesn't attempt to
+      // put the ID in a dedicated table.
+      // @todo Remove when https://www.drupal.org/node/1498720 is in.
+      ->setProvider('give')
+      ->setSetting('unsigned', TRUE);
+
+    $fields['created'] = BaseFieldDefinition::create('created')
+      ->setLabel(t('Created'))
+      ->setDescription(t('The time that the donation was created.'))
+      ->setTranslatable(TRUE)
+      ->setReadOnly(TRUE);
+
     $fields['give_form'] = BaseFieldDefinition::create('entity_reference')
       ->setLabel(t('Form ID'))
       ->setDescription(t('The ID of the associated form.'))

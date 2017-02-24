@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\comment_notify\Functional;
+namespace Drupal\Tests\give\Functional;
 
 use Drupal\Tests\BrowserTestBase;
 
@@ -25,8 +25,8 @@ class DonationFormTest extends BrowserTestBase {
    */
   public static $modules = [
     'system',
+    'views',
     'give',
-    'give_record',
     'field',
     'user',
     'give_test',

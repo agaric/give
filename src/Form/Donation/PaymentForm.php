@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\give;
+namespace Drupal\give\Form\Donation;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
@@ -11,6 +11,7 @@ use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\give\MailHandlerInterface;
 
 /**
  * Form controller for give donation forms.

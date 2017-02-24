@@ -4,14 +4,37 @@
  * Contains \Drupal\give_record\Tests\GiveRecordTestBase.
  */
 
-namespace Drupal\give_record\Tests;
+namespace Drupal\Tests\give\Functional;
 
-use Drupal\simpletest\WebTestBase;
+use Drupal\Tests\BrowserTestBase;
 
 /**
  * Defines a base-class for contact-storage tests.
+ *
+ * @group give
  */
-abstract class GiveRecordTestBase extends WebTestBase {
+abstract class GiveTestBase extends BrowserTestBase {
+
+  /**
+   * Admin User.
+   *
+   * @var \Drupal\user\Entity\User $adminUser
+   */
+  protected $adminUser;
+
+  /**
+   * Modules to enable.
+   *
+   * @var array
+   */
+  public static $modules = array(
+    'user',
+    'text',
+    'give',
+    'field_ui',
+    'give_test',
+    'views'
+  );
 
   /**
    * Adds a form.
@@ -37,8 +60,9 @@ abstract class GiveRecordTestBase extends WebTestBase {
     $edit['recipients'] = $recipients;
     $edit['reply'] = $reply;
     $edit['selected'] = ($selected ? TRUE : FALSE);
+    $edit['subject'] = $this->randomString();
     $edit += $third_party_settings;
-    $this->drupalPostForm('admin/structure/give/add', $edit, t('Save'));
+    $this->drupalPostForm('admin/structure/give/add', $edit, "edit-submit");
   }
 
   /**
@@ -57,13 +81,25 @@ abstract class GiveRecordTestBase extends WebTestBase {
     $edit = [];
     $edit['name'] = $name;
     $edit['mail'] = $mail;
-    $edit['amount[0][value]'] = $amount;
-    if ($id == $this->config('give.settings')->get('default_form')) {
-      $this->drupalPostForm('give', $edit, t('Give'));
-    }
-    else {
-      $this->drupalPostForm('give/' . $id, $edit, t('Give'));
-    }
+    $edit['amount'] = $amount;
+// @todo check if this is working.
+//    if ($id == $this->config('give.settings')->get('default_form')) {
+//      $this->drupalPostForm('give', $edit, t('Give'));
+//    }
+//    else {
+    $this->drupalPostForm('give/' . $id, $edit, t('Give'));
+  }
+
+  /**
+   * @param string $phone
+   * @param string $check_or_other_information
+   */
+  public function submitByCheck($phone, $check_or_other_information) {
+    $edit = [];
+    $edit['method'] = 3; // By check or other.
+    $edit['telephone'] = $phone;
+    $edit['check_or_other_information'] = $check_or_other_information;
+    $this->drupalPostForm(NULL, $edit, t('Give'));
   }
 
 }

@@ -4,7 +4,7 @@
  * Contains \Drupal\give_record\DonationViewsData.
  */
 
-namespace Drupal\give_record;
+namespace Drupal\give;
 
 use Drupal\views\EntityViewsData;
 

@@ -13,15 +13,16 @@ use Drupal\give\GiveFormInterface;
  *   label = @Translation("Give form"),
  *   handlers = {
  *     "access" = "Drupal\give\GiveFormAccessControlHandler",
- *     "list_builder" = "Drupal\give\GiveFormListBuilder",
+ *     "list_builder" = "Drupal\give\Form\GiveForm\GiveFormListBuilder",
+ *     "view_builder" = "\Drupal\give\GiveFormViewBuilder",
  *     "form" = {
- *       "add" = "Drupal\give\GiveFormEditForm",
- *       "edit" = "Drupal\give\GiveFormEditForm",
+ *       "add" = "Drupal\give\Form\GiveForm\GiveFormEditForm",
+ *       "edit" = "Drupal\give\Form\GiveForm\GiveFormEditForm",
  *       "delete" = "Drupal\Core\Entity\EntityDeleteForm"
  *     }
  *   },
  *   config_prefix = "form",
- *   admin_permission = "administer give forms",
+ *   admin_permission = "administer give",
  *   bundle_of = "give_donation",
  *   entity_keys = {
  *     "id" = "id",
@@ -82,7 +83,8 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
   protected $reply = '';
 
   /**
-   * An automatic reply with a receipt for the donation.
+   * Optional message to show potential givers who select the "Check or other"
+   * donation method.
    *
    * @var string
    */
@@ -94,6 +96,20 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
    * @var int
    */
   protected $weight = 0;
+
+  /**
+   * The uri where the user will go after to donate.
+   *
+   * @var string
+   */
+  protected $redirectUri = '/';
+
+  /**
+   * The text displayed in the Submit Button.
+   *
+   * @var string
+   */
+  protected $submitButtonText = 'Give';
 
   /**
    * {@inheritdoc}
@@ -167,6 +183,37 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
    */
   public function setWeight($weight) {
     $this->weight = $weight;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   * @todo create a hook_update for set this values from old installations.
+   */
+  public function getRedirectUri() {
+    return $this->redirectUri;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setRedirectUri($uri) {
+    $this->redirectUri = $uri;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getSubmitButtonText() {
+    return $this->submitButtonText;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setSubmitButtonText($text) {
+    $this->submitButtonText = $text;
     return $this;
   }
 

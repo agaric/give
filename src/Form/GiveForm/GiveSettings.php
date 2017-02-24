@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\give\Form;
+namespace Drupal\give\Form\GiveForm;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;

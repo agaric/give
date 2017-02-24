@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\give;
+namespace Drupal\give\Form\Donation;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Utility\Unicode;
@@ -12,6 +12,8 @@ use Drupal\Core\Flood\FloodInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\give\MailHandlerInterface;
+use Drupal\Core\Url;
 
 /**
  * Form controller for give donation forms.
@@ -155,8 +157,12 @@ class DonationForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function actions(array $form, FormStateInterface $form_state) {
+    /** @var \Drupal\give\Entity\Donation $donation */
+    $donation = $this->entity;
+    /** @var \Drupal\give\Entity\GiveForm $giveForm */
+    $giveForm = $donation->referencedEntities()[0];
     $elements = parent::actions($form, $form_state);
-    $elements['submit']['#value'] = $this->t('Give');
+    $elements['submit']['#value'] = $this->t($giveForm->getSubmitButtonText());
     return $elements;
   }
 
@@ -243,8 +249,10 @@ class DonationForm extends ContentEntityForm {
 
     $this->flood->register('give', $this->config('give.settings')->get('flood.interval'));
 
-    // Saving only has an effect with give_record enabled.
-    $donation->save();
+    if ($donation->save() == SAVED_NEW) {
+      // Redirect to th second step.
+      $form_state->setRedirectUrl(Url::fromRoute('entity.give_form.donate', ['give_form' => $donation->get('give_form')->target_id, 'give_donation' => $donation->id()]));
+    }
   }
 
 }

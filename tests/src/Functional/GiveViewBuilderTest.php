@@ -5,14 +5,14 @@
  * Contains \Drupal\give_record\Tests\GiveViewBuilderTest.
  */
 
-namespace Drupal\give_record\Tests;
+namespace Drupal\Tests\give\Functional;
 
 /**
  * Tests adding give form as entity reference and viewing them through UI.
  *
- * @group give_record
+ * @group give
  */
-class GiveViewBuilderTest extends GiveStorageTestBase {
+class GiveViewBuilderTest extends GiveTestBase {
 
   /**
    * Modules to enable.
@@ -25,7 +25,7 @@ class GiveViewBuilderTest extends GiveStorageTestBase {
     'give',
     'field_ui',
     'give_test',
-    'give_record',
+    'views'
   ];
 
   /**
@@ -54,13 +54,14 @@ class GiveViewBuilderTest extends GiveStorageTestBase {
    */
   public function testGiveViewBuilder() {
     // Create test admin user.
+    // @todo having the "administer give" perm it shouldn't need the "create and edit give forms" but it does. why?
     $this->adminUser = $this->drupalCreateUser([
       'administer content types',
       'access give forms',
       'administer give',
+      'create and edit give forms',
       'administer users',
       'administer account settings',
-      'administer give_message fields',
     ]);
 
     // Login as admin user.
@@ -69,14 +70,14 @@ class GiveViewBuilderTest extends GiveStorageTestBase {
     // Create first valid give form.
     $mail = 'simpletest@example.com';
     $this->addGiveForm('test_id', 'test_label', $mail, '', TRUE);
-    $this->assertText(t('Give form test_label has been added.'));
+    $this->assertSession()->pageTextContains(t('Give form test_label has been added.'));
 
     $field_name = 'give';
     $entity_type = 'node';
     $bundle_name = 'article';
 
     // Add a Entity Reference Give Field to Article content type.
-    $field_storage = \Drupal::entityManager()
+    $field_storage = \Drupal::entityTypeManager()
       ->getStorage('field_storage_config')
       ->create([
         'field_name' => $field_name,
@@ -85,7 +86,7 @@ class GiveViewBuilderTest extends GiveStorageTestBase {
         'settings' => ['target_type' => 'give_form'],
       ]);
     $field_storage->save();
-    $field = \Drupal::entityManager()
+    $field = \Drupal::entityTypeManager()
       ->getStorage('field_config')
       ->create([
         'field_storage' => $field_storage,
@@ -97,8 +98,11 @@ class GiveViewBuilderTest extends GiveStorageTestBase {
     $field->save();
 
     // Configure the give reference field form Entity form display.
-    entity_get_form_display($entity_type, $bundle_name, 'default')
-      ->setComponent($field_name, [
+    /** @var \Drupal\Core\Entity\Display\EntityFormDisplayInterface $form_display */
+    $form_display = \Drupal::entityTypeManager()
+      ->getStorage('entity_form_display')
+      ->load('node.article.default');
+      $form_display->setComponent($field_name, [
         'type' => 'options_select',
         'settings' => [
           'weight' => 20,
@@ -107,13 +111,15 @@ class GiveViewBuilderTest extends GiveStorageTestBase {
       ->save();
 
     // Configure the give reference field form Entity view display.
-    entity_get_display('node', 'article', 'default')
-      ->setComponent($field_name, [
-        'label' => 'above',
-        'type' => 'entity_reference_entity_view',
-        'weight' => 20,
-      ])
-      ->save();
+    /** @var \Drupal\Core\Entity\Display\EntityViewDisplayInterface $view_display */
+    $view_display = \Drupal::entityTypeManager()
+      ->getStorage('entity_view_display')
+      ->load('node.article.default');
+    $view_display->setComponent($field_name, [
+      'label' => 'above',
+      'type' => 'entity_reference_entity_view',
+      'weight' => 20,
+    ])->save();
 
     // Display Article creation form.
     $this->drupalGet('node/add/article');
@@ -130,9 +136,9 @@ class GiveViewBuilderTest extends GiveStorageTestBase {
     $node = $this->drupalGetNodeByTitle($edit[$title_key]);
     $this->drupalGet('node/' . $node->id());
     // Some fields should be present.
-    $this->assertText(t('Your email address'));
-    $this->assertText(t('Amount'));
-    $this->assertFieldByName('amount[0][value]');
+    $this->assertSession()->pageTextContains(t('Your email address'));
+    $this->assertSession()->pageTextContains(t('Amount'));
+    $this->assertSession()->fieldExists('amount');
   }
 
 }
