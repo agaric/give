@@ -20,6 +20,7 @@ class GiveFormAndDonationEntityTest extends EntityKernelTestBase {
    * @var array
    */
   public static $modules = array(
+    'views',
     'system',
     'give',
     'field',
