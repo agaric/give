@@ -25,7 +25,6 @@ class GiveRecordTest extends GiveTestBase {
       'access give forms',
       'administer give',
       'create and edit give forms',
-      'access give forms',
       'administer users',
       'administer account settings',
     ));
