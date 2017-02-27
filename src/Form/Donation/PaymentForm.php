@@ -264,13 +264,14 @@ class PaymentForm extends ContentEntityForm {
         "amount" => $donation->getAmount(),
         "currency" => "usd",
         "interval" => "month",
+        "interval_count" => $donation->recurring(),
         "name" => $donation->getLabel(),
       ];
-
       try {
         $plan = $this->giveStripe->createPlan($plan_data);
       } catch (\Exception $e) {
         $form_state->setErrorByName('stripe_errors', $this->t($e->getMessage()));
+        return;
       }
 
       // Create the customer with subscription plan on Stripe's servers - this will charge the user's card

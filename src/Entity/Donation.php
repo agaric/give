@@ -129,7 +129,7 @@ class Donation extends ContentEntityBase implements DonationInterface {
    * {@inheritdoc}
    */
   public function recurring() {
-    return (bool)$this->get('recurring')->value;
+    return $this->get('recurring')->value;
   }
 
   /**

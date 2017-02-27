@@ -94,7 +94,7 @@ class GiveController extends ControllerBase {
    * @param \Drupal\give\GiveFormInterface $give_form
    *   The give form to use.
    *
-   * @param \Drupal\give\DonationInterface  $donation
+   * @param \Drupal\give\DonationInterface $donation
    *   The donation for which payment is to be processed.
    *
    * @return array
