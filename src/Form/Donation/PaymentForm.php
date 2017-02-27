@@ -259,8 +259,7 @@ class PaymentForm extends ContentEntityForm {
 
     // If the donation is recurring, we create a plan and a customer.
     if ($donation->recurring() > 0) {
-      $plan_already_exists = FALSE;
-      $plan = [
+      $plan_data = [
         "id" => $donation->uuid(),
         "amount" => $donation->getAmount(),
         "currency" => "usd",
@@ -269,45 +268,34 @@ class PaymentForm extends ContentEntityForm {
       ];
 
       try {
-        $plan = $this->giveStripe->createPlan($plan);
+        $plan = $this->giveStripe->createPlan($plan_data);
       } catch (\Exception $e) {
         $form_state->setErrorByName('stripe_errors', $this->t($e->getMessage()));
       }
 
       // Create the customer with subscription plan on Stripe's servers - this will charge the user's card
+
+      $customer_data = [
+        "plan" => $plan->_values['id'],
+        "source" => $token,
+        "metadata" => [
+          "give_form_id" => $donation->getGiveForm()->id(),
+          "give_form_label" => $donation->getGiveForm()->label(),
+          "email" => $donation->getDonorMail(),
+        ],
+      ];
+
       try {
-        $customer = \Stripe\Customer::create(array(
-          "plan" => $plan_id,
-          "source" => $token,
-          "metadata" => array(
-            "give_form_id" => $donation->getGiveForm()->id(),
-            "give_form_label" => $donation->getGiveForm()->label(),
-            "email" => $donation->getDonorMail(),
-          ),
-        ));
-      } catch(\Stripe\Error\ApiConnection $e) {
-        $form_state->setErrorByName('stripe_errors', $this->t('Could not connect to payment processer. More information: %e', ['%e' => $e->getMessage()]));
-      } catch(\Stripe\Error\Card $e) {
-        $form_state->setErrorByName('number', $this->t("Could not process card: %e", ['%e' => $e->getMessage()]));
-      } catch(\Stripe\Error\Base $e) {
-        $form_state->setErrorByName('stripe_errors', $this->t('Error: %e', ['%e' => $e->getMessage()]));
+        if ($this->giveStripe->createCustomer($customer_data)) {
+          $this->entity->setCompleted();
+        }
+      } catch (\Exception $e) {
+        $form_state->setErrorByName('stripe_errors', $e->getMessage());
       }
-
-      if (isset($customer) && $customer) {
-        // Below works, unlike $donation->setCompleted().
-        $this->entity->setCompleted();
-      }
-      else {
-        drupal_set_message(t("Could not complete donation."), 'error');
-      }
-
-      return $donation;
-    }
-
-    // If the donation is *not* recurring, only in this case do we create a charge ourselves.
-    // Create the charge on Stripe's servers - this will charge the user's card
-    try {
-      $charge = \Stripe\Charge::create(array(
+    } else {
+      // If the donation is *not* recurring, only in this case do we create a charge ourselves.
+      // Create the charge on Stripe's servers - this will charge the user's card.
+      $donation_data = [
         "amount" => $donation->getAmount(), // amount in cents, again
         "currency" => "usd",
         "source" => $token,
@@ -317,24 +305,16 @@ class PaymentForm extends ContentEntityForm {
           "give_form_label" => $donation->getGiveForm()->label(),
           "email" => $donation->getDonorMail(),
         ),
-      ));
-    } catch(\Stripe\Error\Card $e) {
-      $form_state->setErrorByName('number', $this->t("Could not process card: %e", ['%e' => $e->getMessage()]));
-    } catch(\Stripe\Error\ApiConnection $e) {
-      $form_state->setErrorByName('stripe_errors', $this->t('Could not connect to payment processer. More information: %e', ['%e' => $e->getMessage()]));
-    } catch(\Stripe\Error\Base $e) {
-      $form_state->setErrorByName('stripe_errors', $this->t('Error: %e', ['%e' => $e->getMessage()]));
-    }
+      ];
 
-    if (isset($charge) && $charge) {
-      // Below works, unlike $donation->setCompleted().
-      $this->entity->setCompleted();
+      try {
+        if ($this->giveStripe->createCharge($donation_data)) {
+          $this->entity->setCompleted();
+        }
+      } catch (\Exception $e) {
+        $form_state->setErrorByName('stripe_errors', $e->getMessage());
+      }
     }
-    else {
-      drupal_set_message(t("Could not complete donation."), 'error');
-    }
-
-    return $donation;
   }
 
   /**

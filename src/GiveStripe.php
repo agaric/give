@@ -5,6 +5,8 @@ namespace Drupal\give;
 use \Stripe\Stripe;
 use \Stripe\Plan;
 use \Stripe\Error;
+use \Stripe\Customer;
+use \Stripe\Charge;
 
 
 class GiveStripe {
@@ -47,18 +49,59 @@ class GiveStripe {
     }
 
     // Check if the plan was created or retrieved correctly.
-    if (!$plan instanceof Plan) {
+    if (!($plan instanceof Plan)) {
       throw new \Exception(t("Unable to create subscription plan for recurring donation. Could not complete donation."));
     }
     return $plan;
   }
 
-  public function createCharge() {
+  /**
+   * Charge the donation.
+   *
+   * @param array $donation_data
+   *   The donation data.
+   * @throws \Exception The error returned by the Stripe API.
+   * @return bool
+   */
+  public function createCharge($donation_data) {
+    try {
+      $charge = Charge::create($donation_data);
+    } catch(Error\Card $e) {
+      throw new \Exception(t("Could not process card: %e", ['%e' => $e->getMessage()]));
+    } catch(Error\ApiConnection $e) {
+      throw new \Exception(t('Could not connect to payment processer. More information: %e', ['%e' => $e->getMessage()]));
+    } catch(Error\Base $e) {
+      throw new \Exception(t('Error: %e', ['%e' => $e->getMessage()]));
+    }
 
+    if (!($charge instanceof Charge)) {
+      throw new \Exception(t("Could not complete donation."));
+    }
+    return TRUE;
   }
 
-  public function createCustomer() {
+  /**
+   * Create a customer for this donation.
+   *
+   * @param $customer_data
+   * @throws \Exception The error returned by the Stripe API.
+   * @return bool
+   */
+  public function createCustomer($customer_data) {
+    try {
+      $customer = Customer::create($customer_data);
+    } catch(Error\ApiConnection $e) {
+      throw new \Exception(t('Could not connect to payment processer. More information: %e', ['%e' => $e->getMessage()]));
+    } catch(Error\Card $e) {
+      throw new \Exception(t("Could not process card: %e", ['%e' => $e->getMessage()]));
+    } catch(Error\Base $e) {
+      throw new \Exception(t('Error: %e', ['%e' => $e->getMessage()]));
+    }
 
+    if (!($customer instanceof Customer)) {
+      throw new \Exception(t("Could not complete donation."));
+    }
+    return TRUE;
   }
 
 }

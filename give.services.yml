@@ -1,6 +1,6 @@
 services:
   give.stripe:
-    class: Drupal\give\Stripe
+    class: Drupal\give\GiveStripe
   give.mail_handler:
     class: Drupal\give\MailHandler
     arguments: ['@plugin.manager.mail', '@language_manager', '@logger.channel.give', '@string_translation', '@entity.manager']
