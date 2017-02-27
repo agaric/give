@@ -85,6 +85,7 @@ class DonationFormTest extends BrowserTestBase {
     $this->getSession()->getPage()->fillField('method', "3");
     $this->getSession()->getPage()->fillField('Telephone number', '123456789');
     $this->getSession()->getPage()->fillField('Further information', '123456789');
+    $this->getSession()->getPage()->fillField('recurring', '6');
     $this->submitForm([], 'Give');
     $this->assertTrue($this>$this->getSession()->getPage()->hasContent('Your donation has been received.  Thank you!'));
 

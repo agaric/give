@@ -261,16 +261,16 @@ class Donation extends ContentEntityBase implements DonationInterface {
       ->setDescription('The amount of the donation, in cents USD.')
       ->setRequired(TRUE);
 
-    $fields['recurring'] = BaseFieldDefinition::create('boolean')
+    $fields['recurring'] = BaseFieldDefinition::create('integer')
       ->setLabel(t('Recurring'))
-      ->setDescription(t('Whether the donation should recur monthly.'))
-      ->setDisplayOptions('form', array(
-        'type' => 'boolean_checkbox',
-        'settings' => array(
+      ->setDescription(t('Whether the donation should recur on intervals.'))
+      ->setDisplayOptions('form', [
+        'type' => 'list_integer',
+        'settings' => [
           'display_label' => TRUE,
-        ),
+        ],
         'weight' => 15,
-      ))
+      ])
       ->setDisplayConfigurable('form', TRUE);
 
     $fields['created'] = BaseFieldDefinition::create('created')
