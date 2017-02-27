@@ -2,16 +2,14 @@
 
 namespace Drupal\give\Form\Donation;
 
-use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\give\MailHandlerInterface;
+use Drupal\give\GiveStripe;
 
 /**
  * Form controller for give donation forms.
@@ -47,24 +45,31 @@ class PaymentForm extends ContentEntityForm {
   protected $dateFormatter;
 
   /**
+   * The Stripe Service.
+   * @var GiveStripe
+   */
+  protected $giveStripe;
+
+  /**
    * Constructs a DonationForm object.
    *
    * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
    *   The entity manager.
-   * @param \Drupal\Core\Flood\FloodInterface $flood
-   *   The flood control mechanism.
    * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
    *   The language manager service.
    * @param \Drupal\give\MailHandlerInterface $mail_handler
    *   The give mail handler service.
    * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
    *   The date service.
+   * @param \Drupal\give\GiveStripe $give_stripe
+   *   The GiveStripe service.
    */
-  public function __construct(EntityManagerInterface $entity_manager, LanguageManagerInterface $language_manager, MailHandlerInterface $mail_handler, DateFormatterInterface $date_formatter) {
+  public function __construct(EntityManagerInterface $entity_manager, LanguageManagerInterface $language_manager, MailHandlerInterface $mail_handler, DateFormatterInterface $date_formatter, GiveStripe $give_stripe) {
     parent::__construct($entity_manager);
     $this->languageManager = $language_manager;
     $this->mailHandler = $mail_handler;
     $this->dateFormatter = $date_formatter;
+    $this->giveStripe = $give_stripe;
   }
 
   /**
@@ -75,7 +80,8 @@ class PaymentForm extends ContentEntityForm {
       $container->get('entity.manager'),
       $container->get('language_manager'),
       $container->get('give.mail_handler'),
-      $container->get('date.formatter')
+      $container->get('date.formatter'),
+      $container->get('give.stripe')
     );
   }
 
@@ -235,6 +241,7 @@ class PaymentForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+    /** @var \Drupal\give\Entity\Donation $donation */
     $donation = parent::validateForm($form, $form_state);
     if ($donation->isCompleted()) {
       $form_state->setErrorByName('stripe_errors', $this->t("You have already completed this donation. Thank you! Please initiate a new donation if you wish to donate more."));
@@ -248,48 +255,23 @@ class PaymentForm extends ContentEntityForm {
       $form_state->setErrorByName('stripe_errors', $this->t("Could not retrieve token from Stripe."));
     }
 
-    \Stripe\Stripe::setApiKey(\Drupal::config('give.settings')->get('stripe_secret_key'));
+    $this->giveStripe->setApiKey(\Drupal::config('give.settings')->get('stripe_secret_key'));
 
     // If the donation is recurring, we create a plan and a customer.
-    if ($donation->recurring()) {
+    if ($donation->recurring() > 0) {
       $plan_already_exists = FALSE;
-      try {
-        $plan = \Stripe\Plan::create(array(
-          "id" => $donation->uuid(),
-          "amount" => $donation->getAmount(),
-          "currency" => "usd",
-          "interval" => "month",
-          "name" => $donation->getLabel(),
-        ));
-      } catch(\Stripe\Error\ApiConnection $e) {
-        $form_state->setErrorByName('stripe_errors', $this->t('Could not connect to payment processer. More information: %e', ['%e' => $e->getMessage()]));
-      } catch(\Stripe\Error\InvalidRequest $e) {
-        if ($e->getMessage() === 'Plan already exists.') {
-          // The plan already exists and we should use its UUID to create the
-          // customer for the plan and process the donation.
-          // Therefore we won't throw an error.
-          // Yes it would be nice to not read the text of an error message to determine this.
-          // The reason the plan is somewhat likely to already exist is that
-          // we necessarily create the plan before we try to charge the card,
-          // and if charging the card fails we go through this form again.
-          $plan_already_exists = TRUE;
-        }
-        else {
-          $form_state->setErrorByName('stripe_errors', $this->t('Invalid request: %e', ['%e' => $e->getMessage()]));
-        }
-      } catch(\Stripe\Error\Base $e) {
-        $form_state->setErrorByName('stripe_errors', $this->t('Error: %e', ['%e' => $e->getMessage()]));
-      }
+      $plan = [
+        "id" => $donation->uuid(),
+        "amount" => $donation->getAmount(),
+        "currency" => "usd",
+        "interval" => "month",
+        "name" => $donation->getLabel(),
+      ];
 
-      if ($plan_already_exists) {
-        $plan_id = $donation->uuid();
-      }
-      elseif (isset($plan) && $plan) {
-        $plan_id = $plan->_values['id'];
-      }
-      else {
-        drupal_set_message(t("Unable to create subscription plan for recurring donation. Could not complete donation."), 'error');
-        return;
+      try {
+        $plan = $this->giveStripe->createPlan($plan);
+      } catch (\Exception $e) {
+        $form_state->setErrorByName('stripe_errors', $this->t($e->getMessage()));
       }
 
       // Create the customer with subscription plan on Stripe's servers - this will charge the user's card
