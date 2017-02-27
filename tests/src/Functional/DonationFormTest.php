@@ -65,7 +65,7 @@ class DonationFormTest extends BrowserTestBase {
     $this->assertTrue($this->getSession()->getPage()->hasContent("Your name"));
     $this->assertTrue($this->getSession()->getPage()->hasContent($this->adminUser->getUsername()));
     $this->assertTrue($this->getSession()->getPage()->findField('Amount to give'));
-    $this->assertTrue($this->getSession()->getPage()->findField('Give this same donation every month'));
+    $this->assertTrue($this->getSession()->getPage()->findField('edit-recurring-1'));
     $this->getSession()->getPage()->fillField('amount', 10);
     $this->submitForm([], 'edit-submit');
 
@@ -85,7 +85,6 @@ class DonationFormTest extends BrowserTestBase {
     $this->getSession()->getPage()->fillField('method', "3");
     $this->getSession()->getPage()->fillField('Telephone number', '123456789');
     $this->getSession()->getPage()->fillField('Further information', '123456789');
-    $this->getSession()->getPage()->fillField('recurring', '6');
     $this->submitForm([], 'Give');
     $this->assertTrue($this>$this->getSession()->getPage()->hasContent('Your donation has been received.  Thank you!'));
 
