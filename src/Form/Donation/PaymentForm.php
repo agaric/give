@@ -10,6 +10,7 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\give\MailHandlerInterface;
 use Drupal\give\GiveStripeInterface;
+use Drupal\Core\Url;
 
 /**
  * Form controller for give donation forms.
@@ -322,6 +323,11 @@ class PaymentForm extends ContentEntityForm {
    */
   public function save(array $form, FormStateInterface $form_state) {
     $donation = $this->entity;
+
+    // Redirect the user.
+    $give_form = $donation->getGiveForm();
+    $url = Url::fromUserInput($give_form->getRedirectUri());
+    $form_state->setRedirectUrl($url);
 
     $user = $this->currentUser();
     $this->mailHandler->sendDonationNotice($donation, $user);

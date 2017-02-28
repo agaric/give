@@ -117,7 +117,7 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
     $form['redirect_uri'] = [
       '#type' => 'textfield',
       '#title' => t('Redirect Page'),
-      '#description' => t('Input the Uri (entity:node/NODE-ID) of the Page to redirect the form after Submit.'),
+      '#description' => t('The path to redirect the form after Submit.'),
       '#default_value' => $give_form->getRedirectUri(),
     ];
     $form['submit_text'] = [
