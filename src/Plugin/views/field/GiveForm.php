@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains Drupal\give_record\Plugin\views\field\ContactForm.
+ * Contains Drupal\give\Plugin\views\field\ContactForm.
  */
 
 namespace Drupal\give\Plugin\views\field;

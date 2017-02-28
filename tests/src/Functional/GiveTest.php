@@ -93,7 +93,7 @@ class GiveRecordTest extends GiveTestBase {
 
     // Fill the redirect field and assert the page is successfully redirected.
     //@todo Test that the redirect url option is working.
-//    $edit = ['give_record_uri' => 'entity:user/' . $admin_user->id()];
+//    $edit = ['give_uri' => 'entity:user/' . $admin_user->id()];
 //    $this->drupalPostForm('admin/structure/give/manage/test_id', $edit, t('Save'));
 //    $edit = [
 //      'amount[0][value]' => 'Test amount',
@@ -105,8 +105,8 @@ class GiveRecordTest extends GiveTestBase {
 //    // Fill the "Submit button text" field and assert the form can still be
 //    // submitted.
 //    $edit = [
-//      'give_record_submit_text' => 'Submit the form',
-//      'give_record_preview' => FALSE,
+//      'give_submit_text' => 'Submit the form',
+//      'give_preview' => FALSE,
 //    ];
 //    $this->drupalPostForm('admin/structure/give/manage/test_id', $edit, t('Save'));
 //    $edit = [

@@ -105,7 +105,7 @@ interface GiveFormInterface extends ConfigEntityInterface {
   public function getRedirectUri();
 
   /**
-   * Sets the uri where the user will be redirected after the donate.
+   * Sets the uri where the user will be redirected after to donate.
    *
    * @param string $uri
    *   The uri.

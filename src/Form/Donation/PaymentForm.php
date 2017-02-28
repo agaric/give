@@ -9,7 +9,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\give\MailHandlerInterface;
-use Drupal\give\GiveStripe;
+use Drupal\give\GiveStripeInterface;
 
 /**
  * Form controller for give donation forms.
@@ -64,7 +64,7 @@ class PaymentForm extends ContentEntityForm {
    * @param \Drupal\give\GiveStripe $give_stripe
    *   The GiveStripe service.
    */
-  public function __construct(EntityManagerInterface $entity_manager, LanguageManagerInterface $language_manager, MailHandlerInterface $mail_handler, DateFormatterInterface $date_formatter, GiveStripe $give_stripe) {
+  public function __construct(EntityManagerInterface $entity_manager, LanguageManagerInterface $language_manager, MailHandlerInterface $mail_handler, DateFormatterInterface $date_formatter, GiveStripeInterface $give_stripe) {
     parent::__construct($entity_manager);
     $this->languageManager = $language_manager;
     $this->mailHandler = $mail_handler;
@@ -145,7 +145,7 @@ class PaymentForm extends ContentEntityForm {
       '#title' => t('Card number'),
       '#required' => TRUE,
       '#value' => TRUE, // For items, required is supposed to only show the asterisk, but Drupal is broken.
-      '#markup' => '<input id="stripe_number" size="20" maxlength="20" class="form-text" type="text" data-stripe="number">',
+      '#markup' => '<input id="stripe_number" size="20" maxlength="20" class="form-text" type="text" data-stripe="number" name="stripe_number">',
       '#allowed_tags' => ['input'],
       '#states' => [
         'visible' => [
@@ -159,7 +159,7 @@ class PaymentForm extends ContentEntityForm {
       '#title' => t('Expiration (MM YY)'),
       '#required' => TRUE,
       '#value' => TRUE, // For items, required is supposed to only show the asterisk, but Drupal is broken.
-      '#markup' => '<input id="stripe_exp_month" size="2" maxlength="2" type="text" data-stripe="exp_month" class="inline"> <input id="stripe_exp_year" size="2" maxlength="2" type="text" data-stripe="exp_year" class="inline">',
+      '#markup' => '<input id="stripe_exp_month" name="stripe_exp_month" size="2" maxlength="2" type="text" data-stripe="exp_month" class="inline"> <input id="stripe_exp_year" name="stripe_exp_year" size="2" maxlength="2" type="text" data-stripe="exp_year" class="inline">',
       '#allowed_tags' => ['input'],
       '#states' => [
         'visible' => [
@@ -173,7 +173,7 @@ class PaymentForm extends ContentEntityForm {
       '#title' => t('CVC'),
       '#required' => TRUE,
       '#value' => TRUE, // For items, required is supposed to only show the asterisk, but Drupal is broken.
-      '#markup' => '<input id="stripe_cvc" size="4" maxlength="4" type="text" data-stripe="cvc" class="inline">',
+      '#markup' => '<input id="stripe_cvc" name="stripe_cvc" size="4" maxlength="4" type="text" data-stripe="cvc" class="inline">',
       '#allowed_tags' => ['input'],
       '#states' => [
         'visible' => [
@@ -336,7 +336,6 @@ class PaymentForm extends ContentEntityForm {
 
     drupal_set_message($this->t('Your donation has been received.  Thank you!'));
 
-    // Saving only has an effect with give_record enabled.
     $donation->save();
   }
 

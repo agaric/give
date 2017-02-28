@@ -114,14 +114,13 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       '#default_value' => ($default_form && $default_form === $give_form->id()),
     );
 
-    // @todo Migrate this to the new schema in a hook_update.
-    $form['give_record_uri'] = [
+    $form['redirect_uri'] = [
       '#type' => 'textfield',
       '#title' => t('Redirect Page'),
       '#description' => t('Input the Uri (entity:node/NODE-ID) of the Page to redirect the form after Submit.'),
       '#default_value' => $give_form->getRedirectUri(),
     ];
-    $form['give_record_submit_text'] = [
+    $form['submit_text'] = [
       '#type' => 'textfield',
       '#title' => t('Submit button text'),
       '#description' => t("Override the submit button's default <em>Give</em> text."),

@@ -9,26 +9,17 @@ use \Stripe\Customer;
 use \Stripe\Charge;
 
 
-class GiveStripe {
+class GiveStripe Implements GiveStripeInterface {
 
   /**
-   * The Stripe Api Key.
-   *
-   * @param string $stripeSecretKey
+   * {@inheritdoc}
    */
   public function setApiKey($stripeSecretKey) {
     Stripe::setApiKey($stripeSecretKey);
   }
 
   /**
-   * Create a plan if it does not exists,
-   *
-   * @param array $plan_data
-   *   The stripe plan.
-   *
-   * @throws \Exception The error returned by the Stripe API.
-   *
-   * @return \Stripe\Plan The Stripe Plan.
+   * {@inheritdoc}
    */
   public function createPlan($plan_data) {
     try {
@@ -55,12 +46,7 @@ class GiveStripe {
   }
 
   /**
-   * Charge the donation.
-   *
-   * @param array $donation_data
-   *   The donation data.
-   * @throws \Exception The error returned by the Stripe API.
-   * @return bool
+   * {@inheritdoc}
    */
   public function createCharge($donation_data) {
     try {
@@ -80,11 +66,7 @@ class GiveStripe {
   }
 
   /**
-   * Create a customer for this donation.
-   *
-   * @param $customer_data
-   * @throws \Exception The error returned by the Stripe API.
-   * @return bool
+   * {@inheritdoc}
    */
   public function createCustomer($customer_data) {
     try {

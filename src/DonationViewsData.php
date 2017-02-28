@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Contains \Drupal\give_record\DonationViewsData.
+ * Contains \Drupal\give\DonationViewsData.
  */
 
 namespace Drupal\give;

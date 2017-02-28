@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Contains \Drupal\give_record\Tests\GiveRecordTestBase.
+ * Contains \Drupal\give\Tests\GiveRecordTestBase.
  */
 
 namespace Drupal\Tests\give\Functional;

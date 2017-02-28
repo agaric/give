@@ -48,8 +48,8 @@ give.form.*:
         type: email
         label: 'Email address'
     subject:
-          type: string
-          label: 'Subject'
+      type: string
+      label: 'Subject'
     reply:
       type: text
       label: 'Auto-reply'
