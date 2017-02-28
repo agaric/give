@@ -15,7 +15,7 @@ use Drupal\Core\Test\AssertMailTrait;
  *
  * @group give
  */
-class GiveRecordTest extends GiveTestBase {
+class GiveTest extends GiveTestBase {
 
   use AssertMailTrait;
 

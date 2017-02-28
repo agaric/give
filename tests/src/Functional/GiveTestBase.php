@@ -1,7 +1,7 @@
 <?php
 /**
  * @file
- * Contains \Drupal\give\Tests\GiveRecordTestBase.
+ * Contains \Drupal\give\Tests\GiveTestBase.
  */
 
 namespace Drupal\Tests\give\Functional;
@@ -11,7 +11,6 @@ use Drupal\Tests\BrowserTestBase;
 /**
  * Defines a base-class for contact-storage tests.
  *
- * @group give
  */
 abstract class GiveTestBase extends BrowserTestBase {
 
