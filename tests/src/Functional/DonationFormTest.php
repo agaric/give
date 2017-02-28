@@ -54,7 +54,7 @@ class DonationFormTest extends BrowserTestBase {
   }
 
   /**
-   * Test the settings page.
+   * Test the pay with check option in the donation form.
    */
   public function testCheckPaymentMethodAsAuthenticatedUser() {
     $this->drupalLogin($this->adminUser);
@@ -65,7 +65,6 @@ class DonationFormTest extends BrowserTestBase {
     $this->assertTrue($this->getSession()->getPage()->hasContent("Your name"));
     $this->assertTrue($this->getSession()->getPage()->hasContent($this->adminUser->getUsername()));
     $this->assertTrue($this->getSession()->getPage()->findField('Amount to give'));
-    $this->assertTrue($this->getSession()->getPage()->findField('edit-recurring-1'));
     $this->getSession()->getPage()->fillField('amount', 10);
     $this->submitForm([], 'edit-submit');
 
@@ -83,6 +82,9 @@ class DonationFormTest extends BrowserTestBase {
     $this->drupalLogout();
   }
 
+  /**
+   * Test the credit card option in the donate form.
+   */
   public function testCreditCardPaymentMethodAsAuthenticatedUser() {
     $this->drupalLogin($this->adminUser);
 
@@ -92,7 +94,47 @@ class DonationFormTest extends BrowserTestBase {
     $this->assertTrue($this->getSession()->getPage()->hasContent("Your name"));
     $this->assertTrue($this->getSession()->getPage()->hasContent($this->adminUser->getUsername()));
     $this->assertTrue($this->getSession()->getPage()->findField('Amount to give'));
+    $this->getSession()->getPage()->selectFieldOption("recurring", 0);
+    $this->getSession()->getPage()->fillField('amount', 10);
+    $this->submitForm([], 'edit-submit');
+
+    // Check that all the fields are present in the second step.
+    $this->assertTrue($this->getSession()->getPage()->findField('method'));
+    // The stripe_token field is hidden so we cannot use findField to check if
+    // it exists.
+    $this->getSession()->getPage()->hasContent('name="stripe_token"');
+    $this->assertSession()->fieldExists('stripe_number');
+    $this->assertSession()->fieldExists('stripe_exp_month');
+    $this->assertSession()->fieldExists('stripe_exp_year');
+    $this->assertSession()->fieldExists('stripe_cvc');
+
+    // Test the "By credit/debit card" donation method.
+    $this->getSession()->getPage()->fillField('method', "1");
+    $this->getSession()->getPage()->fillField("stripe_number", "1234123412341234");
+    $this->getSession()->getPage()->fillField('stripe_exp_month', "01");
+    $this->getSession()->getPage()->fillField('stripe_exp_year', "19");
+    $this->getSession()->getPage()->fillField('stripe_cvc', "123");
+    // We haven't a real stripe token so we are going to fake one.
+    $this->getSession()->getPage()->find('css', 'input[name="stripe_token"]')->setValue($this->randomString());
+    $this->submitForm([], 'Give');
+    $this->assertTrue($this->getSession()->getPage()->hasContent('Your donation has been received. Thank you!'));
+    $this->drupalLogout();
+  }
+
+  /**
+   *  Select an interval in the donation paying with credit card.
+   */
+  public function testCreditCardPaymentIntervalOption() {
+    $this->drupalLogin($this->adminUser);
+
+    $this->drupalGet('/give/tzedakah');
+    $this->assertTrue($this->getSession()->getPage()->hasContent("Your email address"));
+    $this->assertTrue($this->getSession()->getPage()->hasContent($this->adminUser->getEmail()));
+    $this->assertTrue($this->getSession()->getPage()->hasContent("Your name"));
+    $this->assertTrue($this->getSession()->getPage()->hasContent($this->adminUser->getUsername()));
+    $this->assertTrue($this->getSession()->getPage()->findField('Amount to give'));
     $this->assertTrue($this->getSession()->getPage()->findField('edit-recurring-1'));
+    $this->getSession()->getPage()->selectFieldOption("recurring", 1);
     $this->getSession()->getPage()->fillField('amount', 10);
     $this->submitForm([], 'edit-submit');
 

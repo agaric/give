@@ -26,7 +26,9 @@ class GiveStripe Implements GiveStripeInterface {
    * @return \Stripe\Plan The Stripe Plan.
    */
   public function createPlan($plan_data) {
-    return [];
+    $plan = new \stdClass();
+    $plan->_values = ['id' => 'test-id'];
+    return $plan;
   }
 
   /**
