@@ -81,12 +81,12 @@ abstract class GiveTestBase extends BrowserTestBase {
     $edit['name'] = $name;
     $edit['mail'] = $mail;
     $edit['amount'] = $amount;
-// @todo check if this is working.
-//    if ($id == $this->config('give.settings')->get('default_form')) {
-//      $this->drupalPostForm('give', $edit, t('Give'));
-//    }
-//    else {
-    $this->drupalPostForm('give/' . $id, $edit, t('Give'));
+    if ($id == $this->config('give.settings')->get('default_form')) {
+      $this->drupalPostForm('give', $edit, t('Give'));
+    }
+    else {
+      $this->drupalPostForm('give/' . $id, $edit, t('Give'));
+    }
   }
 
   /**

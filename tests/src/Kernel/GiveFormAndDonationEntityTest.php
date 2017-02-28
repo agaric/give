@@ -53,7 +53,7 @@ class GiveFormAndDonationEntityTest extends EntityKernelTestBase {
 
     // Check for default values.
     $this->assertEquals('/', $giveForm->getRedirectUri());
-    $this->assertEquals('Give', $giveForm->getSubmitButtonText());
+    $this->assertEquals('Give', $giveForm->getSubmitText());
 
     // Set some values and check for them afterwards.
     $giveForm->setRecipients(['user@mail.com']);
@@ -62,7 +62,7 @@ class GiveFormAndDonationEntityTest extends EntityKernelTestBase {
     $giveForm->setCheckOrOtherText('Message');
     $giveForm->setWeight(10);
     $giveForm->setRedirectUri("entity:node/10");
-    $giveForm->setSubmitButtonText("Donate");
+    $giveForm->setSubmitText("Donate");
 
     $this->assertEquals(['user@mail.com'], $giveForm->getRecipients());
     $this->assertEquals('Mail Subject', $giveForm->getSubject());
@@ -70,7 +70,7 @@ class GiveFormAndDonationEntityTest extends EntityKernelTestBase {
     $this->assertEquals('Message', $giveForm->getCheckOrOtherText());
     $this->assertEquals(10, $giveForm->getWeight());
     $this->assertEquals("entity:node/10", $giveForm->getRedirectUri());
-    $this->assertEquals("Donate", $giveForm->getSubmitButtonText());
+    $this->assertEquals("Donate", $giveForm->getSubmitText());
 
     $no_access_user = $this->createUser(['uid' => 2]);
     $access_user = $this->createUser(['uid' => 3], ['access give forms']);

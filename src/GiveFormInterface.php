@@ -117,7 +117,7 @@ interface GiveFormInterface extends ConfigEntityInterface {
   /**
    * The text displayed in the submit button in the donation form.
    */
-  public function getSubmitButtonText();
+  public function getSubmitText();
 
   /**
    * Set the text displayed in the submit button in the donation form.
@@ -127,5 +127,5 @@ interface GiveFormInterface extends ConfigEntityInterface {
    *
    * @return $this
    */
-  public function setSubmitButtonText($text);
+  public function setSubmitText($text);
 }

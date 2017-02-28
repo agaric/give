@@ -174,7 +174,7 @@ class DonationForm extends ContentEntityForm {
     /** @var \Drupal\give\Entity\GiveForm $giveForm */
     $giveForm = $donation->referencedEntities()[0];
     $elements = parent::actions($form, $form_state);
-    $elements['submit']['#value'] = $this->t($giveForm->getSubmitButtonText());
+    $elements['submit']['#value'] = $this->t($giveForm->getSubmitText());
     return $elements;
   }
 

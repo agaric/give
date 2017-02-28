@@ -104,14 +104,14 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
    *
    * @var string
    */
-  protected $redirectUri = '/';
+  protected $redirect_uri = '/';
 
   /**
    * The text displayed in the Submit Button.
    *
    * @var string
    */
-  protected $submitButtonText = 'Give';
+  protected $submit_text = 'Give';
 
   /**
    * {@inheritdoc}
@@ -192,29 +192,29 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
    * {@inheritdoc}
    */
   public function getRedirectUri() {
-    return $this->redirectUri;
+    return $this->redirect_uri;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setRedirectUri($uri) {
-    $this->redirectUri = $uri;
+  public function setRedirectUri($redirect_uri) {
+    $this->redirect_uri = $redirect_uri;
     return $this;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function getSubmitButtonText() {
-    return $this->submitButtonText;
+  public function getSubmitText() {
+    return $this->submit_text;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setSubmitButtonText($text) {
-    $this->submitButtonText = $text;
+  public function setSubmitText($submit_text) {
+    $this->submit_text = $submit_text;
     return $this;
   }
 

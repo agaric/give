@@ -124,7 +124,7 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       '#type' => 'textfield',
       '#title' => t('Submit button text'),
       '#description' => t("Override the submit button's default <em>Give</em> text."),
-      '#default_value' => $give_form->getSubmitButtonText(),
+      '#default_value' => $give_form->getSubmitText(),
     ];
 
     return $form;
