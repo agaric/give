@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\give_record\GiveFormViewBuilder.
+ * Contains \Drupal\give\GiveFormViewBuilder.
  */
 
 namespace Drupal\give;

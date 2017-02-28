@@ -77,7 +77,7 @@ entity.give_donation.edit_form:
     _entity_form: 'give_donation.edit'
     _title: 'Edit donation'
   requirements:
-    _permission: 'administer give'
+    _entity_access: 'give_donation.update'
 
 entity.give_donation.delete_form:
   path: '/admin/structure/give/donations/{give_donation}/delete'
@@ -85,7 +85,7 @@ entity.give_donation.delete_form:
     _entity_form: 'give_donation.delete'
     _title: 'Delete donation'
   requirements:
-    _permission: 'administer give'
+    _entity_access: 'give_donation.delete'
 
 entity.give_donation.collection:
   path: '/admin/structure/give/donations'

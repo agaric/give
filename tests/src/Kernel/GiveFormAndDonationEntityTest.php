@@ -20,6 +20,7 @@ class GiveFormAndDonationEntityTest extends EntityKernelTestBase {
    * @var array
    */
   public static $modules = array(
+    'views',
     'system',
     'give',
     'field',
@@ -106,11 +107,12 @@ class GiveFormAndDonationEntityTest extends EntityKernelTestBase {
     $donation->setAmount(4200);
     $donation->setDonorName('donor_name');
     $donation->setDonorMail('donor_mail');
-    $donation->setRecurring(TRUE);
+    $donation->setRecurring(3);
 
     $this->assertEquals(4200, $donation->getAmount());
     $this->assertEquals('donor_name', $donation->getDonorName());
     $this->assertEquals('donor_mail', $donation->getDonorMail());
+    $this->assertEquals(3, $donation->recurring());
     $this->assertTrue($donation->recurring());
 
     $no_access_user = $this->createUser(['uid' => 2]);

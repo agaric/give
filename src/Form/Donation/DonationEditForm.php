@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\give_record\DonationEditForm.
+ * Contains \Drupal\give\DonationEditForm.
  */
 
 namespace Drupal\give\Form\Donation;

@@ -2,16 +2,14 @@
 
 namespace Drupal\give\Form\Donation;
 
-use Drupal\Component\Utility\Html;
-use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Datetime\DateFormatterInterface;
-use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\ContentEntityForm;
 use Drupal\Core\Entity\EntityManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\give\MailHandlerInterface;
+use Drupal\give\GiveStripeInterface;
 
 /**
  * Form controller for give donation forms.
@@ -47,24 +45,31 @@ class PaymentForm extends ContentEntityForm {
   protected $dateFormatter;
 
   /**
+   * The Stripe Service.
+   * @var GiveStripe
+   */
+  protected $giveStripe;
+
+  /**
    * Constructs a DonationForm object.
    *
    * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
    *   The entity manager.
-   * @param \Drupal\Core\Flood\FloodInterface $flood
-   *   The flood control mechanism.
    * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
    *   The language manager service.
    * @param \Drupal\give\MailHandlerInterface $mail_handler
    *   The give mail handler service.
    * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
    *   The date service.
+   * @param \Drupal\give\GiveStripe $give_stripe
+   *   The GiveStripe service.
    */
-  public function __construct(EntityManagerInterface $entity_manager, LanguageManagerInterface $language_manager, MailHandlerInterface $mail_handler, DateFormatterInterface $date_formatter) {
+  public function __construct(EntityManagerInterface $entity_manager, LanguageManagerInterface $language_manager, MailHandlerInterface $mail_handler, DateFormatterInterface $date_formatter, GiveStripeInterface $give_stripe) {
     parent::__construct($entity_manager);
     $this->languageManager = $language_manager;
     $this->mailHandler = $mail_handler;
     $this->dateFormatter = $date_formatter;
+    $this->giveStripe = $give_stripe;
   }
 
   /**
@@ -75,7 +80,8 @@ class PaymentForm extends ContentEntityForm {
       $container->get('entity.manager'),
       $container->get('language_manager'),
       $container->get('give.mail_handler'),
-      $container->get('date.formatter')
+      $container->get('date.formatter'),
+      $container->get('give.stripe')
     );
   }
 
@@ -139,7 +145,7 @@ class PaymentForm extends ContentEntityForm {
       '#title' => t('Card number'),
       '#required' => TRUE,
       '#value' => TRUE, // For items, required is supposed to only show the asterisk, but Drupal is broken.
-      '#markup' => '<input id="stripe_number" size="20" maxlength="20" class="form-text" type="text" data-stripe="number">',
+      '#markup' => '<input id="stripe_number" size="20" maxlength="20" class="form-text" type="text" data-stripe="number" name="stripe_number">',
       '#allowed_tags' => ['input'],
       '#states' => [
         'visible' => [
@@ -153,7 +159,7 @@ class PaymentForm extends ContentEntityForm {
       '#title' => t('Expiration (MM YY)'),
       '#required' => TRUE,
       '#value' => TRUE, // For items, required is supposed to only show the asterisk, but Drupal is broken.
-      '#markup' => '<input id="stripe_exp_month" size="2" maxlength="2" type="text" data-stripe="exp_month" class="inline"> <input id="stripe_exp_year" size="2" maxlength="2" type="text" data-stripe="exp_year" class="inline">',
+      '#markup' => '<input id="stripe_exp_month" name="stripe_exp_month" size="2" maxlength="2" type="text" data-stripe="exp_month" class="inline"> <input id="stripe_exp_year" name="stripe_exp_year" size="2" maxlength="2" type="text" data-stripe="exp_year" class="inline">',
       '#allowed_tags' => ['input'],
       '#states' => [
         'visible' => [
@@ -167,7 +173,7 @@ class PaymentForm extends ContentEntityForm {
       '#title' => t('CVC'),
       '#required' => TRUE,
       '#value' => TRUE, // For items, required is supposed to only show the asterisk, but Drupal is broken.
-      '#markup' => '<input id="stripe_cvc" size="4" maxlength="4" type="text" data-stripe="cvc" class="inline">',
+      '#markup' => '<input id="stripe_cvc" name="stripe_cvc" size="4" maxlength="4" type="text" data-stripe="cvc" class="inline">',
       '#allowed_tags' => ['input'],
       '#states' => [
         'visible' => [
@@ -235,6 +241,7 @@ class PaymentForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
+    /** @var \Drupal\give\Entity\Donation $donation */
     $donation = parent::validateForm($form, $form_state);
     if ($donation->isCompleted()) {
       $form_state->setErrorByName('stripe_errors', $this->t("You have already completed this donation. Thank you! Please initiate a new donation if you wish to donate more."));
@@ -248,84 +255,47 @@ class PaymentForm extends ContentEntityForm {
       $form_state->setErrorByName('stripe_errors', $this->t("Could not retrieve token from Stripe."));
     }
 
-    \Stripe\Stripe::setApiKey(\Drupal::config('give.settings')->get('stripe_secret_key'));
+    $this->giveStripe->setApiKey(\Drupal::config('give.settings')->get('stripe_secret_key'));
 
     // If the donation is recurring, we create a plan and a customer.
-    if ($donation->recurring()) {
-      $plan_already_exists = FALSE;
+    if ($donation->recurring() > 0) {
+      $plan_data = [
+        "id" => $donation->uuid(),
+        "amount" => $donation->getAmount(),
+        "currency" => "usd",
+        "interval" => "month",
+        "interval_count" => $donation->recurring(),
+        "name" => $donation->getLabel(),
+      ];
       try {
-        $plan = \Stripe\Plan::create(array(
-          "id" => $donation->uuid(),
-          "amount" => $donation->getAmount(),
-          "currency" => "usd",
-          "interval" => "month",
-          "name" => $donation->getLabel(),
-        ));
-      } catch(\Stripe\Error\ApiConnection $e) {
-        $form_state->setErrorByName('stripe_errors', $this->t('Could not connect to payment processer. More information: %e', ['%e' => $e->getMessage()]));
-      } catch(\Stripe\Error\InvalidRequest $e) {
-        if ($e->getMessage() === 'Plan already exists.') {
-          // The plan already exists and we should use its UUID to create the
-          // customer for the plan and process the donation.
-          // Therefore we won't throw an error.
-          // Yes it would be nice to not read the text of an error message to determine this.
-          // The reason the plan is somewhat likely to already exist is that
-          // we necessarily create the plan before we try to charge the card,
-          // and if charging the card fails we go through this form again.
-          $plan_already_exists = TRUE;
-        }
-        else {
-          $form_state->setErrorByName('stripe_errors', $this->t('Invalid request: %e', ['%e' => $e->getMessage()]));
-        }
-      } catch(\Stripe\Error\Base $e) {
-        $form_state->setErrorByName('stripe_errors', $this->t('Error: %e', ['%e' => $e->getMessage()]));
-      }
-
-      if ($plan_already_exists) {
-        $plan_id = $donation->uuid();
-      }
-      elseif (isset($plan) && $plan) {
-        $plan_id = $plan->_values['id'];
-      }
-      else {
-        drupal_set_message(t("Unable to create subscription plan for recurring donation. Could not complete donation."), 'error');
+        $plan = $this->giveStripe->createPlan($plan_data);
+      } catch (\Exception $e) {
+        $form_state->setErrorByName('stripe_errors', $this->t($e->getMessage()));
         return;
       }
 
       // Create the customer with subscription plan on Stripe's servers - this will charge the user's card
+      $customer_data = [
+        "plan" => $plan->_values['id'],
+        "source" => $token,
+        "metadata" => [
+          "give_form_id" => $donation->getGiveForm()->id(),
+          "give_form_label" => $donation->getGiveForm()->label(),
+          "email" => $donation->getDonorMail(),
+        ],
+      ];
+
       try {
-        $customer = \Stripe\Customer::create(array(
-          "plan" => $plan_id,
-          "source" => $token,
-          "metadata" => array(
-            "give_form_id" => $donation->getGiveForm()->id(),
-            "give_form_label" => $donation->getGiveForm()->label(),
-            "email" => $donation->getDonorMail(),
-          ),
-        ));
-      } catch(\Stripe\Error\ApiConnection $e) {
-        $form_state->setErrorByName('stripe_errors', $this->t('Could not connect to payment processer. More information: %e', ['%e' => $e->getMessage()]));
-      } catch(\Stripe\Error\Card $e) {
-        $form_state->setErrorByName('number', $this->t("Could not process card: %e", ['%e' => $e->getMessage()]));
-      } catch(\Stripe\Error\Base $e) {
-        $form_state->setErrorByName('stripe_errors', $this->t('Error: %e', ['%e' => $e->getMessage()]));
+        if ($this->giveStripe->createCustomer($customer_data)) {
+          $this->entity->setCompleted();
+        }
+      } catch (\Exception $e) {
+        $form_state->setErrorByName('stripe_errors', $e->getMessage());
       }
-
-      if (isset($customer) && $customer) {
-        // Below works, unlike $donation->setCompleted().
-        $this->entity->setCompleted();
-      }
-      else {
-        drupal_set_message(t("Could not complete donation."), 'error');
-      }
-
-      return $donation;
-    }
-
-    // If the donation is *not* recurring, only in this case do we create a charge ourselves.
-    // Create the charge on Stripe's servers - this will charge the user's card
-    try {
-      $charge = \Stripe\Charge::create(array(
+    } else {
+      // If the donation is *not* recurring, only in this case do we create a charge ourselves.
+      // Create the charge on Stripe's servers - this will charge the user's card.
+      $donation_data = [
         "amount" => $donation->getAmount(), // amount in cents, again
         "currency" => "usd",
         "source" => $token,
@@ -335,24 +305,16 @@ class PaymentForm extends ContentEntityForm {
           "give_form_label" => $donation->getGiveForm()->label(),
           "email" => $donation->getDonorMail(),
         ),
-      ));
-    } catch(\Stripe\Error\Card $e) {
-      $form_state->setErrorByName('number', $this->t("Could not process card: %e", ['%e' => $e->getMessage()]));
-    } catch(\Stripe\Error\ApiConnection $e) {
-      $form_state->setErrorByName('stripe_errors', $this->t('Could not connect to payment processer. More information: %e', ['%e' => $e->getMessage()]));
-    } catch(\Stripe\Error\Base $e) {
-      $form_state->setErrorByName('stripe_errors', $this->t('Error: %e', ['%e' => $e->getMessage()]));
-    }
+      ];
 
-    if (isset($charge) && $charge) {
-      // Below works, unlike $donation->setCompleted().
-      $this->entity->setCompleted();
+      try {
+        if ($this->giveStripe->createCharge($donation_data)) {
+          $this->entity->setCompleted();
+        }
+      } catch (\Exception $e) {
+        $form_state->setErrorByName('stripe_errors', $e->getMessage());
+      }
     }
-    else {
-      drupal_set_message(t("Could not complete donation."), 'error');
-    }
-
-    return $donation;
   }
 
   /**
@@ -373,7 +335,6 @@ class PaymentForm extends ContentEntityForm {
 
     drupal_set_message($this->t('Your donation has been received.  Thank you!'));
 
-    // Saving only has an effect with give_record enabled.
     $donation->save();
   }
 

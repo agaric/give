@@ -146,10 +146,22 @@ class DonationForm extends ContentEntityForm {
       '#required' => TRUE,
     );
 
-    $form['recurring'] = array(
-      '#type' => 'checkbox',
-      '#title' => $this->t('Give this same donation every month'),
+    $form['recurring_fieldset'] = [
+      '#type' => 'fieldset',
+      '#title' => 'Want to give this donation automatically every:'
+    ];
+    $form['recurring_fieldset']['recurring'] = array(
+      '#type' => 'radios',
+      '#default_value' => 'once',
+      '#options' => [
+        '0' => $this->t('Just once'),
+        '1' => $this->t('Every month'),
+        '3' => $this->t('Every 3 months (quarterly)'),
+        '6' => $this->t('6 months (semi-annually)'),
+        '12' => $this->t('year (annually)'),
+      ],
     );
+
     return $form;
   }
 

@@ -2,7 +2,7 @@
 
 /**
  * @file
- * Contains \Drupal\give_record\Tests\GiveViewBuilderTest.
+ * Contains \Drupal\give\Tests\GiveViewBuilderTest.
  */
 
 namespace Drupal\Tests\give\Functional;

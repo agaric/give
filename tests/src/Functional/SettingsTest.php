@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\Tests\comment_notify\Functional;
+namespace Drupal\Tests\give\Functional;
 
 use Drupal\Tests\BrowserTestBase;
 

@@ -42,6 +42,8 @@ use Drupal\give\GiveFormInterface;
  *     "reply",
  *     "check_or_other_text",
  *     "weight",
+ *     "redirect_uri",
+ *     "submit_text"
  *   }
  * )
  */
@@ -66,7 +68,7 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
    *
    * @var array
    */
-  protected $recipients = array();
+  protected $recipients = [];
 
   /**
    * An automatic subject with a receipt for the donation.
@@ -188,7 +190,6 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
 
   /**
    * {@inheritdoc}
-   * @todo create a hook_update for set this values from old installations.
    */
   public function getRedirectUri() {
     return $this->redirectUri;
