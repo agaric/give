@@ -8,6 +8,7 @@
 namespace Drupal\Tests\give\Functional;
 
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Test\AssertMailTrait;
 
 /**
  * Tests storing give donations and viewing them through UI.
@@ -15,6 +16,8 @@ use Drupal\Core\Session\AccountInterface;
  * @group give
  */
 class GiveRecordTest extends GiveTestBase {
+
+  use AssertMailTrait;
 
   /**
    * Tests give donations submitted through give form.
@@ -29,10 +32,16 @@ class GiveRecordTest extends GiveTestBase {
       'administer account settings',
     ));
 
+    $flood_limit = 1;
+    $this->config('give.settings')
+      ->set('flood.limit', $flood_limit)
+      ->set('flood.interval', 600)
+      ->save();
+
     $this->drupalLogin($this->adminUser);
     // Create first valid give form.
     $mail = 'simpletest@example.com';
-    $this->addGiveForm('test_id', 'test_label', $mail, '', TRUE);
+    $this->addGiveForm('test_id', 'test_label', $mail, "Autoreply message", TRUE);
     $this->assertTrue($this->getSession()->getPage()->hasContent('Give form test_label has been added.'));
 
     // Ensure that anonymous users can submit give forms.
@@ -46,6 +55,19 @@ class GiveRecordTest extends GiveTestBase {
     $this->assertSession()->addressEquals('/give/test_id/1');
     $this->submitByCheck('12345678', 'Test');
     $this->assertSession()->pageTextContains('Your donation has been received. Thank you!');
+
+    // Test the flood interval, the second donation is not work because the user
+    // should wait until the flood time has passed.
+    $this->drupalGet('give/test_id');
+    $this->assertSession()->pageTextContains(t('Your email address'));
+    $this->submitGive('Test_name', $mail, '22', 'test_id');
+    $this->assertSession()->pageTextContains('You cannot send more than 1 donations in 10 min. Try again later.');
+
+    // Test to the autoreply email was sent.
+    // @todo test that the autoreply mail is not send when the message is empty.
+    $captured_emails = $this->getMails(array('id' => 'give_donation_receipt'));
+    $this->assertEquals(1, count($captured_emails));
+    $this->assertEquals(trim('Autoreply message'), trim($captured_emails[0]['body']));
 
     // Login as admin.
     $this->drupalLogin($this->adminUser);
