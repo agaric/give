@@ -15,20 +15,6 @@ namespace Drupal\Tests\give\Functional;
 class GiveViewBuilderTest extends GiveTestBase {
 
   /**
-   * Modules to enable.
-   *
-   * @var array
-   */
-  public static $modules = [
-    'user',
-    'node',
-    'give',
-    'field_ui',
-    'give_test',
-    'views'
-  ];
-
-  /**
    * An administrative user with permission administer give forms.
    *
    * @var \Drupal\user\UserInterface
@@ -38,7 +24,7 @@ class GiveViewBuilderTest extends GiveTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  public function setUp() {
     parent::setUp();
 
     // Create Article node type.
