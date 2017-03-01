@@ -1,8 +1,4 @@
 <?php
-/**
- * @file
- * Contains \Drupal\give\DonationViewsData.
- */
 
 namespace Drupal\give;
 

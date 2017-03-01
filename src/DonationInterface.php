@@ -78,13 +78,16 @@ interface DonationInterface extends ContentEntityInterface {
   /**
    * Sets the email donation amount.
    *
-   * @param string $donation
+   * @param string $amount
    *   The donation amount in USD cents.
    */
   public function setAmount($amount);
 
   /**
    * Convert the user-facing amount unit (dollars) into stored unit (cents).
+   *
+   * @param string $dollar_amount
+   *   THe donation amount with the format "$20.00"
    */
   public function setDollarAmount($dollar_amount);
 

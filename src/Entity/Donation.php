@@ -2,7 +2,6 @@
 
 namespace Drupal\give\Entity;
 
-use Drupal\Core\Entity\EntityStorageInterface;
 use Drupal\Core\Entity\ContentEntityBase;
 use Drupal\give\DonationInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
@@ -250,7 +249,7 @@ class Donation extends ContentEntityBase implements DonationInterface {
       ->setDescription(t('The email of the person that is sending the give donation.'));
 
     // The label of the give donation (will be automatically created from other
-    //parts; see DonationForm::buildEntity()).
+    // parts; see DonationForm::buildEntity()).
     $fields['label'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Label'))
       ->setRequired(TRUE);

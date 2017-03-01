@@ -8,9 +8,9 @@ use Drupal\KernelTests\Core\Entity\EntityKernelTestBase;
  * Tests the donation entity class.
  *
  * @group give
+ *
  * @see \Drupal\give\Entity\Donation
  * @see \Drupal\give\Entity\GiveForm
- *
  */
 class GiveFormAndDonationEntityTest extends EntityKernelTestBase {
 
@@ -84,7 +84,6 @@ class GiveFormAndDonationEntityTest extends EntityKernelTestBase {
     $this->assertTrue($giveForm->access('update', $admin));
     $this->assertFalse($giveForm->access('update', $access_user));
   }
-
 
   /**
    * Test the Donation Entity.

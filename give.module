@@ -2,12 +2,10 @@
 
 /**
  * @file
- * Enables the use of donation forms to give money on your site..
+ * Enables the use of donation forms to give money on your site.
  */
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\user\Entity\User;
 
 /**
  * Denotes that the donation is not completed.

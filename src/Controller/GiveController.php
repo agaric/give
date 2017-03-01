@@ -6,7 +6,6 @@ use Drupal\Core\Controller\ControllerBase;
 use Drupal\give\GiveFormInterface;
 use Drupal\give\DonationInterface;
 use Drupal\Core\Render\RendererInterface;
-use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -94,7 +93,7 @@ class GiveController extends ControllerBase {
    * @param \Drupal\give\GiveFormInterface $give_form
    *   The give form to use.
    *
-   * @param \Drupal\give\DonationInterface $donation
+   * @param \Drupal\give\DonationInterface $give_donation
    *   The donation for which payment is to be processed.
    *
    * @return array

@@ -148,7 +148,7 @@ class DonationForm extends ContentEntityForm {
 
     $form['recurring_fieldset'] = [
       '#type' => 'fieldset',
-      '#title' => 'Want to give this donation automatically every:'
+      '#title' => 'Want to give this donation automatically every:',
     ];
     $form['recurring_fieldset']['recurring'] = array(
       '#type' => 'radios',

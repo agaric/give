@@ -47,7 +47,8 @@ class PaymentForm extends ContentEntityForm {
 
   /**
    * The Stripe Service.
-   * @var GiveStripe
+   *
+   * @var \Drupal\give\GiveStripeInterface
    */
   protected $giveStripe;
 
@@ -62,7 +63,7 @@ class PaymentForm extends ContentEntityForm {
    *   The give mail handler service.
    * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
    *   The date service.
-   * @param \Drupal\give\GiveStripe $give_stripe
+   * @param \Drupal\give\GiveStripeInterface $give_stripe
    *   The GiveStripe service.
    */
   public function __construct(EntityManagerInterface $entity_manager, LanguageManagerInterface $language_manager, MailHandlerInterface $mail_handler, DateFormatterInterface $date_formatter, GiveStripeInterface $give_stripe) {
@@ -116,7 +117,7 @@ class PaymentForm extends ContentEntityForm {
       '#title' => t('Choose donation method'),
       '#options' => array(
         GIVE_WITH_STRIPE => $this->t('By credit/debit card'),
-        // GIVE_WITH_DWOLLA => $this->t('By bank transfer'),
+        // GIVE_WITH_DWOLLA => $this->t('By bank transfer')
         GIVE_WITH_CHECK => $this->t('By check or other'),
       ),
       '#weight' => 0,
@@ -127,7 +128,7 @@ class PaymentForm extends ContentEntityForm {
       'drupalSettings' => [
         'give' => [
           'stripe_publishable_key' => \Drupal::config('give.settings')->get('stripe_publishable_key'),
-        ]
+        ],
       ]
     ];
 
