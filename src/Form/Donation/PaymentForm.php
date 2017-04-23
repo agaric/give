@@ -144,10 +144,10 @@ class PaymentForm extends ContentEntityForm {
 
     $form['number'] = array(
       '#type' => 'item',
-      '#title' => t('Card number'),
+      '#title' => t('Credit or debit card'),
       '#required' => TRUE,
       '#value' => TRUE, // For items, required is supposed to only show the asterisk, but Drupal is broken.
-      '#markup' => '<input id="stripe_number" size="20" maxlength="20" class="form-text" type="text" data-stripe="number" name="stripe_number">',
+      '#markup' => '<div id="card-element"></div><div id="card-errors"></div>',
       '#allowed_tags' => ['input'],
       '#states' => [
         'visible' => [
@@ -156,6 +156,7 @@ class PaymentForm extends ContentEntityForm {
       ],
     );
 
+/*
     $form['expiration'] = array(
       '#type' => 'item',
       '#title' => t('Expiration (MM YY)'),
@@ -183,6 +184,11 @@ class PaymentForm extends ContentEntityForm {
         ],
       ],
     );
+
+    $form[''] = [
+      '#type' => '',
+    ];
+ */
 
     $form['check_or_other_text'] = array(
       '#type' => 'item',
