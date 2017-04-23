@@ -147,8 +147,8 @@ class PaymentForm extends ContentEntityForm {
       '#title' => t('Credit or debit card'),
       '#required' => TRUE,
       '#value' => TRUE, // For items, required is supposed to only show the asterisk, but Drupal is broken.
-      '#markup' => '<div id="card-element"></div><div id="card-errors"></div>',
-      '#allowed_tags' => ['input'],
+      '#markup' => '<div id="stripe-card-element"></div><div class="form--inline-feedback form--inline-feedback--success" id="stripe-card-errors"></div><div class="form--inline-feedback form--inline-feedback--error" id="stripe-card-success"></div>',
+      '#allowed_tags' => ['div'],
       '#states' => [
         'visible' => [
           ':input[name="method"]' => ['value' => GIVE_WITH_STRIPE],
