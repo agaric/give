@@ -56,9 +56,12 @@
       e.preventDefault();
       var form = document.querySelector('.give-donation-form');
       var extraDetails = {
-        // name: form.querySelector('input[name=cardholder-name]').value,
-        // address_zip: form.querySelector('input[name=address-zip]').value
+        name: form.querySelector('input[name=donor_name_for_stripe]').value
       };
+      var address_zip = form.querySelector('input[name=address-zip]');
+      if (address_zip) {
+        extraDetails.address_zip = address_zip.value;
+      }
       stripe.createToken(card, extraDetails).then(handleResponse);
     }
   });

@@ -142,7 +142,15 @@ class PaymentForm extends ContentEntityForm {
       '#default_value' => '',
     );
 
-    $form['number'] = array(
+    // Custom radar rules can't use name but Stripe's risk assessment does.
+    // Therefore this should default to the entered name but be editable.
+    // TODO see https://www.drupal.org/node/2872223
+    $form['donor_name_for_stripe'] = array(
+      '#type' => 'hidden',
+      '#default_value' => $donation->getDonorName(),
+    );
+
+    $form['card'] = array(
       '#type' => 'item',
       '#title' => t('Credit or debit card'),
       '#required' => TRUE,
