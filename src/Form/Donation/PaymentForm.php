@@ -260,6 +260,7 @@ class PaymentForm extends ContentEntityForm {
       $customer_data = [
         "plan" => $plan->_values['id'],
         "source" => $token,
+        "email" => $donation->getDonorMail(),
         "metadata" => [
           "give_form_id" => $donation->getGiveForm()->id(),
           "give_form_label" => $donation->getGiveForm()->label(),
