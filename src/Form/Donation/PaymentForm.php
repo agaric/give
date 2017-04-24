@@ -241,7 +241,7 @@ class PaymentForm extends ContentEntityForm {
     $this->giveStripe->setApiKey(\Drupal::config('give.settings')->get('stripe_secret_key'));
 
     // If the donation is recurring, we create a plan and a customer.
-    if ($donation->recurring() > 0) {
+    if ($donation->recurring()) {
       $plan_data = [
         "id" => $donation->getPlanId(),
         "amount" => $donation->getAmount(),
