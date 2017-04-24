@@ -105,12 +105,24 @@ interface DonationInterface extends ContentEntityInterface {
   public function recurring();
 
   /**
-   * Sets if the donor should give the same donation on a monthly basis or not.
+   * Sets the number of intervals to elapse between donations.
    *
-   * @param bool $recur
-   *   TRUE if a donation should recur monthly, FALSE if not.
+   * @param integer $count
+   *   The number of intervals which should elapse between donations. Currently
+   *   the interval is hard-coded to month, so a value of 1 is monthly, 3 is
+   *   quarterly, and so on.
    */
-  public function setRecurring($recur);
+  public function setRecurrenceIntervalCount($count);
+
+  /**
+   * Returns the number of intervals to elapse between donations.
+   *
+   * @return integer $count
+   *   The number of intervals which should elapse between donations. Currently
+   *   the interval is hard-coded to month, so a value of 1 is monthly, 3 is
+   *   quarterly, and so on.
+   */
+  public function getRecurrenceIntervalCount();
 
   /**
    * Returns a plan ID based on currency, amount, interval, and interval count.
