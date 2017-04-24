@@ -105,6 +105,11 @@ interface DonationInterface extends ContentEntityInterface {
   public function recurring();
 
   /**
+   * Recurrence is the time between donations made up of the interval count and the interval unit.
+   */
+  public function getRecurrence();
+
+  /**
    * Sets the intervals to elapse between donations.
    *
    * @param string interval
