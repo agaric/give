@@ -134,7 +134,7 @@ class Donation extends ContentEntityBase implements DonationInterface {
   /**
    * {@inheritdoc}
    */
-  public function setRecurring($recurring) {
+  public function setRecurrenceIntervalCount($count) {
     $this->set('recurring', (bool) $recurring);
     return $this;
   }
@@ -273,7 +273,7 @@ class Donation extends ContentEntityBase implements DonationInterface {
 
     $fields['recurring'] = BaseFieldDefinition::create('integer')
       ->setLabel(t('Recurring'))
-      ->setDescription(t('Whether the donation should recur on intervals.'))
+      ->setDescription(t('The interval counts (in number of months) at which the donation should recur, or zero if not recurring.'))
       ->setDisplayOptions('form', [
         'type' => 'list_integer',
         'settings' => [
