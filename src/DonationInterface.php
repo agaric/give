@@ -113,6 +113,15 @@ interface DonationInterface extends ContentEntityInterface {
   public function setRecurring($recur);
 
   /**
+   * Returns a plan ID based on currency, amount, interval, and interval count.
+   *
+   * Note that interval count is the number of intervals between donations, not
+   * the number of times the payment should be made.  Recurring payments go on
+   * forever.
+   */
+  public function getPlanId();
+
+  /**
    * Gets the donation creation timestamp.
    *
    * @return int

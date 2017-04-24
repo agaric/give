@@ -141,6 +141,17 @@ class Donation extends ContentEntityBase implements DonationInterface {
 
   /**
    * {@inheritdoc}
+   *
+   * Note that currency is hard-coded to US Dollars and interval to monthly,
+   * as they are elsewhere in the application, but it would be trivial to
+   * change.
+   */
+  public function getPlanId() {
+    return 'usd' . $this->getAmount() . '_month' . $this->recurring();
+  }
+
+  /**
+   * {@inheritdoc}
    */
   public function getCreatedTime() {
     return $this->get('created')->value;
