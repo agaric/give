@@ -256,7 +256,7 @@ class DonationForm extends ContentEntityForm {
     $this->flood->register('give', $this->config('give.settings')->get('flood.interval'));
 
     if ($donation->save() == SAVED_NEW) {
-      // Redirect to th second step.
+      // Redirect to the second step.
       $form_state->setRedirectUrl(Url::fromRoute('entity.give_form.donate', ['give_form' => $donation->get('give_form')->target_id, 'give_donation' => $donation->id()]));
     }
   }
