@@ -247,7 +247,7 @@ class PaymentForm extends ContentEntityForm {
         "currency" => "usd",
         "interval" => "month",
         "interval_count" => $donation->recurring(),
-        "name" => $donation->getLabel(),
+        "name" => $donation->getPlanName(),
       ];
       try {
         $plan = $this->giveStripe->createPlan($plan_data);

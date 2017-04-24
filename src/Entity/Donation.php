@@ -167,6 +167,13 @@ class Donation extends ContentEntityBase implements DonationInterface {
   /**
    * {@inheritdoc}
    */
+  public function getPlanName() {
+    return $this->getDollarAmount() . ' ' . $this->getRecurrence();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getCreatedTime() {
     return $this->get('created')->value;
   }
