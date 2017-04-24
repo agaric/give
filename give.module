@@ -140,3 +140,31 @@ function give_replace_donation_tokens($message, \Drupal\give\DonationInterface $
   );
   return str_replace(array_keys($search_replace), array_values($search_replace), $message);
 }
+
+/**
+ * Convert donation interval and interval count into human-friendly descriptions.
+ *
+ * Presently only month interval with counts of 1, 3, 6, and 12 is supported.
+ */
+function give_recurrance_label($interval_count, $interval = 'month') {
+  if ($interval != 'month') {
+    throw new \Exception(t("Unsupported interval %interval. Interval periods other than month-based are not currently supported.", ['%interval' => $interval]));
+  }
+  if (!in_array($interval_count, [0, 1, 3, 6, 12])) {
+    throw new \Exception(t("Unknown interval count %count, only 0, 1, 3, 6, and 12 are currently accepted", ['%count' => $interval_count]));
+  }
+  return give_list_recurrances()[(int) $interval_count];
+}
+
+/**
+ * Returns the available month-based recurrances.
+ */
+function give_list_recurrances() {
+  return [
+    0 => t('No, just once'),
+    1 => t('Every month'),
+    3 => t('Every 3 months (quarterly)'),
+    6 => t('Every 6 months (semi-annually)'),
+    12 => ('Every year (annually)'),
+  ];
+}
