@@ -164,40 +164,6 @@ class PaymentForm extends ContentEntityForm {
       ],
     );
 
-/*
-    $form['expiration'] = array(
-      '#type' => 'item',
-      '#title' => t('Expiration (MM YY)'),
-      '#required' => TRUE,
-      '#value' => TRUE, // For items, required is supposed to only show the asterisk, but Drupal is broken.
-      '#markup' => '<input id="stripe_exp_month" name="stripe_exp_month" size="2" maxlength="2" type="text" data-stripe="exp_month" class="inline"> <input id="stripe_exp_year" name="stripe_exp_year" size="2" maxlength="2" type="text" data-stripe="exp_year" class="inline">',
-      '#allowed_tags' => ['input'],
-      '#states' => [
-        'visible' => [
-          ':input[name="method"]' => ['value' => GIVE_WITH_STRIPE],
-        ],
-      ],
-    );
-
-    $form['cvc'] = array(
-      '#type' => 'item',
-      '#title' => t('CVC'),
-      '#required' => TRUE,
-      '#value' => TRUE, // For items, required is supposed to only show the asterisk, but Drupal is broken.
-      '#markup' => '<input id="stripe_cvc" name="stripe_cvc" size="4" maxlength="4" type="text" data-stripe="cvc" class="inline">',
-      '#allowed_tags' => ['input'],
-      '#states' => [
-        'visible' => [
-          ':input[name="method"]' => ['value' => GIVE_WITH_STRIPE],
-        ],
-      ],
-    );
-
-    $form[''] = [
-      '#type' => '',
-    ];
- */
-
     $form['check_or_other_text'] = array(
       '#type' => 'item',
       '#description' => $donation->getGiveForm()->getCheckOrOtherText(),
