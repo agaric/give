@@ -108,7 +108,8 @@ class PaymentForm extends ContentEntityForm {
       '#type' => 'item',
       '#value' => $donation->getAmount(),
       '#title' => $this->t('Amount you pledged'),
-      '#plain_text' => $donation->recurring() ? $this->t(':amount monthly', [':amount' => $donation->getDollarAmount()]) : $donation->getDollarAmount(),
+      '#plain_text' => $donation->recurring() ? $this->t(':amount :recurrence',
+        [':amount' => $donation->getDollarAmount(), ':recurrence' => $donation->getRecurrence()]) : $donation->getDollarAmount(),
       '#weight' => -40,
     );
 
