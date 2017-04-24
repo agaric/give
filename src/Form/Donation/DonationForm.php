@@ -150,17 +150,11 @@ class DonationForm extends ContentEntityForm {
       '#type' => 'fieldset',
       '#title' => $this->t('Make this a recurring donation:'),
     ];
-    $form['recurring_fieldset']['recurring'] = array(
+    $form['recurring_fieldset']['recurring'] = [
       '#type' => 'radios',
       '#default_value' => 'once',
-      '#options' => [
-        '0' => $this->t('No, just once'),
-        '1' => $this->t('Every month'),
-        '3' => $this->t('Every 3 months (quarterly)'),
-        '6' => $this->t('Every 6 months (semi-annually)'),
-        '12' => $this->t('Every year (annually)'),
-      ],
-    );
+      '#options' => give_list_recurrances(),
+    ];
 
     return $form;
   }
