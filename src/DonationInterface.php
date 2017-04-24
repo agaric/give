@@ -130,8 +130,21 @@ interface DonationInterface extends ContentEntityInterface {
    * Note that interval count is the number of intervals between donations, not
    * the number of times the payment should be made.  Recurring payments go on
    * forever.
+   *
+   * Non-recurring payments do not recieve a plan ID.
+   *
+   * @return string
    */
   public function getPlanId();
+
+  /**
+   * Returns a plan name based on currency, amount, interval, and interval count.
+   *
+   * @see getPlanId()
+   *
+   * @return string
+   */
+  public function getPlanName();
 
   /**
    * Gets the donation creation timestamp.
