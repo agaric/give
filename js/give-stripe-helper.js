@@ -35,28 +35,14 @@
     errorElement.classList.remove('visible');
 
     if (result.token) {
-      // Get the token ID:
-      var token = result.token.id;
-      // Insert the token ID into the form so it gets submitted to the server:
+      // Insert the token ID into the form so it gets submitted to the server.
       var form = document.querySelector('.give-donation-form');
-      form.querySelector('input[name=stripe_token]').value = token;
-
-      // Submit the form:
+      form.querySelector('input[name=stripe_token]').value = result.token.id;
+      // Submit the form, completing the action the user expected after pressing submit.
       form.submit();
-      // Use the token to create a charge or a customer
-      // https://stripe.com/docs/charges
-      successElement.querySelector('.token').textContent = result.token.id;
-      successElement.classList.add('visible');
     } else if (result.error) {
       errorElement.textContent = result.error.message;
       errorElement.classList.add('visible');
-/*
-        // Show the errors on the form:
-        var pre_span = '<div role="contentinfo" aria-label="Error message" class="messages messages--error"><div role="alert">';
-        var post_span = '</div></div>';
-        $form.find('.payment-errors').html(pre_span + response.error.message + post_span);
-        $form.find('.submit').prop('disabled', false); // Re-enable submission
-*/
     }
   }
 
@@ -76,15 +62,5 @@
       stripe.createToken(card, extraDetails).then(handleResponse);
     }
   });
-
-/*
-  $form.submit(function(event) {
-      // Disable the submit button to prevent repeated clicks:
-      $form.find('.submit').prop('disabled', true);
-
-      // Prevent the form from being submitted:
-      return false;
-  });
-*/
 
 })(Drupal, drupalSettings, jQuery);
