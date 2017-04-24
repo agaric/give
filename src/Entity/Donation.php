@@ -128,6 +128,13 @@ class Donation extends ContentEntityBase implements DonationInterface {
    * {@inheritdoc}
    */
   public function recurring() {
+    return (bool) $this->getRecurrenceIntervalCount() && $this->getRecurrenceIntervalUnit();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRecurrenceIntervalCount() {
     return $this->get('recurring')->value;
   }
 

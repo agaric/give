@@ -111,7 +111,7 @@ interface DonationInterface extends ContentEntityInterface {
    *   The interval unit used to describe how much time should elapse between
    *   donations. Currently the interval is hard-coded to month.
    */
-  public function setRecurrenceInterval($interval);
+  public function setRecurrenceIntervalUnit($interval);
 
   /**
    * Returns the interval used to define time to elapse between donations.
@@ -120,7 +120,7 @@ interface DonationInterface extends ContentEntityInterface {
    *   The interval unit used to describe how much time should elapse between
    *   donations. Currently the interval is hard-coded to month.
    */
-  public function getRecurrenceInterval();
+  public function getRecurrenceIntervalUnit();
 
   /**
    * Sets the number of intervals to elapse between donations.
