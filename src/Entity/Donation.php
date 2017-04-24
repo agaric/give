@@ -134,6 +134,24 @@ class Donation extends ContentEntityBase implements DonationInterface {
   /**
    * {@inheritdoc}
    */
+  public function setRecurrenceIntervalUnit($interval) {
+    if ($interval != 'month') {
+      throw new \Exception(t("Unsupported interval %interval. Interval periods other than month-based are not currently supported.", ['%interval' => $interval]));
+    }
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getRecurrenceIntervalUnit() {
+    return 'month';
+  }
+
+
+  /**
+   * {@inheritdoc}
+   */
   public function getRecurrenceIntervalCount() {
     return $this->get('recurring')->value;
   }
