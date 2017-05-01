@@ -4,7 +4,7 @@
  */
 (function (Drupal, settings, $) {
   if (settings.give.stripe_publishable_key) {
-    var stripe = Stripe('pk_test_bUh7EpEkPzKqFOptiK9x7TKi'); // settings.give.stripe_publishable_key
+    var stripe = Stripe(settings.give.stripe_publishable_key);
     var elements = stripe.elements();
     var card = elements.create('card', {
       hidePostalCode: true,
