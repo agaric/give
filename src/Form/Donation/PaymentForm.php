@@ -130,7 +130,12 @@ class PaymentForm extends ContentEntityForm {
         'give' => [
           'stripe_publishable_key' => \Drupal::config('give.settings')->get('stripe_publishable_key'),
         ],
-      ]
+        'http_header' => [
+          ['Content-Security-Policy' => "connect-src 'https://api.stripe.com'"],
+          ['Content-Security-Policy' => "child-src 'https://js.stripe.com'"],
+          ['Content-Security-Policy' => "script-src 'https://js.stripe.com'"],
+        ],
+      ],
     ];
 
     $form['stripe_errors'] = array(
