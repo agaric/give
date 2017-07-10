@@ -52,9 +52,9 @@ class MailHandlerTest extends UnitTestCase {
   /**
    * The entity manager service.
    *
-   * @var \Drupal\Core\Entity\EntityManagerInterface|\PHPUnit_Framework_MockObject_MockObject
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface|\PHPUnit_Framework_MockObject_MockObject
    */
-  protected $entityManager;
+  protected $entityTypeManager;
 
   /**
    * The user storage handler.
@@ -71,15 +71,15 @@ class MailHandlerTest extends UnitTestCase {
     $this->mailManager = $this->getMock('\Drupal\Core\Mail\MailManagerInterface');
     $this->languageManager = $this->getMock('\Drupal\Core\Language\LanguageManagerInterface');
     $this->logger = $this->getMock('\Psr\Log\LoggerInterface');
-    $this->entityManager = $this->getMock('\Drupal\Core\Entity\EntityManagerInterface');
+    $this->entityTypeManager = $this->getMock('\Drupal\Core\Entity\EntityTypeManagerInterface');
     $this->userStorage = $this->getMock('\Drupal\Core\Entity\EntityStorageInterface');
-    $this->entityManager->expects($this->any())
+    $this->entityTypeManager->expects($this->any())
       ->method('getStorage')
       ->with('user')
       ->willReturn($this->userStorage);
 
     $string_translation = $this->getStringTranslationStub();
-    $this->giveMailHandler = new MailHandler($this->mailManager, $this->languageManager, $this->logger, $string_translation, $this->entityManager);
+    $this->giveMailHandler = new MailHandler($this->mailManager, $this->languageManager, $this->logger, $string_translation, $this->entityTypeManager);
     $language = new Language(array('id' => 'en'));
 
     $this->languageManager->expects($this->any())

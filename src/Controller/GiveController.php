@@ -58,7 +58,7 @@ class GiveController extends ControllerBase {
 
     // Use the default form if no form has been passed.
     if (empty($give_form)) {
-      $give_form = $this->entityManager()
+      $give_form = $this->entityTypeManager()
         ->getStorage('give_form')
         ->load($config->get('default_form'));
       // If there are no forms, do not display the form.
@@ -74,7 +74,7 @@ class GiveController extends ControllerBase {
       }
     }
 
-    $donation = $this->entityManager()
+    $donation = $this->entityTypeManager()
       ->getStorage('give_donation')
       ->create(array(
         'give_form' => $give_form->id(),

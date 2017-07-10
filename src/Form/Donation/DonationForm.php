@@ -7,7 +7,7 @@ use Drupal\Component\Utility\Unicode;
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Datetime\DrupalDateTime;
 use Drupal\Core\Entity\ContentEntityForm;
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Flood\FloodInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
@@ -58,7 +58,7 @@ class DonationForm extends ContentEntityForm {
   /**
    * Constructs a DonationForm object.
    *
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity manager.
    * @param \Drupal\Core\Flood\FloodInterface $flood
    *   The flood control mechanism.
@@ -69,8 +69,8 @@ class DonationForm extends ContentEntityForm {
    * @param \Drupal\Core\Datetime\DateFormatterInterface $date_formatter
    *   The date service.
    */
-  public function __construct(EntityManagerInterface $entity_manager, FloodInterface $flood, LanguageManagerInterface $language_manager, MailHandlerInterface $mail_handler, DateFormatterInterface $date_formatter) {
-    parent::__construct($entity_manager);
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, FloodInterface $flood, LanguageManagerInterface $language_manager, MailHandlerInterface $mail_handler, DateFormatterInterface $date_formatter) {
+    parent::__construct($entity_type_manager);
     $this->flood = $flood;
     $this->languageManager = $language_manager;
     $this->mailHandler = $mail_handler;
@@ -104,7 +104,7 @@ class DonationForm extends ContentEntityForm {
         '#theme_wrappers' => array('container__preview'),
         '#attributes' => array('class' => array('preview')),
       );
-      $form['preview']['donation'] = $this->entityManager->getViewBuilder('give_donation')->view($donation, 'full');
+      $form['preview']['donation'] = $this->entityTypeManager->getViewBuilder('give_donation')->view($donation, 'full');
     }
 
     $form['name'] = array(

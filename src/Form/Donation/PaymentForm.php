@@ -4,7 +4,7 @@ namespace Drupal\give\Form\Donation;
 
 use Drupal\Core\Datetime\DateFormatterInterface;
 use Drupal\Core\Entity\ContentEntityForm;
-use Drupal\Core\Entity\EntityManagerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Language\LanguageManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -55,7 +55,7 @@ class PaymentForm extends ContentEntityForm {
   /**
    * Constructs a DonationForm object.
    *
-   * @param \Drupal\Core\Entity\EntityManagerInterface $entity_manager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity manager.
    * @param \Drupal\Core\Language\LanguageManagerInterface $language_manager
    *   The language manager service.
@@ -66,8 +66,8 @@ class PaymentForm extends ContentEntityForm {
    * @param \Drupal\give\GiveStripeInterface $give_stripe
    *   The GiveStripe service.
    */
-  public function __construct(EntityManagerInterface $entity_manager, LanguageManagerInterface $language_manager, MailHandlerInterface $mail_handler, DateFormatterInterface $date_formatter, GiveStripeInterface $give_stripe) {
-    parent::__construct($entity_manager);
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, LanguageManagerInterface $language_manager, MailHandlerInterface $mail_handler, DateFormatterInterface $date_formatter, GiveStripeInterface $give_stripe) {
+    parent::__construct($entity_type_manager);
     $this->languageManager = $language_manager;
     $this->mailHandler = $mail_handler;
     $this->dateFormatter = $date_formatter;
