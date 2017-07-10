@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\give\GiveFormViewBuilder.
- */
-
 namespace Drupal\give;
 
 use Drupal\Core\Config\Config;

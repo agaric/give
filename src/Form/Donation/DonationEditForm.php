@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\give\DonationEditForm.
- */
-
 namespace Drupal\give\Form\Donation;
 
 use Drupal\Core\Entity\ContentEntityForm;

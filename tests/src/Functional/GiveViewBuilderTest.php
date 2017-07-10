@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\give\Tests\GiveViewBuilderTest.
- */
-
 namespace Drupal\Tests\give\Functional;
 
 /**
