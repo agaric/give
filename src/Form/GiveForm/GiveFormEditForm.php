@@ -179,7 +179,7 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
         ->save();
     }
 
-    $form_state->setRedirectUrl($give_form->urlInfo('collection'));
+    $form_state->setRedirectUrl($give_form->toUrl('collection'));
   }
 
 }
