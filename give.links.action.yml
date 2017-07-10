@@ -4,3 +4,9 @@ give.form_add:
   weight: 1
   appears_on:
     - entity.give_form.collection
+give.structure:
+  route_name: entity.give_form.collection
+  title: 'Create and configure give donation forms'
+  weight: 1
+  appears_on:
+    - give.settings
