@@ -264,7 +264,7 @@ class PaymentForm extends ContentEntityForm {
 
       // Create the customer with subscription plan on Stripe's servers - this will charge the user's card
       $customer_data = [
-        "plan" => $plan->_values['id'],
+        "plan" => $donation->getPlanId(),
         "source" => $token,
         "email" => $donation->getDonorMail(),
         "metadata" => [
