@@ -271,6 +271,7 @@ class PaymentForm extends ContentEntityForm {
           "give_form_id" => $donation->getGiveForm()->id(),
           "give_form_label" => $donation->getGiveForm()->label(),
           "email" => $donation->getDonorMail(),
+          "name" => $donation->getDonorName(),
         ],
       ];
 
