@@ -319,11 +319,12 @@ class PaymentForm extends ContentEntityForm {
 
     $user = $this->currentUser();
     $this->mailHandler->sendDonationNotice($donation, $user);
+
     drupal_set_message(
       $this->t("Thank you, :donor_name, for your donation of :amount",
       array(
         ':donor_name' => $donation->getDonorName(),
-        ':amount' => $donation->recurring() ? $this->t(':amount monthly', [':amount' => $donation->getDollarAmount()]) : $donation->getDollarAmount()))
+        ':amount' => $donation->recurring() ? $this->t(':plan', [':plan' => $donation->getPlanName()]) : $donation->getDollarAmount()))
     );
     drupal_set_message($this->t("We have e-mailed a receipt to <em>:mail</em>.", [':mail' => $donation->getDonorMail()]));
 
