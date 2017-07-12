@@ -43,7 +43,8 @@ use Drupal\give\GiveFormInterface;
  *     "check_or_other_text",
  *     "weight",
  *     "redirect_uri",
- *     "submit_text"
+ *     "submit_text",
+ *     "frequency"
  *   }
  * )
  */
@@ -112,6 +113,28 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
    * @var string
    */
   protected $submit_text = 'Give';
+
+  /**
+   * Frequency intervals (Stripe Plans).
+   *
+   * @var array
+   */
+  protected $frequency = [];
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getFrequency() {
+    return $this->frequency;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setFrequency(array $frequency) {
+    $this->frequency = $frequency;
+    return $this;
+  }
 
   /**
    * {@inheritdoc}

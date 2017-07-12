@@ -10,6 +10,25 @@ use Drupal\Core\Config\Entity\ConfigEntityInterface;
 interface GiveFormInterface extends ConfigEntityInterface {
 
   /**
+   * Get the plans supported by this donation.
+   *
+   * @return array
+   *   The Plans available for this donation form.
+   */
+  public function getFrequency();
+
+  /**
+   * Set the plans supported by this donation.
+   *
+   * @param array $frequency
+   *   The plans supported by this donation.
+   *
+   * @return $this
+   *   Return the entity.
+   */
+  public function setFrequency(array $frequency);
+
+  /**
    * Returns list of recipient email addresses.
    *
    * @return array
@@ -21,7 +40,7 @@ interface GiveFormInterface extends ConfigEntityInterface {
    * Returns an automatic subject for the donation receipt e-mail.
    *
    * @return string
-   *  Subject for the donation receipt e-mail.
+   *   Subject for the donation receipt e-mail.
    */
   public function getSubject();
 
@@ -29,7 +48,7 @@ interface GiveFormInterface extends ConfigEntityInterface {
    * Returns an automatic reply to be sent with donation receipt to the donor.
    *
    * @return string
-   *  Text to be sent with the donation receipt.
+   *   Text to be sent with the donation receipt.
    */
   public function getReply();
 
@@ -122,10 +141,11 @@ interface GiveFormInterface extends ConfigEntityInterface {
   /**
    * Set the text displayed in the submit button in the donation form.
    *
-   * @param text $text
+   * @param string $text
    *   The text displayed in the submit button.
    *
    * @return $this
    */
   public function setSubmitText($text);
+
 }

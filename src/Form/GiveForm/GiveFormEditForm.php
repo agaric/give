@@ -30,7 +30,7 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
    *   The email validator.
    */
   public function __construct(EmailValidator $email_validator) {
-   $this->emailValidator = $email_validator;
+    $this->emailValidator = $email_validator;
   }
 
   /**
@@ -54,10 +54,12 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
    */
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
+    $form['#tree'] = TRUE;
 
     /** @var \Drupal\give\Entity\GiveForm $give_form */
     $give_form = $this->entity;
     $default_form = $this->config('give.settings')->get('default_form');
+    $frequencies = $give_form->getFrequency() ?: 1;
 
     $form['label'] = array(
       '#type' => 'textfield',
@@ -126,10 +128,9 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       '#description' => t("Override the submit button's default <em>Give</em> text."),
       '#default_value' => $give_form->getSubmitText(),
     ];
-
     $name_field = $form_state->get('num_intervals');
-    $form['#tree'] = TRUE;
     $form['frequency'] = [
+      '#type' => 'fieldset',
       '#title' => $this->t('Frequency Intervals (Plans)'),
     ];
     $form['frequency']['frequency_intervals_table'] = [
@@ -145,7 +146,7 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
     ];
 
     if (empty($name_field)) {
-      $name_field = 1;
+      $name_field = count($frequencies) ?: 1;
       $form_state->set('num_intervals', $name_field);
     }
     for ($i = 0; $i < $name_field; $i++) {
@@ -158,26 +159,25 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
           'month' => 'month',
           'year' => 'year',
         ],
+        '#default_value' => (isset($frequencies[$i])) ? $frequencies[$i]['interval'] : 'month',
       ];
-
       $form['frequency']['frequency_intervals_table'][$i]['interval_count'] = [
         '#type' => 'number',
         '#title' => '',
-        '#default_value' => 1,
+        '#default_value' => (isset($frequencies[$i])) ? $frequencies[$i]['interval_count'] : 1,
       ];
-
       $form['frequency']['frequency_intervals_table'][$i]['description'] = [
         '#type' => 'textfield',
         '#title' => '',
-        '#default_value' => '',
+        '#default_value' => (isset($frequencies[$i])) ? $frequencies[$i]['description'] : '',
       ];
     }
-    $form['frequency']['frequency_intervals_table']['actions'] = [
+    $form['frequency']['actions'] = [
       '#type' => 'actions',
     ];
-    $form['frequency']['frequency_intervals_table']['actions']['add_frequency'] = [
+    $form['frequency']['actions']['add_frequency'] = [
       '#type' => 'submit',
-      '#value' => t('Add one more'),
+      '#value' => t('Add'),
       '#submit' => array('::addOne'),
       '#ajax' => [
         'callback' => '::addmoreCallback',
@@ -185,9 +185,9 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       ],
     ];
     if ($name_field > 1) {
-      $form['frequency']['frequency_intervals_table']['actions']['remove_frequency'] = [
+      $form['frequency']['actions']['remove_frequency'] = [
         '#type' => 'submit',
-        '#value' => t('Remove one'),
+        '#value' => t('Remove'),
         '#submit' => array('::removeCallback'),
         '#ajax' => [
           'callback' => '::addmoreCallback',
@@ -285,6 +285,18 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
     }
 
     $form_state->setRedirectUrl($give_form->toUrl('collection'));
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function buildEntity(array $form, FormStateInterface $form_state) {
+    /** @var \Drupal\give\GiveFormInterface $entity */
+    $entity = parent::buildEntity($form, $form_state);
+    $frequency = $form_state->getValue('frequency');
+    $entity->set('frequency', $frequency['frequency_intervals_table']);
+
+    return $entity;
   }
 
 }

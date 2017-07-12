@@ -65,3 +65,19 @@ give.form.*:
     submit_text:
       type: string
       label: 'Submit button text'
+    frequency:
+      type: sequence
+      label: 'Frequencies'
+      sequence:
+        type: mapping
+        label: 'Frequency'
+        mapping:
+          interval:
+            type: string
+            label: 'Interval'
+          interval_count:
+            type: integer
+            label: 'Interval Count'
+          description:
+            type: 'string'
+            label: 'Description'
