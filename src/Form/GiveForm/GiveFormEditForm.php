@@ -127,7 +127,104 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       '#default_value' => $give_form->getSubmitText(),
     ];
 
+    $name_field = $form_state->get('num_intervals');
+    $form['#tree'] = TRUE;
+    $form['frequency_intervals_fieldset'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Frequency'),
+      '#prefix' => '<div id="frequency-intervals-wrapper">',
+      '#suffix' => '</div>',
+    ];
+
+    if (empty($name_field)) {
+      $name_field = 1;
+      $form_state->set('num_intervals', $name_field);
+    }
+    for ($i = 0; $i < $name_field; $i++) {
+      $form['frequency_intervals_fieldset'][$i]['interval'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Interval'),
+        '#options' => [
+          'day' => 'day',
+          'week' => 'week',
+          'month' => 'month',
+          'year' => 'year',
+        ],
+      ];
+
+      $form['frequency_intervals_fieldset'][$i]['interval_count'] = [
+        '#type' => 'number',
+        '#title' => $this->t('Interval count'),
+        '#default_value' => 1,
+      ];
+
+      $form['frequency_intervals_fieldset'][$i]['description'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Description'),
+        '#default_value' => '',
+      ];
+    }
+    $form['frequency_intervals_fieldset']['actions'] = [
+      '#type' => 'actions',
+    ];
+    $form['frequency_intervals_fieldset']['actions']['add_frequency'] = [
+      '#type' => 'submit',
+      '#value' => t('Add one more'),
+      '#submit' => array('::addOne'),
+      '#ajax' => [
+        'callback' => '::addmoreCallback',
+        'wrapper' => 'frequency-intervals-wrapper',
+      ],
+    ];
+    if ($name_field > 1) {
+      $form['frequency_intervals_fieldset']['actions']['remove_frequency'] = [
+        '#type' => 'submit',
+        '#value' => t('Remove one'),
+        '#submit' => array('::removeCallback'),
+        '#ajax' => [
+          'callback' => '::addmoreCallback',
+          'wrapper' => 'frequency-intervals-wrapper',
+        ],
+      ];
+    }
+    $form_state->setCached(FALSE);
+
     return $form;
+  }
+
+  /**
+   * Callback for both ajax-enabled buttons.
+   *
+   * Selects and returns the fieldset with the names in it.
+   */
+  public function addmoreCallback(array &$form, FormStateInterface $form_state) {
+    return $form['frequency_intervals_fieldset'];
+  }
+
+  /**
+   * Submit handler for the "add-one-more" button.
+   *
+   * Increments the max counter and causes a rebuild.
+   */
+  public function addOne(array &$form, FormStateInterface $form_state) {
+    $name_field = $form_state->get('num_intervals');
+    $add_button = $name_field + 1;
+    $form_state->set('num_intervals', $add_button);
+    $form_state->setRebuild();
+  }
+
+  /**
+   * Submit handler for the "remove one" button.
+   *
+   * Decrements the max counter and causes a form rebuild.
+   */
+  public function removeCallback(array &$form, FormStateInterface $form_state) {
+    $name_field = $form_state->get('num_intervals');
+    if ($name_field > 1) {
+      $remove_button = $name_field - 1;
+      $form_state->set('num_intervals', $remove_button);
+    }
+    $form_state->setRebuild();
   }
 
   /**
