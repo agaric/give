@@ -129,9 +129,17 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
 
     $name_field = $form_state->get('num_intervals');
     $form['#tree'] = TRUE;
-    $form['frequency_intervals_fieldset'] = [
-      '#type' => 'fieldset',
+    $form['frequency'] = [
+      '#title' => $this->t('Frequency Intervals (Plans)'),
+    ];
+    $form['frequency']['frequency_intervals_table'] = [
+      '#type' => 'table',
       '#title' => $this->t('Frequency'),
+      '#header' => [
+        $this->t('Interval'),
+        $this->t('Interval count'),
+        $this->t('Description'),
+      ],
       '#prefix' => '<div id="frequency-intervals-wrapper">',
       '#suffix' => '</div>',
     ];
@@ -141,9 +149,9 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       $form_state->set('num_intervals', $name_field);
     }
     for ($i = 0; $i < $name_field; $i++) {
-      $form['frequency_intervals_fieldset'][$i]['interval'] = [
+      $form['frequency']['frequency_intervals_table'][$i]['interval'] = [
         '#type' => 'select',
-        '#title' => $this->t('Interval'),
+        '#title' => '',
         '#options' => [
           'day' => 'day',
           'week' => 'week',
@@ -152,22 +160,22 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
         ],
       ];
 
-      $form['frequency_intervals_fieldset'][$i]['interval_count'] = [
+      $form['frequency']['frequency_intervals_table'][$i]['interval_count'] = [
         '#type' => 'number',
-        '#title' => $this->t('Interval count'),
+        '#title' => '',
         '#default_value' => 1,
       ];
 
-      $form['frequency_intervals_fieldset'][$i]['description'] = [
+      $form['frequency']['frequency_intervals_table'][$i]['description'] = [
         '#type' => 'textfield',
-        '#title' => $this->t('Description'),
+        '#title' => '',
         '#default_value' => '',
       ];
     }
-    $form['frequency_intervals_fieldset']['actions'] = [
+    $form['frequency']['frequency_intervals_table']['actions'] = [
       '#type' => 'actions',
     ];
-    $form['frequency_intervals_fieldset']['actions']['add_frequency'] = [
+    $form['frequency']['frequency_intervals_table']['actions']['add_frequency'] = [
       '#type' => 'submit',
       '#value' => t('Add one more'),
       '#submit' => array('::addOne'),
@@ -177,7 +185,7 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       ],
     ];
     if ($name_field > 1) {
-      $form['frequency_intervals_fieldset']['actions']['remove_frequency'] = [
+      $form['frequency']['frequency_intervals_table']['actions']['remove_frequency'] = [
         '#type' => 'submit',
         '#value' => t('Remove one'),
         '#submit' => array('::removeCallback'),
@@ -198,7 +206,7 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
    * Selects and returns the fieldset with the names in it.
    */
   public function addmoreCallback(array &$form, FormStateInterface $form_state) {
-    return $form['frequency_intervals_fieldset'];
+    return $form['frequency']['frequency_intervals_table'];
   }
 
   /**
