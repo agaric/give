@@ -80,7 +80,7 @@ class MailHandlerTest extends UnitTestCase {
 
     $string_translation = $this->getStringTranslationStub();
     $this->giveMailHandler = new MailHandler($this->mailManager, $this->languageManager, $this->logger, $string_translation, $this->entityTypeManager);
-    $language = new Language(array('id' => 'en'));
+    $language = new Language(['id' => 'en']);
 
     $this->languageManager->expects($this->any())
       ->method('getDefaultLanguage')
@@ -137,114 +137,114 @@ class MailHandlerTest extends UnitTestCase {
    * Data provider for ::testSendMailDonations.
    */
   public function getSendMailDonations() {
-    $data = array();
-    $recipients = array('admin@drupal.org', 'user@drupal.org');
-    $default_result = array(
+    $data = [];
+    $recipients = ['admin@drupal.org', 'user@drupal.org'];
+    $default_result = [
       'module' => 'give',
       'key' => '',
       'to' => implode(', ', $recipients),
       'langcode' => 'en',
-      'params' => array(),
+      'params' => [],
       'from' => 'anonymous@drupal.org',
-    );
-    $results = array();
+    ];
+    $results = [];
     $donation = $this->getAnonymousMockDonation($recipients, '');
     $donor = $this->getMockDonor();
-    $result = array(
+    $result = [
       'key' => 'donation_notice',
-      'params' => array(
+      'params' => [
         'give_donation' => $donation,
         'donor' => $donor,
         'give_form' => $donation->getGiveForm(),
-      ),
-    );
+      ],
+    ];
     $results[] = $result + $default_result;
-    $data[] = array($donation, $donor, $results);
+    $data[] = [$donation, $donor, $results];
 
-    $results = array();
+    $results = [];
     $donation = $this->getAnonymousMockDonation($recipients, 'reply');
     $donor = $this->getMockDonor();
-    $result = array(
+    $result = [
       'key' => 'donation_notice',
-      'params' => array(
+      'params' => [
         'give_donation' => $donation,
         'donor' => $donor,
         'give_form' => $donation->getGiveForm(),
-      ),
-    );
+      ],
+    ];
     $results[] = $result + $default_result;
     $result['key'] = 'donation_receipt';
     $result['to'] = 'anonymous@drupal.org';
     $result['from'] = NULL;
     $results[] = $result + $default_result;
-    $data[] = array($donation, $donor, $results);
+    $data[] = [$donation, $donor, $results];
 
-    $results = array();
+    $results = [];
     $donation = $this->getAnonymousMockDonation($recipients, '', TRUE);
     $donor = $this->getMockDonor();
-    $result = array(
+    $result = [
       'key' => 'donation_notice',
-      'params' => array(
+      'params' => [
         'give_donation' => $donation,
         'donor' => $donor,
         'give_form' => $donation->getGiveForm(),
-      ),
-    );
+      ],
+    ];
     $results[] = $result + $default_result;
-    $data[] = array($donation, $donor, $results);
+    $data[] = [$donation, $donor, $results];
 
-    $results = array();
+    $results = [];
     $donation = $this->getAnonymousMockDonation($recipients, 'reply', TRUE);
     $donor = $this->getMockDonor();
-    $result = array(
+    $result = [
       'key' => 'donation_notice',
-      'params' => array(
+      'params' => [
         'give_donation' => $donation,
         'donor' => $donor,
         'give_form' => $donation->getGiveForm(),
-      ),
-    );
+      ],
+    ];
     $results[] = $result + $default_result;
     $result['key'] = 'donation_receipt';
     $result['from'] = NULL;
     $results[] = $result + $default_result;
-    $data[] = array($donation, $donor, $results);
+    $data[] = [$donation, $donor, $results];
 
     // For authenticated user.
-    $results = array();
+    $results = [];
     $donation = $this->getAuthenticatedMockDonation();
     $donor = $this->getMockDonor(FALSE, 'user@drupal.org');
-    $result = array(
+    $result = [
       'module' => 'give',
       'key' => 'user_mail',
       'to' => 'user2@drupal.org',
       'langcode' => 'en',
-      'params' => array(
+      'params' => [
         'give_donation' => $donation,
         'donor' => $donor,
-      ),
+      ],
       'from' => 'user@drupal.org',
-    );
+    ];
     $results[] = $result;
-    $data[] = array($donation, $donor, $results);
+    $data[] = [$donation, $donor, $results];
 
-    $results = array();
+    $results = [];
     $donation = $this->getAuthenticatedMockDonation(TRUE);
     $donor = $this->getMockDonor(FALSE, 'user@drupal.org');
-    $result = array(
+    $result = [
       'module' => 'give',
       'key' => 'user_mail',
       'to' => 'user2@drupal.org',
       'langcode' => 'en',
-      'params' => array(
+      'params' => [
         'give_donation' => $donation,
         'donor' => $donor,
-      ),
+      ],
       'from' => 'user@drupal.org',
-    );
+    ];
     $results[] = $result;
 
-    $data[] = array($donation, $donor, $results);
+    $data[] = [$donation, $donor, $results];
 
     return $data;
   }

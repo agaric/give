@@ -61,60 +61,60 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
     $default_form = $this->config('give.settings')->get('default_form');
     $frequencies = ($give_form->isNew()) ? give_get_default_frequencies() : $give_form->getFrequencies();
 
-    $form['label'] = array(
+    $form['label'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Label'),
       '#maxlength' => 255,
       '#default_value' => $give_form->label(),
       '#description' => $this->t("Example: 'General donations', 'Renovation fund drive', or 'Annual appeal'."),
       '#required' => TRUE,
-    );
-    $form['id'] = array(
+    ];
+    $form['id'] = [
       '#type' => 'machine_name',
       '#default_value' => $give_form->id(),
       '#maxlength' => EntityTypeInterface::BUNDLE_MAX_LENGTH,
-      '#machine_name' => array(
+      '#machine_name' => [
         'exists' => '\Drupal\give\Entity\GiveForm::load',
-      ),
+      ],
       '#disabled' => !$give_form->isNew(),
-    );
-    $form['recipients'] = array(
+    ];
+    $form['recipients'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Recipients'),
       '#default_value' => implode(', ', $give_form->getRecipients()),
       '#description' => $this->t("Provide who should be notified when a donation is received. Example: 'donations@example.org' or 'fund@example.org,staff@example.org' . To specify multiple recipients, separate each email address with a comma."),
       '#required' => TRUE,
-    );
-    $form['subject'] = array(
+    ];
+    $form['subject'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Subject'),
       '#default_value' => $give_form->getSubject(),
       '#description' => $this->t('Subject used for e-mail reply (if Auto-reply with receipt is set below).'),
       '#required' => TRUE,
-    );
-    $form['reply'] = array(
+    ];
+    $form['reply'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Auto-reply with receipt'),
       '#default_value' => $give_form->getReply(),
       '#description' => $this->t('Optionally send a receipt confirming the donation (including amount) with this text, which should include your organization name and any relevant tax information. Leave empty if you do not want to send the donor an auto-reply message and receipt.'),
-    );
-    $form['check_or_other_text'] = array(
+    ];
+    $form['check_or_other_text'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Text to show for check or other'),
       '#default_value' => $give_form->getCheckOrOtherText(),
       '#description' => $this->t('Optional message to show potential givers who select the "Check or other" donation method.'),
-    );
-    $form['weight'] = array(
+    ];
+    $form['weight'] = [
       '#type' => 'weight',
       '#title' => $this->t('Weight'),
       '#default_value' => $give_form->getWeight(),
       '#description' => $this->t('When listing forms, those with lighter (smaller) weights get listed before forms with heavier (larger) weights. Forms with equal weights are sorted alphabetically.'),
-    );
-    $form['selected'] = array(
+    ];
+    $form['selected'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Make this the default form'),
       '#default_value' => ($default_form && $default_form === $give_form->id()),
-    );
+    ];
 
     $form['redirect_uri'] = [
       '#type' => 'textfield',
@@ -178,7 +178,7 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
     $form['frequency']['frequency_intervals_table']['actions']['add_frequency'] = [
       '#type' => 'submit',
       '#value' => t('Add'),
-      '#submit' => array('::addOne'),
+      '#submit' => ['::addOne'],
       '#ajax' => [
         'callback' => '::addmoreCallback',
         'wrapper' => 'frequency-intervals-wrapper',
@@ -189,7 +189,7 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       $form['frequency']['frequency_intervals_table']['actions']['remove_frequency'] = [
         '#type' => 'submit',
         '#value' => t('Remove'),
-        '#submit' => array('::removeCallback'),
+        '#submit' => ['::removeCallback'],
         '#ajax' => [
           'callback' => '::addmoreCallback',
           'wrapper' => 'frequency-intervals-wrapper',
@@ -248,7 +248,7 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
     foreach ($recipients as &$recipient) {
       $recipient = trim($recipient);
       if (!$this->emailValidator->isValid($recipient)) {
-        $form_state->setErrorByName('recipients', $this->t('%recipient is an invalid email address.', array('%recipient' => $recipient)));
+        $form_state->setErrorByName('recipients', $this->t('%recipient is an invalid email address.', ['%recipient' => $recipient]));
       }
     }
     $form_state->setValue('recipients', $recipients);
@@ -264,12 +264,12 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
 
     $edit_link = $this->entity->link($this->t('Edit'));
     if ($status == SAVED_UPDATED) {
-      drupal_set_message($this->t('Give form %label has been updated.', array('%label' => $give_form->label())));
-      $this->logger('give')->notice('Give form %label has been updated.', array('%label' => $give_form->label(), 'link' => $edit_link));
+      drupal_set_message($this->t('Give form %label has been updated.', ['%label' => $give_form->label()]));
+      $this->logger('give')->notice('Give form %label has been updated.', ['%label' => $give_form->label(), 'link' => $edit_link]);
     }
     else {
-      drupal_set_message($this->t('Give form %label has been added.', array('%label' => $give_form->label())));
-      $this->logger('give')->notice('Give form %label has been added.', array('%label' => $give_form->label(), 'link' => $edit_link));
+      drupal_set_message($this->t('Give form %label has been added.', ['%label' => $give_form->label()]));
+      $this->logger('give')->notice('Give form %label has been added.', ['%label' => $give_form->label(), 'link' => $edit_link]);
     }
 
     // Update the default form.

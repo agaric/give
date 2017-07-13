@@ -218,7 +218,7 @@ class DonationTest extends GiveTestBase {
     // Check to that the user was sent to the step 2.
     $this->submitDonateByCheck('12345678', 'Test');
 
-    $captured_emails = $this->getMails(array('id' => 'give_donation_receipt'));
+    $captured_emails = $this->getMails(['id' => 'give_donation_receipt']);
     $this->assertEquals(1, count($captured_emails));
     $this->assertEquals(trim('Auto reply message'), trim($captured_emails[0]['body']));
   }

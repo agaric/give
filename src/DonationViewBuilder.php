@@ -56,7 +56,7 @@ class DonationViewBuilder extends EntityViewBuilder {
       // convert DIVs correctly.
       foreach (Element::children($build) as $key) {
         if (isset($build[$key]['#label_display']) && $build[$key]['#label_display'] == 'above') {
-          $build[$key] += array('#prefix' => '');
+          $build[$key] += ['#prefix' => ''];
           $build[$key]['#prefix'] = $build[$key]['#title'] . ":\n";
           $build[$key]['#label_display'] = 'hidden';
         }

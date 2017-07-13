@@ -51,29 +51,29 @@ class DonationEditForm extends ContentEntityForm {
     $donation = $this->entity;
     $form = parent::form($form, $form_state, $donation);
 
-    $form['name'] = array(
+    $form['name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Donor name'),
       '#maxlength' => 255,
       '#default_value' => $donation->getDonorName(),
-    );
-    $form['mail'] = array(
+    ];
+    $form['mail'] = [
       '#type' => 'email',
       '#title' => $this->t('Donor email address'),
       '#default_value' => $donation->getDonorMail(),
-    );
-    $form['amount'] = array(
+    ];
+    $form['amount'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Amount (USD)'),
       '#default_value' => round($donation->getAmount()/100, 2),
       '#disabled' => TRUE,
-    );
-    $form['recurring'] = array(
+    ];
+    $form['recurring'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Recurring'),
       '#default_value' => $donation->getRecurrenceIntervalCount(),
       '#disabled' => TRUE,
-    );
+    ];
 
     return $form;
   }
@@ -83,10 +83,10 @@ class DonationEditForm extends ContentEntityForm {
    */
   public function save(array $form, FormStateInterface $form_state) {
     $this->entity->save();
-    $this->logger('give')->notice('The donation %label has been updated.', array(
+    $this->logger('give')->notice('The donation %label has been updated.', [
       '%label' => $this->entity->getLabel(),
       'link' => $this->getEntity()->link($this->t('Edit'), 'edit-form'),
-    ));
+    ]);
   }
 
 }

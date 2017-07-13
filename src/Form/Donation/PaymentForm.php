@@ -97,32 +97,32 @@ class PaymentForm extends ContentEntityForm {
     $form['#suffix'] = '</div>';
     $form['#attributes']['class'][] = 'give-form give-form-payment flow-middle';
 
-    $form['thanks'] = array(
+    $form['thanks'] = [
       '#markup' => $this->t(
         "<h3>Thank you for supporting :sitename, :name!</h3>",
         [':name' => $donation->getDonorName(), ':sitename' => \Drupal::config('system.site')->get('name')]
       ),
       '#weight' => -50,
-    );
-    $form['show_amount'] = array(
+    ];
+    $form['show_amount'] = [
       '#type' => 'item',
       '#value' => $donation->getAmount(),
       '#title' => $this->t('Amount you pledged'),
       '#plain_text' => $donation->recurring() ? $this->t(':plan',
         [':plan' => $donation->getPlanName()]) : $donation->getDollarAmount(),
       '#weight' => -40,
-    );
+    ];
 
-    $form['method'] = array(
+    $form['method'] = [
       '#type' => 'radios',
       '#title' => t('Choose donation method'),
-      '#options' => array(
+      '#options' => [
         GIVE_WITH_STRIPE => $this->t('By credit/debit card'),
         // GIVE_WITH_DWOLLA => $this->t('By bank transfer')
         GIVE_WITH_CHECK => $this->t('By check or other'),
-      ),
+      ],
       '#weight' => 0,
-    );
+    ];
 
     $form['#attached'] = [
       'library' => ['give/give-stripe-helper'],
@@ -138,25 +138,25 @@ class PaymentForm extends ContentEntityForm {
       ],
     ];
 
-    $form['stripe_errors'] = array(
+    $form['stripe_errors'] = [
       '#markup' => '<span class="payment-errors"></span>',
       '#weight' => 10,
-    );
+    ];
 
-    $form['stripe_token'] = array(
+    $form['stripe_token'] = [
       '#type' => 'hidden',
       '#default_value' => '',
-    );
+    ];
 
     // Custom radar rules can't use name but Stripe's risk assessment does.
     // Therefore this should default to the entered name but be editable.
     // TODO see https://www.drupal.org/node/2872223
-    $form['donor_name_for_stripe'] = array(
+    $form['donor_name_for_stripe'] = [
       '#type' => 'hidden',
       '#default_value' => $donation->getDonorName(),
-    );
+    ];
 
-    $form['card'] = array(
+    $form['card'] = [
       '#type' => 'item',
       '#title' => t('Credit or debit card'),
       '#required' => TRUE,
@@ -168,9 +168,9 @@ class PaymentForm extends ContentEntityForm {
           ':input[name="method"]' => ['value' => GIVE_WITH_STRIPE],
         ],
       ],
-    );
+    ];
 
-    $form['check_or_other_text'] = array(
+    $form['check_or_other_text'] = [
       '#type' => 'item',
       '#description' => $donation->getGiveForm()->getCheckOrOtherText(),
       '#states' => [
@@ -178,9 +178,9 @@ class PaymentForm extends ContentEntityForm {
           ':input[name="method"]' => ['value' => GIVE_WITH_CHECK],
         ],
       ],
-    );
+    ];
 
-    $form['telephone'] = array(
+    $form['telephone'] = [
       '#type' => 'tel',
       '#title' => t('Telephone number'),
       '#states' => [
@@ -188,9 +188,9 @@ class PaymentForm extends ContentEntityForm {
           ':input[name="method"]' => ['value' => GIVE_WITH_CHECK],
         ],
       ],
-    );
+    ];
 
-    $form['check_or_other_information'] = array(
+    $form['check_or_other_information'] = [
       '#type' => 'textarea',
       '#title' => t('Further information'),
       '#description' => t('Please ask any questions or explain anything needed to arrange for giving your donation.'),
@@ -199,7 +199,7 @@ class PaymentForm extends ContentEntityForm {
           ':input[name="method"]' => ['value' => GIVE_WITH_CHECK],
         ],
       ],
-    );
+    ];
 
     return $form;
   }
@@ -290,12 +290,12 @@ class PaymentForm extends ContentEntityForm {
         "currency" => "usd",
         "source" => $token,
         "description" => $donation->getLabel(),
-        "metadata" => array(
+        "metadata" => [
           "give_form_id" => $donation->getGiveForm()->id(),
           "give_form_label" => $donation->getGiveForm()->label(),
           "email" => $donation->getDonorMail(),
           "name" => $donation->getDonorName(),
-        ),
+        ],
       ];
 
       try {
@@ -324,9 +324,9 @@ class PaymentForm extends ContentEntityForm {
 
     drupal_set_message(
       $this->t("Thank you, :donor_name, for your donation of :amount",
-      array(
+      [
         ':donor_name' => $donation->getDonorName(),
-        ':amount' => $donation->recurring() ? $this->t(':plan', [':plan' => $donation->getPlanName()]) : $donation->getDollarAmount()))
+        ':amount' => $donation->recurring() ? $this->t(':plan', [':plan' => $donation->getPlanName()]) : $donation->getDollarAmount()])
     );
     drupal_set_message($this->t("We have e-mailed a receipt to <em>:mail</em>.", [':mail' => $donation->getDonorMail()]));
 

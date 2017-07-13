@@ -100,24 +100,24 @@ class DonationForm extends ContentEntityForm {
     $form['#attributes']['class'][] = 'give-form';
 
     if (!empty($donation->preview)) {
-      $form['preview'] = array(
-        '#theme_wrappers' => array('container__preview'),
-        '#attributes' => array('class' => array('preview')),
-      );
+      $form['preview'] = [
+        '#theme_wrappers' => ['container__preview'],
+        '#attributes' => ['class' => ['preview']],
+      ];
       $form['preview']['donation'] = $this->entityTypeManager->getViewBuilder('give_donation')->view($donation, 'full');
     }
 
-    $form['name'] = array(
+    $form['name'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Your name'),
       '#maxlength' => 255,
       '#required' => TRUE,
-    );
-    $form['mail'] = array(
+    ];
+    $form['mail'] = [
       '#type' => 'email',
       '#title' => $this->t('Your email address'),
       '#required' => TRUE,
-    );
+    ];
     if ($user->isAnonymous()) {
       $form['#attached']['library'][] = 'core/drupal.form';
       $form['#attributes']['data-user-info-from-browser'] = TRUE;
@@ -136,7 +136,7 @@ class DonationForm extends ContentEntityForm {
       $form['mail']['#plain_text'] = $user->getEmail();
     }
 
-    $form['amount'] = array(
+    $form['amount'] = [
       '#type' => 'number',
       '#step' => .01,
       '#min' => 4,
@@ -144,7 +144,7 @@ class DonationForm extends ContentEntityForm {
       '#title' => $this->t('Amount to give'),
       '#field_prefix' => $this->t('$'),
       '#required' => TRUE,
-    );
+    ];
 
     $form['recurring_fieldset'] = [
       '#type' => 'fieldset',
@@ -243,10 +243,10 @@ class DonationForm extends ContentEntityForm {
       $interval = $this->config('give.settings')->get('flood.interval');
 
       if (!$this->flood->isAllowed('give', $limit, $interval)) {
-        $form_state->setErrorByName('', $this->t('You cannot send more than %limit donations in @interval. Try again later.', array(
+        $form_state->setErrorByName('', $this->t('You cannot send more than %limit donations in @interval. Try again later.', [
           '%limit' => $limit,
           '@interval' => $this->dateFormatter->formatInterval($interval),
-        )));
+        ]));
       }
     }
 

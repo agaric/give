@@ -19,14 +19,14 @@ class GiveFormAndDonationEntityTest extends EntityKernelTestBase {
    *
    * @var array
    */
-  public static $modules = array(
+  public static $modules = [
     'views',
     'system',
     'give',
     'field',
     'user',
     'give_test',
-  );
+  ];
 
   /**
    * {@inheritdoc}
@@ -91,7 +91,7 @@ class GiveFormAndDonationEntityTest extends EntityKernelTestBase {
   public function testDonationMethods() {
     $donation_storage = $this->container->get('entity.manager')->getStorage('give_donation');
     /** @var \Drupal\give\Entity\Donation $donation */
-    $donation = $donation_storage->create(array('give_form' => 'tzedakah'));
+    $donation = $donation_storage->create(['give_form' => 'tzedakah']);
 
     // Check for empty values first.
     $this->assertEquals(0, $donation->getAmount());

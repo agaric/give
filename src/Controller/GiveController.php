@@ -64,9 +64,9 @@ class GiveController extends ControllerBase {
       // If there are no forms, do not display the form.
       if (empty($give_form)) {
         if ($this->currentUser()->hasPermission('administer give')) {
-          drupal_set_message($this->t('The give form has not been configured. <a href=":add">Add one or more forms</a> .', array(
-            ':add' => $this->url('give.form_add'))), 'error');
-          return array();
+          drupal_set_message($this->t('The give form has not been configured. <a href=":add">Add one or more forms</a> .', [
+            ':add' => $this->url('give.form_add')]), 'error');
+          return [];
         }
         else {
           throw new NotFoundHttpException();
@@ -76,9 +76,9 @@ class GiveController extends ControllerBase {
 
     $donation = $this->entityTypeManager()
       ->getStorage('give_donation')
-      ->create(array(
+      ->create([
         'give_form' => $give_form->id(),
-      ));
+      ]);
 
     $form = $this->entityFormBuilder()->getForm($donation);
     $form['#title'] = $give_form->label();

@@ -73,7 +73,7 @@ class MailHandler implements MailHandlerInterface {
   public function sendDonationNotice(DonationInterface $donation, AccountInterface $donor) {
     // Clone the donor, as we make changes to mail and name properties.
     $donor_cloned = clone $this->userStorage->load($donor->id());
-    $params = array();
+    $params = [];
     $current_langcode = $this->languageManager->getCurrentLanguage()->getId();
     $recipient_langcode = $this->languageManager->getDefaultLanguage()->getId();
     $give_form = $donation->getGiveForm();
@@ -86,7 +86,7 @@ class MailHandler implements MailHandlerInterface {
 
       // For the email message, clarify that the donor name is not verified; it
       // could potentially clash with a username on this site.
-      $donor_cloned->name = $this->t('@name (not verified)', array('@name' => $donation->getDonorName()));
+      $donor_cloned->name = $this->t('@name (not verified)', ['@name' => $donation->getDonorName()]);
     }
 
     // Build email parameters.
@@ -106,11 +106,11 @@ class MailHandler implements MailHandlerInterface {
       $this->mailManager->mail('give', 'donation_receipt', $donor_cloned->getEmail(), $current_langcode, $params);
     }
 
-    $this->logger->notice('%donor-name (@donor-from) gave via %give_form.', array(
+    $this->logger->notice('%donor-name (@donor-from) gave via %give_form.', [
       '%donor-name' => $donor_cloned->getUsername(),
       '@donor-from' => $donor_cloned->getEmail(),
       '%give_form' => $give_form->label(),
-    ));
+    ]);
   }
 
 }

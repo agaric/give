@@ -114,7 +114,7 @@ class Donation extends ContentEntityBase implements DonationInterface {
    */
   public function getDollarAmount() {
     $cents = $this->getAmount();
-    return t("$@amount", array('@amount' => round($cents/100, 2)));
+    return t("$@amount", ['@amount' => round($cents/100, 2)]);
   }
 
   /**
@@ -296,10 +296,10 @@ class Donation extends ContentEntityBase implements DonationInterface {
     $fields['langcode'] = BaseFieldDefinition::create('language')
       ->setLabel(t('Language'))
       ->setDescription(t('The donation language code.'))
-      ->setDisplayOptions('form', array(
+      ->setDisplayOptions('form', [
         'type' => 'language_select',
         'weight' => 2,
-      ));
+      ]);
 
     $fields['name'] = BaseFieldDefinition::create('string')
       ->setLabel(t("The donor's name"))
