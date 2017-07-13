@@ -59,7 +59,7 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
     /** @var \Drupal\give\Entity\GiveForm $give_form */
     $give_form = $this->entity;
     $default_form = $this->config('give.settings')->get('default_form');
-    $frequencies = ($give_form->isNew()) ? $this->getDefaultFrequencies() : $give_form->getFrequency();
+    $frequencies = ($give_form->isNew()) ? give_get_default_frequencies() : $give_form->getFrequencies();
 
     $form['label'] = array(
       '#type' => 'textfield',
@@ -296,21 +296,9 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
     $entity = parent::buildEntity($form, $form_state);
     $frequency = $form_state->getValue('frequency');
     unset($frequency['frequency_intervals_table']['actions']);
-    $entity->set('frequency', $frequency['frequency_intervals_table']);
+    $entity->set('frequencies', $frequency['frequency_intervals_table']);
 
     return $entity;
-  }
-
-  /**
-   * Default pre-created frequencies.
-   */
-  public function getDefaultFrequencies() {
-    return [
-      0 => ['interval' => 'month', 'interval_count' => '1', 'description' => 'Every month'],
-      1 => ['interval' => 'month', 'interval_count' => '3', 'description' => 'Every 3 months (quarterly)'],
-      2 => ['interval' => 'month', 'interval_count' => '6', 'description' => 'Every 6 months (semi-annually)'],
-      3 => ['interval' => 'month', 'interval_count' => '12', 'description' => 'Every year (annually)'],
-    ];
   }
 
 }

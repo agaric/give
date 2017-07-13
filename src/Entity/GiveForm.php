@@ -44,7 +44,7 @@ use Drupal\give\GiveFormInterface;
  *     "weight",
  *     "redirect_uri",
  *     "submit_text",
- *     "frequency"
+ *     "frequencies"
  *   }
  * )
  */
@@ -119,20 +119,20 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
    *
    * @var array
    */
-  protected $frequency = [];
+  protected $frequencies = [];
 
   /**
    * {@inheritdoc}
    */
-  public function getFrequency() {
-    return $this->frequency;
+  public function getFrequencies() {
+    return $this->frequencies;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setFrequency(array $frequency) {
-    $this->frequency = $frequency;
+  public function setFrequencies(array $frequencies) {
+    $this->frequencies = $frequencies;
     return $this;
   }
 

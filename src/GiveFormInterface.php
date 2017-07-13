@@ -15,18 +15,18 @@ interface GiveFormInterface extends ConfigEntityInterface {
    * @return array
    *   The Plans available for this donation form.
    */
-  public function getFrequency();
+  public function getFrequencies();
 
   /**
    * Set the plans supported by this donation.
    *
-   * @param array $frequency
+   * @param array $frequencies
    *   The plans supported by this donation.
    *
    * @return $this
    *   Return the entity.
    */
-  public function setFrequency(array $frequency);
+  public function setFrequencies(array $frequencies);
 
   /**
    * Returns list of recipient email addresses.

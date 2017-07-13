@@ -65,7 +65,7 @@ give.form.*:
     submit_text:
       type: string
       label: 'Submit button text'
-    frequency:
+    frequencies:
       type: sequence
       label: 'Frequencies'
       sequence:
