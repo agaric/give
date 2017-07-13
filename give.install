@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Field\BaseFieldDefinition;
+use Drupal\give\Entity\GiveForm;
 
 /**
  * Add 'stripe_token' field to 'donation' entities.
@@ -24,4 +25,20 @@ function give_update_8001() {
 
   \Drupal::entityDefinitionUpdateManager()
     ->installFieldStorageDefinition('stripe_token', 'give_donation', 'give', $storage_definition);
+}
+
+/**
+ * Add the default frecuencies to the already created entities.
+ */
+function give_update_8002() {
+  $entities = \Drupal::entityQuery('give_form');
+  $ids = $entities->execute();
+  foreach ($ids as $id) {
+    $give_form = GiveForm::load($id);
+    if (empty($give_form->getFrequencies())) {
+      $default = give_get_default_frequencies();
+      $give_form->setFrequencies($default);
+      $give_form->save();
+    }
+  }
 }
