@@ -150,10 +150,16 @@ class DonationForm extends ContentEntityForm {
       '#type' => 'fieldset',
       '#title' => $this->t('Make this a recurring donation:'),
     ];
+
+    $give_form = $this->getBundleEntity();
+    $options = [-1 => 'No, just once'];
+    foreach ($give_form->getFrequencies() as $key => $option) {
+      $options[$key] = $option['description'];
+    }
     $form['recurring_fieldset']['recurring'] = [
       '#type' => 'radios',
       '#default_value' => 'once',
-      '#options' => give_list_recurrances(),
+      '#options' => $options,
     ];
 
     return $form;

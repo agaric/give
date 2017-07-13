@@ -97,7 +97,7 @@ interface DonationInterface extends ContentEntityInterface {
   public function getDollarAmount();
 
   /**
-   * Returns TRUE if the donation should recur monthly.
+   * Returns TRUE if the donation should recur.
    *
    * @return bool
    *   TRUE if the donation should recur monthly, FALSE if not.
@@ -115,6 +115,8 @@ interface DonationInterface extends ContentEntityInterface {
    * @param string interval
    *   The interval unit used to describe how much time should elapse between
    *   donations. Currently the interval is hard-coded to month.
+   *
+   * @deprecated the recurrence unit only can be set in the give_form entity.
    */
   public function setRecurrenceIntervalUnit($interval);
 
@@ -134,6 +136,9 @@ interface DonationInterface extends ContentEntityInterface {
    *   The number of intervals which should elapse between donations. Currently
    *   the interval is hard-coded to month, so a value of 1 is monthly, 3 is
    *   quarterly, and so on.
+   *
+   * @deprecated The recurrence only can be set in the give_form not in the
+   *  donation.
    */
   public function setRecurrenceIntervalCount($count);
 

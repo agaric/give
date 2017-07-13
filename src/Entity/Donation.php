@@ -128,7 +128,7 @@ class Donation extends ContentEntityBase implements DonationInterface {
    * {@inheritdoc}
    */
   public function recurring() {
-    return (bool) $this->getRecurrenceIntervalCount() && $this->getRecurrenceIntervalUnit();
+    return ($this->get('recurring')->value != -1);
   }
 
   /**
@@ -145,15 +145,18 @@ class Donation extends ContentEntityBase implements DonationInterface {
    * {@inheritdoc}
    */
   public function getRecurrenceIntervalUnit() {
-    return 'month';
+    $give_form = $this->getGiveForm();
+    $frecuencies = $give_form->getFrequencies();
+    return $frecuencies[$this->get('recurring')->value]['interval'];
   }
-
 
   /**
    * {@inheritdoc}
    */
   public function getRecurrenceIntervalCount() {
-    return $this->get('recurring')->value;
+    $give_form = $this->getGiveForm();
+    $frecuencies = $give_form->getFrequencies();
+    return $frecuencies[$this->get('recurring')->value]['interval_count'];
   }
 
   /**
@@ -168,7 +171,9 @@ class Donation extends ContentEntityBase implements DonationInterface {
    * {@inheritdoc}
    */
   public function getRecurrence() {
-    return give_recurrance_label($this->getRecurrenceIntervalCount(), $this->getRecurrenceIntervalUnit());
+    $give_form = $this->getGiveForm();
+    $frecuencies = $give_form->getFrequencies();
+    return $frecuencies[$this->get('recurring')->value]['description'];
   }
 
   /**
@@ -179,14 +184,20 @@ class Donation extends ContentEntityBase implements DonationInterface {
    * change.
    */
   public function getPlanId() {
-    return 'usd' . $this->getAmount() . '_month' . $this->recurring();
+    $give_form = $this->getGiveForm();
+    $frecuencies = $give_form->getFrequencies();
+    $interval = $frecuencies[$this->get('recurring')->value]['interval'];
+    $interval_count = $frecuencies[$this->get('recurring')->value]['interval_count'];
+    return 'usd' . $this->getAmount() . '_' . $interval . '_' . $interval_count;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getPlanName() {
-    return $this->getDollarAmount() . ' ' . $this->getRecurrence();
+    $give_form = $this->getGiveForm();
+    $frecuencies = $give_form->getFrequencies();
+    return $this->getDollarAmount() . ' ' . $frecuencies[$this->get('recurring')->value]['description'];
   }
 
   /**
