@@ -59,7 +59,7 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
     /** @var \Drupal\give\Entity\GiveForm $give_form */
     $give_form = $this->entity;
     $default_form = $this->config('give.settings')->get('default_form');
-    $frequencies = $give_form->getFrequency() ?: 1;
+    $frequencies = ($give_form->isNew()) ? $this->getDefaultFrequencies() : $give_form->getFrequency();
 
     $form['label'] = array(
       '#type' => 'textfield',
@@ -172,10 +172,10 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
         '#default_value' => (isset($frequencies[$i])) ? $frequencies[$i]['description'] : '',
       ];
     }
-    $form['frequency']['actions'] = [
+    $form['frequency']['frequency_intervals_table']['actions'] = [
       '#type' => 'actions',
     ];
-    $form['frequency']['actions']['add_frequency'] = [
+    $form['frequency']['frequency_intervals_table']['actions']['add_frequency'] = [
       '#type' => 'submit',
       '#value' => t('Add'),
       '#submit' => array('::addOne'),
@@ -184,8 +184,9 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
         'wrapper' => 'frequency-intervals-wrapper',
       ],
     ];
+
     if ($name_field > 1) {
-      $form['frequency']['actions']['remove_frequency'] = [
+      $form['frequency']['frequency_intervals_table']['actions']['remove_frequency'] = [
         '#type' => 'submit',
         '#value' => t('Remove'),
         '#submit' => array('::removeCallback'),
@@ -294,9 +295,22 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
     /** @var \Drupal\give\GiveFormInterface $entity */
     $entity = parent::buildEntity($form, $form_state);
     $frequency = $form_state->getValue('frequency');
+    unset($frequency['frequency_intervals_table']['actions']);
     $entity->set('frequency', $frequency['frequency_intervals_table']);
 
     return $entity;
+  }
+
+  /**
+   * Default pre-created frequencies.
+   */
+  public function getDefaultFrequencies() {
+    return [
+      0 => ['interval' => 'month', 'interval_count' => '1', 'description' => 'Every month'],
+      1 => ['interval' => 'month', 'interval_count' => '3', 'description' => 'Every 3 months (quarterly)'],
+      2 => ['interval' => 'month', 'interval_count' => '6', 'description' => 'Every 6 months (semi-annually)'],
+      3 => ['interval' => 'month', 'interval_count' => '12', 'description' => 'Every year (annually)'],
+    ];
   }
 
 }
