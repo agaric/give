@@ -139,7 +139,7 @@ class DonationForm extends ContentEntityForm {
     $form['amount'] = [
       '#type' => 'number',
       '#step' => .01,
-      '#min' => 4,
+      '#min' => 2.5,
       '#max' => 1000000,
       '#title' => $this->t('Amount to give'),
       '#field_prefix' => $this->t('$'),
