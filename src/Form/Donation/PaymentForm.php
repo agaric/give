@@ -208,8 +208,9 @@ class PaymentForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function actions(array $form, FormStateInterface $form_state) {
+    $donation = $this->entity;
     $elements = parent::actions($form, $form_state);
-    $elements['submit']['#value'] = $this->t($giveForm->getPaymentSubmitText());
+    $elements['submit']['#value'] = $this->t($donation->getGiveForm()->getPaymentSubmitText());
     $elements['delete']['#title'] = $this->t('Cancel');
     return $elements;
   }
