@@ -148,4 +148,19 @@ interface GiveFormInterface extends ConfigEntityInterface {
    */
   public function setSubmitText($text);
 
+  /**
+   * The text displayed in the submit button in the payment form.
+   */
+  public function getPaymentSubmitText();
+
+  /**
+   * Set the text displayed in the submit button in the payment form.
+   *
+   * @param string $text
+   *   The text displayed in the payment submit button.
+   *
+   * @return $this
+   */
+  public function setPaymentSubmitText($text);
+
 }

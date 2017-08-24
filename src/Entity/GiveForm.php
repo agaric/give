@@ -108,11 +108,18 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
   protected $redirect_uri = '/';
 
   /**
-   * The text displayed in the Submit Button.
+   * The text displayed in the submit Button.
    *
    * @var string
    */
   protected $submit_text = 'Give';
+
+  /**
+   * The text displayed in the submit button on the second, payment page.
+   *
+   * @var string
+   */
+  protected $payment_submit_text = 'Give';
 
   /**
    * Frequency intervals (Stripe Plans).
@@ -238,6 +245,21 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
    */
   public function setSubmitText($submit_text) {
     $this->submit_text = $submit_text;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getPaymentSubmitText() {
+    return $this->payment_submit_text;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setPaymentSubmitText($payment_submit_text) {
+    $this->payment_submit_text = $payment_submit_text;
     return $this;
   }
 

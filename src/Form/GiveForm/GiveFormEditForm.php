@@ -128,6 +128,12 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       '#description' => t("Override the submit button's default <em>Give</em> text."),
       '#default_value' => $give_form->getSubmitText(),
     ];
+    $form['payment_submit_text'] = [
+      '#type' => 'textfield',
+      '#title' => t('Submit payment button text'),
+      '#description' => t("Override the payment page submit button's default <em>Give</em> text."),
+      '#default_value' => $give_form->getPaymentSubmitText(),
+    ];
     $name_field = $form_state->get('num_intervals');
     $form['frequency'] = [
       '#type' => 'fieldset',
