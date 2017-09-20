@@ -91,6 +91,8 @@ class PaymentForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function form(array $form, FormStateInterface $form_state) {
+    $publisable_key = \Drupal::config('give.settings')->get('stripe_publishable_key');
+
     $donation = $this->entity;
     $form = parent::form($form, $form_state, $donation);
     $form['#prefix'] = '<div class="flow">';
@@ -117,26 +119,35 @@ class PaymentForm extends ContentEntityForm {
       '#type' => 'radios',
       '#title' => t('Choose donation method'),
       '#options' => [
-        GIVE_WITH_STRIPE => $this->t('By credit/debit card'),
         // GIVE_WITH_DWOLLA => $this->t('By bank transfer')
         GIVE_WITH_CHECK => $this->t('By check or other'),
       ],
+      '#default_value' => GIVE_WITH_CHECK,
       '#weight' => 0,
     ];
 
-    $form['#attached'] = [
-      'library' => ['give/give-stripe-helper'],
-      'drupalSettings' => [
-        'give' => [
-          'stripe_publishable_key' => \Drupal::config('give.settings')->get('stripe_publishable_key'),
+    // Only display the Credit Card payment method if the stripe credentials
+    // has been provided.
+    if ($publisable_key) {
+      // Add the credit card payment option (via stripe)
+      $form['method']['#options'] = [GIVE_WITH_STRIPE => $this->t('By credit/debit card')] + $form['method']['#options'];
+      // Allow the user select her payment method.
+      unset($form['method']['#default_value']);
+
+      $form['#attached'] = [
+        'library' => ['give/give-stripe-helper'],
+        'drupalSettings' => [
+          'give' => [
+            'stripe_publishable_key' => \Drupal::config('give.settings')->get('stripe_publishable_key'),
+          ],
+          'http_header' => [
+            ['Content-Security-Policy' => "connect-src 'https://api.stripe.com'"],
+            ['Content-Security-Policy' => "child-src 'https://js.stripe.com'"],
+            ['Content-Security-Policy' => "script-src 'https://js.stripe.com'"],
+          ],
         ],
-        'http_header' => [
-          ['Content-Security-Policy' => "connect-src 'https://api.stripe.com'"],
-          ['Content-Security-Policy' => "child-src 'https://js.stripe.com'"],
-          ['Content-Security-Policy' => "script-src 'https://js.stripe.com'"],
-        ],
-      ],
-    ];
+      ];
+    }
 
     $form['stripe_errors'] = [
       '#markup' => '<span class="payment-errors"></span>',
