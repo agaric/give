@@ -44,6 +44,7 @@ use Drupal\give\GiveFormInterface;
  *     "weight",
  *     "redirect_uri",
  *     "submit_text",
+ *     "payment_submit_text",
  *     "frequencies"
  *   }
  * )

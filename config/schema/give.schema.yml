@@ -65,6 +65,9 @@ give.form.*:
     submit_text:
       type: string
       label: 'Submit button text'
+    payment_submit_text:
+      type: string
+      label: 'Submit payment button text'
     frequencies:
       type: sequence
       label: 'Frequencies'
