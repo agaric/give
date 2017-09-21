@@ -161,15 +161,15 @@ class PaymentForm extends ContentEntityForm {
 
     // Custom radar rules can't use name but Stripe's risk assessment does.
     // Therefore this should default to the entered name but be editable.
-    // TODO see https://www.drupal.org/node/2872223
     $form['donor_name_for_stripe'] = [
-      '#type' => 'hidden',
+      '#type' => 'textfield',
+      '#title' => $this->t('The donation will be billed using this name'),
       '#default_value' => $donation->getDonorName(),
     ];
 
     $form['card'] = [
       '#type' => 'item',
-      '#title' => t('Credit or debit card'),
+      '#title' => $this->t('Credit or debit card'),
       '#required' => TRUE,
       '#value' => TRUE, // For items, required is supposed to only show the asterisk, but Drupal is broken.
       '#markup' => '<div id="stripe-card-element" class="give-card-element"></div><div class="form--inline-feedback form--inline-feedback--success" id="stripe-card-errors"></div><div class="form--inline-feedback form--inline-feedback--error" id="stripe-card-success"></div>',
