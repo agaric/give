@@ -9,6 +9,24 @@ use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\give\Entity\GiveForm;
 
 /**
+ * Implements hook_install().
+ */
+function give_install() {
+  // Adjustments to the pre-created donation form.
+  $default_donate_form_id = 'donate';
+
+  // Set the recipient to use the site mail by default.
+  $mail = \Drupal::config('system.site')->get('mail');
+  $donate_form = GiveForm::load($default_donate_form_id);
+  $donate_form->setRecipients([$mail]);
+  $donate_form->save();
+
+  // Set this form as the default donation form.
+  $give_settings = \Drupal::configFactory()->getEditable('give.settings');
+  $give_settings->set('default_form', $default_donate_form_id)->save();
+}
+
+/**
  * Add 'stripe_token' field to 'donation' entities.
  */
 function give_update_8001() {
