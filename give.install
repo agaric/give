@@ -18,6 +18,12 @@ function give_install() {
   // Set the recipient to use the site mail by default.
   $mail = \Drupal::config('system.site')->get('mail');
   $donate_form = GiveForm::load($default_donate_form_id);
+
+  // Check that form module exists before to try set it as default.
+  if (!$donate_form) {
+    return;
+  }
+
   $donate_form->setRecipients([$mail]);
   $donate_form->save();
 
