@@ -41,6 +41,7 @@ use Drupal\give\GiveFormInterface;
  *     "subject",
  *     "reply",
  *     "check_or_other_text",
+ *     "credit_card_extra_text",
  *     "weight",
  *     "redirect_uri",
  *     "submit_text",
@@ -201,6 +202,21 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
    */
   public function setCheckOrOtherText($text) {
     $this->check_or_other_text = $text;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCreditCardExtraText() {
+    return $this->credit_card_extra_text;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setCreditCardExtraText($text) {
+    $this->credit_card_extra_text = $text;
     return $this;
   }
 
