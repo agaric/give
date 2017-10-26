@@ -104,6 +104,12 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       '#default_value' => $give_form->getCheckOrOtherText(),
       '#description' => $this->t('Optional message to show potential givers who select the "Check or other" donation method.'),
     ];
+    $form['credit_card_extra_text'] = [
+      '#type' => 'textarea',
+      '#title' => $this->t('Extra text to show above credit card form'),
+      '#default_value' => $give_form->getCreditCardExtraText(),
+      '#description' => $this->t('Optional message to show above credit card form for potential givers who select the "Credit card" donation method.'),
+    ];
     $form['weight'] = [
       '#type' => 'weight',
       '#title' => $this->t('Weight'),
