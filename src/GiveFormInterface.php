@@ -89,6 +89,21 @@ interface GiveFormInterface extends ConfigEntityInterface {
   public function setCheckOrOtherText($text);
 
   /**
+   * Sets an optional extra message to show potential givers who select the
+   * "Credit card" donation method.
+   */
+  public function setCreditCardExtraText($text);
+
+  /**
+   * Returns an optional extra message to show potential givers who select the 
+   * "Credit card" donation method.
+   *
+   * @return string
+   *  Optional extra text to show above credit card form.
+   */
+  public function getCreditCardExtraText();
+
+  /**
    * Sets an automatic subject for the donation receipt e-mail to the donor.
    *
    * @param string $subject
