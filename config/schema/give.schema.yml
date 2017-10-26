@@ -56,6 +56,9 @@ give.form.*:
     check_or_other_text:
       type: string
       label: 'Check or other text'
+    credit_card_extra_text:
+      type: string
+      label: 'Credit card extra text'
     weight:
       type: integer
       label: 'Weight'
