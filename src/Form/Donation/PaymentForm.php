@@ -167,6 +167,16 @@ class PaymentForm extends ContentEntityForm {
       '#default_value' => $donation->getDonorName(),
     ];
 
+    $form['credit_card_extra_text'] = [
+      '#type' => 'item',
+      '#description' => $donation->getGiveForm()->getCreditCardExtraText(),
+      '#states' => [
+        'visible' => [
+          ':input[name="method"]' => ['value' => GIVE_WITH_STRIPE],
+        ],
+      ],
+    ];
+
     $form['card'] = [
       '#type' => 'item',
       '#title' => $this->t('Credit or debit card'),
