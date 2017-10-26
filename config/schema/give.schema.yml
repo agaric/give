@@ -55,7 +55,7 @@ give.form.*:
       label: 'Auto-reply'
     check_or_other_text:
       type: string
-      label: 'Check or other test'
+      label: 'Check or other text'
     weight:
       type: integer
       label: 'Weight'
