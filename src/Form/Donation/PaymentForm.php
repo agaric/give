@@ -168,6 +168,41 @@ class PaymentForm extends ContentEntityForm {
       '#description' => $this->t('The donation will be billed using this name'),
     ];
 
+    if ($donation->getGiveForm()->getCollectAddress()) {
+      $form['address_line1'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Billing address'),
+        '#required' => TRUE,
+      ];
+      $form['address_line2'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Optional apartment/suite/unit'),
+      ];
+      $form['address_city'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('City or district'),
+        // TODO add '#default_value' (for everything) so form repopulates after errors
+        '#required' => TRUE,
+      ];
+      $form['address_zip'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Postal code / ZIP'),
+        '#required' => TRUE,
+      ];
+      $form['address_state'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('State or province'),
+        '#required' => TRUE,
+      ];
+      $form['address_country'] = [
+        '#type' => 'textfield',
+        '#title' => $this->t('Country'),
+        '#default_value' => 'United States',
+        '#required' => TRUE,
+      ];
+    }
+
+
     $form['credit_card_extra_text'] = [
       '#type' => 'item',
       '#description' => $donation->getGiveForm()->getCreditCardExtraText(),
