@@ -98,6 +98,12 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       '#default_value' => $give_form->getReply(),
       '#description' => $this->t('Optionally send a receipt confirming the donation (including amount) with this text, which should include your organization name and any relevant tax information. Leave empty if you do not want to send the donor an auto-reply message and receipt.'),
     ];
+    $form['collect_address'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Collect address'),
+      '#default_value' => $give_form->getCollectAddress(),
+      '#description' => $this->t('Require the donor to provide their address information.  This is not needed for credit card or other processing.'),
+    ];
     $form['check_or_other_text'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Text to show for check or other'),
