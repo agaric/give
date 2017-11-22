@@ -42,6 +42,7 @@ use Drupal\give\GiveFormInterface;
  *     "reply",
  *     "check_or_other_text",
  *     "credit_card_extra_text",
+ *     "collect_address",
  *     "weight",
  *     "redirect_uri",
  *     "submit_text",
