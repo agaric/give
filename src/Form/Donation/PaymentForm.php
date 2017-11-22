@@ -163,8 +163,9 @@ class PaymentForm extends ContentEntityForm {
     // Therefore this should default to the entered name but be editable.
     $form['donor_name_for_stripe'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('The donation will be billed using this name'),
+      '#title' => $this->t('Name'),
       '#default_value' => $donation->getDonorName(),
+      '#description' => $this->t('The donation will be billed using this name'),
     ];
 
     $form['credit_card_extra_text'] = [
