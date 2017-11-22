@@ -315,7 +315,6 @@ class Donation extends ContentEntityBase implements DonationInterface {
       ->setLabel(t('Label'))
       ->setRequired(TRUE);
 
-    // The text of the give donation.
     $fields['amount'] = BaseFieldDefinition::create('integer')
       ->setLabel(t('Donation amount'))
       ->setDescription('The amount of the donation, in cents USD.')
