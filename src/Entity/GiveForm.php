@@ -223,6 +223,21 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
   /**
    * {@inheritdoc}
    */
+  public function getCollectAddress() {
+    return $this->collect_address;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setCollectAddress($collect_address) {
+    $this->collect_address = $collect_address;
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function getWeight() {
     return $this->weight;
   }

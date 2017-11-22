@@ -59,6 +59,9 @@ give.form.*:
     credit_card_extra_text:
       type: string
       label: 'Credit card extra text'
+    collect_address:
+      type: boolean
+      label: 'Collect address with credit card, check, or other'
     weight:
       type: integer
       label: 'Weight'
