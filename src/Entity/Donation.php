@@ -334,11 +334,11 @@ class Donation extends ContentEntityBase implements DonationInterface {
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created time'))
-      ->setDescription(t('The time that the node was created.'));
+      ->setDescription(t('The time that the donation was created.'));
 
     $fields['changed'] = BaseFieldDefinition::create('changed')
       ->setLabel(t('Changed'))
-      ->setDescription(t('The time that the node was last edited.'));
+      ->setDescription(t('The time that the donation was last edited.'));
 
     $fields['stripe_token'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Stripe token'))
