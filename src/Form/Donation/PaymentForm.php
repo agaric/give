@@ -176,7 +176,7 @@ class PaymentForm extends ContentEntityForm {
       ];
       $form['address_line2'] = [
         '#type' => 'textfield',
-        '#title' => $this->t('Optional apartment/suite/unit'),
+        '#title' => $this->t('Optional unit number'),
       ];
       $form['address_city'] = [
         '#type' => 'textfield',
