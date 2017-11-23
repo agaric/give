@@ -344,6 +344,30 @@ class Donation extends ContentEntityBase implements DonationInterface {
       ->setLabel(t('Stripe token'))
       ->setDescription(t('The token returned by Stripe used to tell Stripe to process the donation.'));
 
+    $fields['address_address1'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Address line 1'))
+      ->setDescription(t('The street address or PO Box of the donor; used in billing address.'));
+
+    $fields['address_address2'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Address line 2'))
+      ->setDescription(t('Optional apartment/suite/unit of the donor; used in billing address.'));
+
+    $fields['address_city'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('City or district'))
+      ->setDescription(t('The town of the donor; used in billing address.'));
+
+    $fields['address_zip'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Postal code'))
+      ->setDescription(t('ZIP or postal code of the donor; used in billing address.'));
+
+    $fields['address_state'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('State or province'))
+      ->setDescription(t('The state/province/region of the donor; used in billing address.'));
+
+    $fields['address_country'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Country'))
+      ->setDescription(t('The country the donor; used in billing address.'));
+
     $fields['complete'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Completed donation'))
       ->setDefaultValue(FALSE);
