@@ -52,7 +52,7 @@ function give_update_8001() {
 }
 
 /**
- * Add the default frecuencies to the already created entities.
+ * Add the default frequencies to the already created entities.
  */
 function give_update_8002() {
   $entities = \Drupal::entityQuery('give_form');
