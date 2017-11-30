@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Entity\EntityTypeInterface;
 
 /**
  * Denotes that the donation is not completed.
@@ -82,6 +83,22 @@ function give_entity_extra_field_info() {
     ];
   }
   return $fields;
+}
+
+/**
+ * Implements hook_entity_base_field_info_alter().
+ *
+ * @TODO do this in the first place rather than as an alter hook.
+ */
+function give_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity_type) {
+  if ($entity_type->id() == 'give_donation') {
+    $i = -10;
+    foreach (['name', 'mail', 'give_form', 'label', 'amount', 'recurring', 'created', 'address_address1'] as $field_name) {
+      $fields[$field_name]->setDisplayConfigurable('view', TRUE);
+      $fields[$field_name]->setDisplayOptions('view', ['weight' => $i]);
+      $i++;
+    }
+  }
 }
 
 /**
