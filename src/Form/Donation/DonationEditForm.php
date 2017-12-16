@@ -69,9 +69,9 @@ class DonationEditForm extends ContentEntityForm {
       '#disabled' => TRUE,
     ];
     $form['recurring'] = [
-      '#type' => 'checkbox',
+      '#type' => 'textfield',
       '#title' => $this->t('Recurring'),
-      '#default_value' => $donation->getRecurrenceIntervalCount(),
+      '#default_value' => $donation->getRecurrence(),
       '#disabled' => TRUE,
     ];
 
