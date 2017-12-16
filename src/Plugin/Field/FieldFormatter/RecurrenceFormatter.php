@@ -19,7 +19,7 @@ use Drupal\Core\Form\FormStateInterface;
  *   }
  * )
  */
-class UserNameFormatter extends FormatterBase {
+class RecurrenceFormatter extends FormatterBase {
 
   /**
    * {@inheritdoc}
