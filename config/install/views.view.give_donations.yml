@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   module:
+    - give
     - user
 id: give_donations
 label: 'Give donations'
@@ -593,7 +594,7 @@ display:
     position: 2
     display_options:
       display_extenders: {  }
-      path: admin/structure/give/donations/details
+      path: admin/structure/give/donation-list-details
       display_description: ''
       fields:
         name:
