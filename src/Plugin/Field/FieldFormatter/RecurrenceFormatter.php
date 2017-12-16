@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\user\Plugin\Field\FieldFormatter;
+namespace Drupal\give\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -15,7 +15,7 @@ use Drupal\Core\Form\FormStateInterface;
  *   label = @Translation("Recurrence"),
  *   description = @Translation("Display the automatic frequency, if any, with which a donation is given."),
  *   field_types = {
- *     "string"
+ *     "integer"
  *   }
  * )
  */
