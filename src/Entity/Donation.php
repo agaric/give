@@ -146,8 +146,8 @@ class Donation extends ContentEntityBase implements DonationInterface {
    */
   public function getRecurrenceIntervalUnit() {
     $give_form = $this->getGiveForm();
-    $frecuencies = $give_form->getFrequencies();
-    return $frecuencies[$this->get('recurring')->value]['interval'];
+    $frequencies = $give_form->getFrequencies();
+    return $frequencies[$this->get('recurring')->value]['interval'];
   }
 
   /**
@@ -155,8 +155,8 @@ class Donation extends ContentEntityBase implements DonationInterface {
    */
   public function getRecurrenceIntervalCount() {
     $give_form = $this->getGiveForm();
-    $frecuencies = $give_form->getFrequencies();
-    return $frecuencies[$this->get('recurring')->value]['interval_count'];
+    $frequencies = $give_form->getFrequencies();
+    return $frequencies[$this->get('recurring')->value]['interval_count'];
   }
 
   /**
@@ -172,22 +172,21 @@ class Donation extends ContentEntityBase implements DonationInterface {
    */
   public function getRecurrence() {
     $give_form = $this->getGiveForm();
-    $frecuencies = $give_form->getFrequencies();
-    return $frecuencies[$this->get('recurring')->value]['description'];
+    $frequencies = $give_form->getFrequencies();
+    return $frequencies[$this->get('recurring')->value]['description'];
   }
 
   /**
    * {@inheritdoc}
    *
-   * Note that currency is hard-coded to US Dollars and interval to monthly,
-   * as they are elsewhere in the application, but it would be trivial to
-   * change.
+   * Note that currency is hard-coded to US Dollars as elsewhere in the
+   * application, but it would not be difficult to change.
    */
   public function getPlanId() {
     $give_form = $this->getGiveForm();
-    $frecuencies = $give_form->getFrequencies();
-    $interval = $frecuencies[$this->get('recurring')->value]['interval'];
-    $interval_count = $frecuencies[$this->get('recurring')->value]['interval_count'];
+    $frequencies = $give_form->getFrequencies();
+    $interval = $frequencies[$this->get('recurring')->value]['interval'];
+    $interval_count = $frequencies[$this->get('recurring')->value]['interval_count'];
     return 'usd' . $this->getAmount() . '_' . $interval . '_' . $interval_count;
   }
 
@@ -196,8 +195,8 @@ class Donation extends ContentEntityBase implements DonationInterface {
    */
   public function getPlanName() {
     $give_form = $this->getGiveForm();
-    $frecuencies = $give_form->getFrequencies();
-    return $this->getDollarAmount() . ' ' . $frecuencies[$this->get('recurring')->value]['description'];
+    $frequencies = $give_form->getFrequencies();
+    return $this->getDollarAmount() . ' ' . $frequencies[$this->get('recurring')->value]['description'];
   }
 
   /**
