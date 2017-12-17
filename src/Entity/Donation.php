@@ -339,10 +339,6 @@ class Donation extends ContentEntityBase implements DonationInterface {
       ->setLabel(t('Changed'))
       ->setDescription(t('The time that the donation was last edited.'));
 
-    $fields['stripe_token'] = BaseFieldDefinition::create('string')
-      ->setLabel(t('Stripe token'))
-      ->setDescription(t('The token returned by Stripe used to tell Stripe to process the donation.'));
-
     $fields['address_line1'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Address line 1'))
       ->setDescription(t('The street address or PO Box of the donor; used in billing address.'));
@@ -370,6 +366,22 @@ class Donation extends ContentEntityBase implements DonationInterface {
     $fields['complete'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Completed donation'))
       ->setDefaultValue(FALSE);
+
+    $fields['stripe_token'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Stripe token'))
+      ->setDescription(t('The token returned by Stripe used to tell Stripe to process the donation.'));
+
+    $fields['card_brand'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Card brand'))
+      ->setDescription(t('The card brand (Visa, MasterCard, etc).'));
+
+    $fields['card_funding'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Card funding'))
+      ->setDescription(t('The card funding type (credit, debit).'));
+
+    $fields['card_last4'] = BaseFieldDefinition::create('integer')
+      ->setLabel(t('Last four'))
+      ->setDescription(t('The last four digits of the credit/debit card, if applicable.'));
 
     return $fields;
   }
