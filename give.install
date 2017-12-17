@@ -68,7 +68,7 @@ function give_update_8002() {
 }
 
 /**
- * Add address fields to 'donation' entities.
+ * Add address and card info fields to 'donation' entities.
  */
 function give_update_8003() {
   $fields = [];
@@ -96,6 +96,18 @@ function give_update_8003() {
   $fields['address_country'] = BaseFieldDefinition::create('string')
     ->setLabel(t('Country'))
     ->setDescription(t('The country the donor; used in billing address.'));
+
+  $fields['card_brand'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Card brand'))
+    ->setDescription(t('The card brand (Visa, MasterCard, etc).'));
+
+  $fields['card_funding'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Card funding'))
+    ->setDescription(t('The card funding type (credit, debit).'));
+
+  $fields['card_last4'] = BaseFieldDefinition::create('integer')
+    ->setLabel(t('Last four'))
+    ->setDescription(t('The last four digits of the credit/debit card, if applicable.'));
 
   foreach ($fields as $field => $storage_definition) {
     \Drupal::entityDefinitionUpdateManager()
