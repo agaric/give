@@ -247,6 +247,21 @@ class Donation extends ContentEntityBase implements DonationInterface {
   /**
    * {@inheritdoc}
    */
+  public function getLast4() {
+    return $this->get('last4')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setLast4($last4) {
+    $this->set('last4', $last4);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function isCompleted() {
     return (bool) $this->get('complete')->value;
   }
