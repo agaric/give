@@ -229,6 +229,22 @@ interface DonationInterface extends ContentEntityInterface {
   public function setStripeToken($token);
 
   /**
+   * Returns the payment card last four digits for the donation (if paid by card).
+   *
+   * @return string
+   *   The payment card last four digits for the donation (if paid by card).
+   */
+  public function getLast4();
+
+  /**
+   * Sets the payment card last four digits for the donation (if paid by card).
+   *
+   * @param string $last4
+   *   The payment card last four digits for the donation (if paid by card).
+   */
+  public function setLast4($last4);
+
+  /**
    * Returns the donation completed status.
    *
    * @return bool
