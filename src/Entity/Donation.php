@@ -343,11 +343,11 @@ class Donation extends ContentEntityBase implements DonationInterface {
       ->setLabel(t('Stripe token'))
       ->setDescription(t('The token returned by Stripe used to tell Stripe to process the donation.'));
 
-    $fields['address_address1'] = BaseFieldDefinition::create('string')
+    $fields['address_line1'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Address line 1'))
       ->setDescription(t('The street address or PO Box of the donor; used in billing address.'));
 
-    $fields['address_address2'] = BaseFieldDefinition::create('string')
+    $fields['address_line2'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Address line 2'))
       ->setDescription(t('Optional apartment/suite/unit of the donor; used in billing address.'));
 
