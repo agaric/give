@@ -53,7 +53,7 @@ class PaymentForm extends ContentEntityForm {
   protected $giveStripe;
 
   /**
-   * Constructs a DonationForm object.
+   * Constructs a PaymentForm object.
    *
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity manager.
@@ -91,7 +91,7 @@ class PaymentForm extends ContentEntityForm {
    * {@inheritdoc}
    */
   public function form(array $form, FormStateInterface $form_state) {
-    $publisable_key = \Drupal::config('give.settings')->get('stripe_publishable_key');
+    $publishable_key = \Drupal::config('give.settings')->get('stripe_publishable_key');
 
     $donation = $this->entity;
     $form = parent::form($form, $form_state, $donation);
@@ -128,7 +128,7 @@ class PaymentForm extends ContentEntityForm {
 
     // Only display the Credit Card payment method if the stripe credentials
     // has been provided.
-    if ($publisable_key) {
+    if ($publishable_key) {
       // Add the credit card payment option (via stripe)
       $form['method']['#options'] = [GIVE_WITH_STRIPE => $this->t('By credit/debit card')] + $form['method']['#options'];
       // Allow the user select her payment method.
@@ -138,7 +138,7 @@ class PaymentForm extends ContentEntityForm {
         'library' => ['give/give-stripe-helper'],
         'drupalSettings' => [
           'give' => [
-            'stripe_publishable_key' => \Drupal::config('give.settings')->get('stripe_publishable_key'),
+            'stripe_publishable_key' => $publishable_key,
           ],
           'http_header' => [
             ['Content-Security-Policy' => "connect-src 'https://api.stripe.com'"],
