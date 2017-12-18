@@ -912,10 +912,10 @@ display:
           hide_alter_empty: true
           entity_type: give_donation
           plugin_id: give_form
-        address_address1:
-          id: address_address1
+        address_line1:
+          id: address_line1
           table: give_donation
-          field: address_address1
+          field: address_line1
           relationship: none
           group_type: group
           admin_label: ''
@@ -975,12 +975,12 @@ display:
           separator: ', '
           field_api_classes: false
           entity_type: give_donation
-          entity_field: address_address1
+          entity_field: address_line1
           plugin_id: field
-        address_address2:
-          id: address_address2
+        address_line2:
+          id: address_line2
           table: give_donation
-          field: address_address2
+          field: address_line2
           relationship: none
           group_type: group
           admin_label: ''
@@ -1040,7 +1040,7 @@ display:
           separator: ', '
           field_api_classes: false
           entity_type: give_donation
-          entity_field: address_address2
+          entity_field: address_line2
           plugin_id: field
         address_city:
           id: address_city

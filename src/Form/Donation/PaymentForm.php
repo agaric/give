@@ -169,12 +169,12 @@ class PaymentForm extends ContentEntityForm {
     ];
 
     if ($donation->getGiveForm()->getCollectAddress()) {
-      $form['address_address1'] = [
+      $form['address_line1'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Billing address'),
         '#required' => TRUE,
       ];
-      $form['address_address2'] = [
+      $form['address_line2'] = [
         '#type' => 'textfield',
         '#title' => $this->t('Apt or unit #'),
       ];
