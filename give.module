@@ -109,6 +109,9 @@ function give_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity
       'address_zip',
       'address_country',
       'stripe_token',
+      'card_funding',
+      'card_brand',
+      'card_last4',
     ] as $field_name) {
       $fields[$field_name]->setDisplayConfigurable('view', TRUE);
       $fields[$field_name]->setDisplayOptions('view', ['weight' => $i]);
