@@ -247,15 +247,45 @@ class Donation extends ContentEntityBase implements DonationInterface {
   /**
    * {@inheritdoc}
    */
-  public function getLast4() {
-    return $this->get('last4')->value;
+  public function getCardLast4() {
+    return $this->get('card_last4')->value;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setLast4($last4) {
-    $this->set('last4', $last4);
+  public function setCardLast4($last4) {
+    $this->set('card_last4', $last4);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCardBrand() {
+    return $this->get('card_brand')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setCardBrand($brand) {
+    $this->set('card_brand', $brand);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCardFunding() {
+    return $this->get('card_funding')->value;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setCardFunding($funding) {
+    $this->set('card_funding', $funding);
     return $this;
   }
 
