@@ -231,20 +231,57 @@ interface DonationInterface extends ContentEntityInterface {
   /**
    * Returns the payment card last four digits for the donation (if paid by card).
    *
-   * @return string
+   * @return integer
    *   The payment card last four digits for the donation (if paid by card).
    */
-  public function getLast4();
+  public function getCardLast4();
 
   /**
    * Sets the payment card last four digits for the donation (if paid by card).
    *
-   * @param string $last4
+   * @param integer $last4
    *   The payment card last four digits for the donation (if paid by card).
    */
-  public function setLast4($last4);
+  public function setCardLast4($last4);
 
   /**
+   * Returns the payment card brand for the donation (if paid by card).
+   *
+   * For example Visa, MasterCard, etc.
+   *
+   * @return string
+   *   The payment card brand used for the donation (if paid by card).
+   */
+  public function getCardBrand();
+
+  /**
+   * Sets the payment card brand used for the donation (if paid by card).
+   *
+   * For example Visa, MasterCard, etc.
+   *
+   * @param string $brand
+   *   The payment card brand used for the donation (if paid by card).
+   */
+  public function setCardBrand($brand);
+
+  /**
+   * Returns the payment card funding type (credit, debit) (if paid by card).
+   *
+   * @return string
+   *   The payment card funding type (credit, debit) used (if paid by card).
+   */
+  public function getCardFunding();
+
+  /**
+   * Sets the payment card funding type (credit, debit) used (if paid by card).
+   *
+   * @param string $funding
+   *   The payment card funding type used for the donation (if paid by card).
+   */
+  public function setCardFunding($funding);
+
+  /**
+   *
    * Returns the donation completed status.
    *
    * @return bool
