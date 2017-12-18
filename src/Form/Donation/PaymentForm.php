@@ -123,6 +123,7 @@ class PaymentForm extends ContentEntityForm {
         GIVE_WITH_CHECK => $this->t('By check or other'),
       ],
       '#default_value' => GIVE_WITH_CHECK,
+      '#required' => TRUE,
       '#weight' => 0,
     ];
 
