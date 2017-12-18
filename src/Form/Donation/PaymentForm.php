@@ -358,6 +358,7 @@ class PaymentForm extends ContentEntityForm {
 
       try {
         if ($this->giveStripe->createCharge($donation_data)) {
+          $this->entity->setCardInfo($this->giveStripe);
           $this->entity->setCompleted();
         }
       } catch (\Exception $e) {

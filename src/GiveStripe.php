@@ -12,6 +12,20 @@ use \Stripe\Charge;
 class GiveStripe Implements GiveStripeInterface {
 
   /**
+   * The plan, if any, associated with a donation.
+   *
+   * @var \Stripe\Plan
+   */
+  protected $plan;
+
+  /**
+   * The charge, if any, associated with a donation.
+   *
+   * @var \Stripe\Charge
+   */
+  public $charge;
+
+  /**
    * {@inheritdoc}
    */
   public function setApiKey($stripeSecretKey) {
@@ -24,13 +38,13 @@ class GiveStripe Implements GiveStripeInterface {
   public function createPlan($plan_data) {
     try {
       // Try to create the plan.
-      $plan = Plan::create($plan_data);
+      $this->plan = Plan::create($plan_data);
     } catch(Error\ApiConnection $e) {
       throw new \Exception(t('Could not connect to payment processer. More information: %e', ['%e' => $e->getMessage()]));
     } catch(Error\InvalidRequest $e) {
       if ($e->getMessage() === 'Plan already exists.') {
         // If the plan already exists, lets retrieve it.
-        $plan = Plan::retrieve($plan_data['id']);
+        $this->plan = Plan::retrieve($plan_data['id']);
       }
       else {
         throw new \Exception(t('Invalid request: %e', ['%e' => $e->getMessage()]));
@@ -50,7 +64,7 @@ class GiveStripe Implements GiveStripeInterface {
    */
   public function createCharge($donation_data) {
     try {
-      $charge = Charge::create($donation_data);
+      $this->charge = Charge::create($donation_data);
     } catch(Error\Card $e) {
       throw new \Exception("Could not process card: " . $e->getMessage());
     } catch(Error\ApiConnection $e) {
@@ -59,7 +73,7 @@ class GiveStripe Implements GiveStripeInterface {
       throw new \Exception('Error: ' . $e->getMessage());
     }
 
-    if (!($charge instanceof Charge)) {
+    if (!($this->charge instanceof Charge)) {
       throw new \Exception("Could not complete donation.");
     }
     return TRUE;

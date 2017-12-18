@@ -305,6 +305,26 @@ class Donation extends ContentEntityBase implements DonationInterface {
   }
 
   /**
+   * Set card info.
+   *
+   * Helper function to set card last four, brand, and funding source from a
+   * GiveStripe entity.
+   *
+   * @param \Drupal\give\GiveStripeInterface $give_stripe
+   */
+  public function setCardInfo($give_stripe) {
+    $charge = $give_stripe->charge;
+    $funding = $charge->source->funding;
+    $brand = $charge->source->brand;
+    $last4 = $charge->source->last4;
+    $this->setCardFunding($funding);
+    $this->setCardBrand($brand);
+    $return = $this->setCardLast4($last4);
+    // \Drupal::logger('portside')->error('Var %var.', ['%var' => var_export($return, TRUE)]);
+    // drupal_set_message(var_export($return, TRUE));
+  }
+
+  /**
    * {@inheritdoc}
    */
   public static function baseFieldDefinitions(EntityTypeInterface $entity_type) {
