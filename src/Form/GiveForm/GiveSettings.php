@@ -29,13 +29,13 @@ class GiveSettings extends ConfigFormBase {
       '#type' => 'textfield',
       '#title' => $this->t('Stripe publishable API key'),
       '#default_value' => $config->get('stripe_publishable_key'),
-      '#description' => $this->t('This is required to take donations via credit or debit card with Stripe.'),
+      '#description' => $this->t('Enter the value for the "Publishable key" token from your <a href="https://dashboard.stripe.com/account/apikeys">Stripe dashboard</a>.  This is required to take donations via credit or debit card with Stripe.'),
     ];
     $form['stripe_secret_key'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Stripe secret API key'),
       '#default_value' => $config->get('stripe_secret_key'),
-      '#description' => $this->t('This is required to take donations via credit or debit card with Stripe.'),
+      '#description' => $this->t('Enter the value for the "Secret key" token from your <a href="https://dashboard.stripe.com/account/apikeys">Stripe dashboard</a>.  This is required to take donations via credit or debit card with Stripe.'),
     ];
 
     return parent::buildForm($form, $form_state);
