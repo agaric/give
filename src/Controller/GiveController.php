@@ -88,7 +88,7 @@ class GiveController extends ControllerBase {
   }
 
   /**
-   * Presents the site-wide give form.
+   * Presents the second page of the give form which takes donations.
    *
    * @param \Drupal\give\GiveFormInterface $give_form
    *   The give form to use.
