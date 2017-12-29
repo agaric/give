@@ -86,10 +86,10 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       '#required' => TRUE,
     ];
     $form['subject'] = [
-      '#type' => 'textarea',
-      '#title' => $this->t('Subject'),
+      '#type' => 'textfield',
+      '#title' => $this->t('Acknowledgement e-mail subject'),
       '#default_value' => $give_form->getSubject(),
-      '#description' => $this->t('Subject used for e-mail reply (if Auto-reply with receipt is set below).'),
+      '#description' => $this->t('Subject used for e-mail response to donor (if Auto-reply with receipt is set below).'),
       '#required' => TRUE,
     ];
     $form['reply'] = [
