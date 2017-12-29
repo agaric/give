@@ -113,4 +113,25 @@ class GiveController extends ControllerBase {
     return $form;
   }
 
+  /**
+   * Presents a preview of the acknowledgement e-mail.
+   *
+   * @param \Drupal\give\GiveFormInterface $give_form
+   *   The give form to use.
+   *
+   * @return array
+   *   The preview as render array as expected by drupal_render().
+   *
+   * @throws \Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+   *   Exception is thrown when user tries to access non existing give form.
+   */
+  public function givePreviewReply(GiveFormInterface $give_form) {
+    $render = [];
+
+    $render['title'] = $give_form->label();
+    $render['subject'] = $give_form->getSubject();
+    $render['#markup'] = 'this is a test';
+    return $render;
+  }
+
 }
