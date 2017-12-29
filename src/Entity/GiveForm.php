@@ -32,6 +32,7 @@ use Drupal\give\GiveFormInterface;
  *     "canonical" = "/give/{give_form}",
  *     "edit-form" = "/admin/structure/give/manage/{give_form}",
  *     "delete-form" = "/admin/structure/give/manage/{give_form}/delete",
+ *     "preview-reply" = "/admin/structure/give/manage/{give_form}/preview-reply",
  *     "collection" = "/admin/structure/give",
  *   },
  *   config_export = {
