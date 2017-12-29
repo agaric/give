@@ -128,9 +128,9 @@ class GiveController extends ControllerBase {
   public function givePreviewReply(GiveFormInterface $give_form) {
     $render = [];
 
-    $render['title'] = $give_form->label();
-    $render['subject'] = $give_form->getSubject();
-    $render['#markup'] = 'this is a test';
+    $render['title']['#markup'] = '<h2>' . $this->t('Preview of automatic donation confirmation e-mail for @label forms', ['@label' => $give_form->label()]) . '</h2>';
+    $render['subject']['#markup'] = '<p>' . $this->t('<strong>Subject:</strong> @subject', ['@subject' => $give_form->getSubject()]) . '</p>';
+    $render['intro']['#markup'] = 'this is a test';
     return $render;
   }
 
