@@ -29,10 +29,10 @@ use Drupal\give\GiveFormInterface;
  *     "label" = "label"
  *   },
  *   links = {
- *     "delete-form" = "/admin/structure/give/manage/{give_form}/delete",
- *     "edit-form" = "/admin/structure/give/manage/{give_form}",
- *     "collection" = "/admin/structure/give",
  *     "canonical" = "/give/{give_form}",
+ *     "edit-form" = "/admin/structure/give/manage/{give_form}",
+ *     "delete-form" = "/admin/structure/give/manage/{give_form}/delete",
+ *     "collection" = "/admin/structure/give",
  *   },
  *   config_export = {
  *     "id",
