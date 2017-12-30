@@ -130,7 +130,29 @@ class GiveController extends ControllerBase {
 
     $render['title']['#markup'] = '<h2>' . $this->t('Preview of automatic donation confirmation e-mail for @label forms', ['@label' => $give_form->label()]) . '</h2>';
     $render['subject']['#markup'] = '<p>' . $this->t('<strong>Subject:</strong> @subject', ['@subject' => $give_form->getSubject()]) . '</p>';
-    $render['intro']['#markup'] = 'this is a test';
+    // If configured, send auto-reply receipt to donor, using current language.
+    if ($give_form->getReply()) {
+      $mail_handler = \Drupal::service('give.mail_handler');
+      $current_langcode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+      // Build email parameters.
+      $params = [];
+      $params['give_form'] = $give_form;
+      $params['give_donation'] = $this->entityTypeManager()
+      ->getStorage('give_donation')
+      ->create([
+        'give_form' => $give_form->id(),
+      ]);
+
+      // new \Drupal\give\Entity\FauxDonation();
+      // $params['donor'] = $donor_cloned;
+
+      // Send to the form recipient(s), using the site's default language.
+
+      $mail_handler->mailManager->doMail('give', 'donation_receipt', 'bud@example.com', $current_langcode, $params);
+    }
+    else {
+      $render['noreply']['#markup'] = '<p>' . $this->t('This donation form has no automatic acknowledgement reply configured.  <a href="@url">Edit it to add one</a>.', ['@url' => $give_form->toUrl('edit-form')->toString()]) . '</p>';
+    }
     return $render;
   }
 
