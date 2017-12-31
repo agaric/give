@@ -145,6 +145,7 @@ class GiveController extends ControllerBase {
     $donation->setCardFunding('credit');
     $donation->setCardBrand('Visa');
     $donation->setCardLast4(9876);
+    $donation->setLabel();
     $donation->setCompleted();
     $mail_handler = \Drupal::service('give.mail_handler');
     $user = $this->currentUser();
