@@ -63,8 +63,32 @@ class Donation extends ContentEntityBase implements DonationInterface {
   /**
    * {@inheritdoc}
    */
-  public function setLabel($label) {
+  public function setLabel() {
+    // We always build the donation's label from the donor's name and e-mail,
+    // the amount of the donation, and the subject field if present.
+    $label = $this->getGiveForm()->get('label') . ' : ';
+    if ($this->getDonorName()) {
+      $label .= $this->getDonorName() . ' ';
+    }
+    if ($this->getDonorMail()) {
+      $label .= '(' . $this->getDonorMail() . ') ';
+    }
+
+    $subject = '';
+    if ($this->hasField('field_subject')) {
+      // The subject may be in any format, so:
+      // 1) Filter it into HTML
+      // 2) Strip out all HTML tags
+      // 3) Convert entities back to plain-text.
+      $subject_text = $this->field_subject->processed;
+      $subject = Unicode::truncate(trim(Html::decodeEntities(strip_tags($subject_text))), 29, TRUE, TRUE);
+    }
+    if ($subject) {
+      $label .= ': ' . $subject;
+    }
     $this->set('label', $label);
+    return $this;
+
   }
 
   /**

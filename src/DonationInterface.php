@@ -60,12 +60,9 @@ interface DonationInterface extends ContentEntityInterface {
   /**
    * Sets the label for the donation.
    *
-   * Set automatically.  See DonationForm::buildEntity().
-   *
-   * @param string $label
-   *   The donation label.
+   * Set automatically.
    */
-  public function setLabel($label);
+  public function setLabel();
 
   /**
    * Returns the donation amount.

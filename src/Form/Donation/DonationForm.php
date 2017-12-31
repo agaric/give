@@ -194,30 +194,7 @@ class DonationForm extends ContentEntityForm {
     // Convert the form unit (dollars) into stored unit (cents) for amount.
     $donation->setDollarAmount($form_state->getValue('amount'));
 
-    // We always build the donation's label from the donor's name and e-mail,
-    // the amount of the donation, and the subject field if present.
-    $label = $donation->getGiveForm()->get('label') . ' : ';
-    if ($donation->getDonorName()) {
-      $label .= $donation->getDonorName() . ' ';
-    }
-    if ($donation->getDonorMail()) {
-      $label .= '(' . $donation->getDonorMail() . ') ';
-    }
-
-    $subject = '';
-    if ($donation->hasField('field_subject')) {
-      // The subject may be in any format, so:
-      // 1) Filter it into HTML
-      // 2) Strip out all HTML tags
-      // 3) Convert entities back to plain-text.
-      $subject_text = $donation->field_subject->processed;
-      $subject = Unicode::truncate(trim(Html::decodeEntities(strip_tags($subject_text))), 29, TRUE, TRUE);
-    }
-    if ($subject) {
-      $label .= ': ' . $subject;
-    }
-
-    $donation->setLabel($label);
+    $donation->setLabel();
 
     return $donation;
   }
