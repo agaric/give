@@ -113,4 +113,43 @@ class MailHandler implements MailHandlerInterface {
     ]);
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function makeDonationReceiptPreview(DonationInterface $donation, AccountInterface $donor) {
+    // Clone the donor, as we make changes to mail and name properties.
+    $donor_cloned = clone $this->userStorage->load($donor->id());
+    $params = [];
+    $current_langcode = $this->languageManager->getCurrentLanguage()->getId();
+    $recipient_langcode = $this->languageManager->getDefaultLanguage()->getId();
+    $give_form = $donation->getGiveForm();
+
+    $donor_cloned->name = $donation->getDonorName();
+    $donor_cloned->mail = $donation->getDonorMail();
+
+    // For the email message, clarify that the donor name is not verified; it
+    // could potentially clash with a username on this site.
+    $donor_cloned->name = $this->t('@name (not verified)', ['@name' => $donation->getDonorName()]);
+
+    // Build email parameters.
+    $params['give_donation'] = $donation;
+    $params['donor'] = $donor_cloned;
+
+    // Send to the form recipient(s), using the site's default language.
+    $params['give_form'] = $give_form;
+
+    $to = implode(', ', $give_form->getRecipients());
+
+    // Send email to the configured recipient(s) (usually admin users).
+    $admin_notice = $this->mailManager->doMail('give', 'donation_notice', $to, $recipient_langcode, $params, $donor_cloned->getEmail());
+
+    // If configured, send auto-reply receipt to donor, using current language.
+    if ($give_form->getReply()) {
+      $receipt = $this->mailManager->doMail('give', 'donation_receipt', $donor_cloned->getEmail(), $current_langcode, $params);
+    }
+
+    return $receipt;
+
+  }
+
 }
