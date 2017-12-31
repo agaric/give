@@ -292,6 +292,96 @@ class Donation extends ContentEntityBase implements DonationInterface {
   /**
    * {@inheritdoc}
    */
+  public function getAddressLine1() {
+    $this->get('address_line1');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setAddressLine1($line) {
+    $this->set('address_line1', $line);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAddressLine2() {
+    $this->get('address_line2');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setAddressLine2($line) {
+    $this->set('address_line2', $line);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAddressCity() {
+    $this->get('address_city');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setAddressCity($city) {
+    $this->set('address_city', $city);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAddressState() {
+    $this->get('address_state');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setAddressState($state) {
+    $this->set('address_state', $state);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAddressZip() {
+    $this->get('address_zip');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setAddressZip($zip) {
+    $this->set('address_zip', $zip);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getAddressCountry() {
+    $this->get('address_country');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setAddressCountry($country) {
+    $this->set('address_country', $country);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function isCompleted() {
     return (bool) $this->get('complete')->value;
   }
