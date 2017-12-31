@@ -28,7 +28,7 @@ class CentsToDollarsFormatter extends FormatterBase {
     $elements = [];
     foreach ($items as $delta => $item) {
       $elements[$delta] = [
-        '#markup' => '$' . (($item->getEntity()->getAmount()) / 100),
+        '#markup' => $item->getEntity()->getDollarAmount(),
       ];
     }
 
