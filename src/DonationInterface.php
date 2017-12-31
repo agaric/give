@@ -281,6 +281,66 @@ interface DonationInterface extends ContentEntityInterface {
   public function setCardFunding($funding);
 
   /**
+   * Gets line one of the donor address.
+   */
+  public function getAddressLine1();
+
+  /**
+   * Sets line one of the donor address.
+   */
+  public function setAddressLine1($line);
+
+  /**
+   * Gets line two of the donor address.
+   */
+  public function getAddressLine2();
+
+  /**
+   * Sets line two of the donor address.
+   */
+  public function setAddressLine2($line);
+
+  /**
+   * Gets the city, town, or locality of the donor address.
+   */
+  public function getAddressCity();
+
+  /**
+   * Sets the city, town, or locality of the donor address.
+   */
+  public function setAddressCity($city);
+
+  /**
+   * Gets the state or province of the donor address.
+   */
+  public function getAddressState();
+
+  /**
+   * Sets the state or province of the donor address.
+   */
+  public function setAddressState($state);
+
+  /**
+   * Gets the ZIP or postal code of the donor address.
+   */
+  public function getAddressZip();
+
+  /**
+   * Sets the ZIP or postal code of the donor address.
+   */
+  public function setAddressZip($zip);
+
+  /**
+   * Gets the country of the donor address.
+   */
+  public function getAddressCountry();
+
+  /**
+   * Sets the country of the donor address.
+   */
+  public function setAddressCountry($country);
+
+  /**
    *
    * Returns the donation completed status.
    *
