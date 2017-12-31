@@ -138,6 +138,13 @@ class GiveController extends ControllerBase {
     $donation->setAmount(12300);
     $donation->setDonorName('Bud Philanthropist');
     $donation->setDonorMail('bud@example.com');
+    $donation->setAddressLine1('1980 Nebraska Ave');
+    $donation->setAddressCity('Los Angeles');
+    $donation->setAddressState('CA');
+    $donation->setAddressCountry('United States');
+    $donation->setCardFunding('credit');
+    $donation->setCardBrand('Visa');
+    $donation->setCardLast4(9876);
     $donation->setCompleted();
     $mail_handler = \Drupal::service('give.mail_handler');
     $user = $this->currentUser();
