@@ -129,7 +129,6 @@ class GiveController extends ControllerBase {
     $render = [];
 
     $render['title']['#markup'] = '<h2>' . $this->t('Preview of automatic donation confirmation e-mail for @label forms', ['@label' => $give_form->label()]) . '</h2>';
-    $render['subject']['#markup'] = '<p>' . $this->t('<strong>Subject:</strong> @subject', ['@subject' => $give_form->getSubject()]) . '</p>';
 
     $donation = $this->entityTypeManager()
       ->getStorage('give_donation')
@@ -140,12 +139,24 @@ class GiveController extends ControllerBase {
     $user = $this->currentUser();
     $email = $mail_handler->makeDonationReceiptPreview($donation, $user);
 
-    if ($email) {
-      $render['email']['#markup'] = $email['body'];
+    if ($email['receipt']) {
+      $rndr = [];
+      $rndr['subject']['#markup'] = '<p>' . $this->t('<strong>Subject:</strong> @subject', ['@subject' => $email['receipt']['subject']]) . '</p>';
+      $rndr['body']['#markup'] = $email['receipt']['body'];
+      $render['receipt'] = $rndr;
     }
     else {
       $render['noreply']['#markup'] = '<p>' . $this->t('This donation form has no automatic acknowledgement reply configured.  <a href="@url">Edit it to add one</a>.', ['@url' => $give_form->toUrl('edit-form')->toString()]) . '</p>';
     }
+
+    $render['separator']['#markup'] = '<hr />';
+
+    $rndr = [];
+    $rndr['subject']['#markup'] = '<p>' . $this->t('<strong>Subject:</strong> @subject', ['@subject' => $email['admin_notice']['subject']]) . '</p>';
+    $rndr['body']['#markup'] = $email['admin_notice']['body'];
+
+    $render['notice_email'] = $rndr;
+
     return $render;
   }
 

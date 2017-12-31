@@ -148,7 +148,7 @@ class MailHandler implements MailHandlerInterface {
       $receipt = $this->mailManager->doMail('give', 'donation_receipt', $donor_cloned->getEmail(), $current_langcode, $params);
     }
 
-    return $receipt;
+    return ['receipt' => $receipt, 'admin_notice' => $admin_notice];
 
   }
 
