@@ -135,6 +135,7 @@ class GiveController extends ControllerBase {
       ->create([
         'give_form' => $give_form->id(),
       ]);
+    $donation->setAmount(12300);
     $mail_handler = \Drupal::service('give.mail_handler');
     $user = $this->currentUser();
     $email = $mail_handler->makeDonationReceiptPreview($donation, $user);
