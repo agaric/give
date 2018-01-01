@@ -1,0 +1,9 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - give
+id: give_donation.email
+label: E-mail
+targetEntityType: give_donation
+cache: true
