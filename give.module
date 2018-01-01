@@ -180,7 +180,22 @@ function give_replace_donation_tokens($message, \Drupal\give\DonationInterface $
     '[today_date]' => strftime('%B %e, %Y'),
     '[date]' => strftime('%B %e, %Y', $donation->getUpdatedTime()),
   ];
-  return str_replace(array_keys($search_replace), array_values($search_replace), $message);
+  return str_replace(give_donation_tokens(), array_values($search_replace), $message);
+}
+
+/**
+ * Tokens used in simple search-replace for donation messages.
+ */
+function give_donation_tokens() {
+  return [
+    '[donor_name]',
+    '[donor_email]',
+    '[give_label]',
+    '[dollar_amount]',
+    '[recurring]',
+    '[today_date]',
+    '[date]',
+  ];
 }
 
 /**
