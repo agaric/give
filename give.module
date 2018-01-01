@@ -162,6 +162,11 @@ function give_mail($key, &$message, $params) {
       $message['subject'] .= give_replace_donation_tokens($params['give_form']->getSubject(), $give_donation);
 
       $message['body'][] = give_replace_donation_tokens($params['give_form']->getReply(), $give_donation);
+      $build = entity_view($give_donation, 'email');
+      $markup = \Drupal::service('renderer')->renderPlain($build);
+      $message['body'][] = render($markup);
+      $markup = ['#markup' => '<strong>oooh</strong>'];
+      $message['body'][] = render($markup);
       break;
 
   }
