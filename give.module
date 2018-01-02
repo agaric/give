@@ -7,6 +7,7 @@
 
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Component\Utility\Xss;
 
 /**
  * Denotes that the donation is not completed.
@@ -161,14 +162,7 @@ function give_mail($key, &$message, $params) {
     case 'donation_receipt':
       $message['subject'] .= give_replace_donation_tokens($params['give_form']->getSubject(), $give_donation);
 
-      $source = give_replace_donation_tokens($params['give_form']->getReply(), $give_donation);
-
-      $manager = \Drupal::service('plugin.manager.filter');
-      $bag = new \Drupal\filter\FilterPluginCollection($manager, []);
-      $filters = $bag->getAll();
-      $filter = $filters['filter_autop'];
-      $filtered = $filter->process($source, $filter)->getProcessedText();
-      $markup = ['#markup' => $filtered];
+      $markup = give_auto_paragraph_text(give_replace_donation_tokens($params['give_form']->getReply(), $give_donation));
       $message['body'][] = render($markup);
 
       $build = entity_view($give_donation, 'email');
@@ -222,4 +216,16 @@ function give_get_default_frequencies() {
     2 => ['interval' => 'month', 'interval_count' => '6', 'description' => 'Every 6 months (semi-annually)'],
     3 => ['interval' => 'month', 'interval_count' => '12', 'description' => 'Every year (annually)'],
   ];
+}
+
+/**
+ * Return administrator text filtered to have line breaks and paragraphs.
+ */
+function give_auto_paragraph_text($text) {
+  $manager = \Drupal::service('plugin.manager.filter');
+  $bag = new \Drupal\filter\FilterPluginCollection($manager, []);
+  $filters = $bag->getAll();
+  $filter = $filters['filter_autop'];
+  $filtered = $filter->process($source, $filter)->getProcessedText();
+  return ['#markup' => $filtered, '#allowed_tags' => Xss::getHtmlTagList()];
 }
