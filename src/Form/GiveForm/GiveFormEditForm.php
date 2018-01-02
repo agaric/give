@@ -96,7 +96,7 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       '#type' => 'textarea',
       '#title' => $this->t('Auto-reply with receipt'),
       '#default_value' => $give_form->getReply(),
-      '#description' => $this->t('Optionally send a receipt confirming the donation (including amount) with this text, which should include your organization name and any relevant tax information. Leave empty if you do not want to send the donor an auto-reply message and receipt.  Tokens available: @tokens.', ['@tokens' => implode(give_donation_tokens(), ', ')),
+      '#description' => $this->t('Optionally send a receipt confirming the donation (including amount) with this text, which should include your organization name and any relevant tax information. Leave empty if you do not want to send the donor an auto-reply message and receipt.  Tokens available: @tokens.', ['@tokens' => implode(give_donation_tokens(), ', ')]),
     ];
     $form['collect_address'] = [
       '#type' => 'checkbox',
