@@ -1,16 +1,15 @@
-uuid: 5a3fb8cd-a43d-44bc-8de5-1a4455a51834
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.give_donation.email
+    - core.entity_view_mode.give_donation.receipt
     - give.form.donate
   module:
     - give
-id: give_donation.donate.email
+id: give_donation.donate.receipt
 targetEntityType: give_donation
 bundle: donate
-mode: email
+mode: receipt
 content:
   address_address1:
     weight: -2
