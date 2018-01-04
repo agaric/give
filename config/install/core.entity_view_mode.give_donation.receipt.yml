@@ -4,6 +4,6 @@ dependencies:
   module:
     - give
 id: give_donation.receipt
-label: Receipt e-mail
+label: 'Receipt e-mail'
 targetEntityType: give_donation
 cache: true
