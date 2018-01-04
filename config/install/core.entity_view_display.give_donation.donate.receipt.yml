@@ -28,7 +28,7 @@ content:
     third_party_settings: {  }
     type: string
   address_city:
-    weight: 10
+    weight: 5
     region: content
     label: hidden
     settings:
@@ -36,7 +36,7 @@ content:
     third_party_settings: {  }
     type: string
   address_country:
-    weight: 13
+    weight: 8
     region: content
     label: inline
     settings:
@@ -44,7 +44,7 @@ content:
     third_party_settings: {  }
     type: string
   address_line1:
-    weight: 8
+    weight: 3
     region: content
     label: hidden
     settings:
@@ -52,7 +52,7 @@ content:
     third_party_settings: {  }
     type: string
   address_line2:
-    weight: 9
+    weight: 4
     region: content
     label: hidden
     settings:
@@ -60,7 +60,7 @@ content:
     third_party_settings: {  }
     type: string
   address_state:
-    weight: 11
+    weight: 6
     region: content
     label: hidden
     settings:
@@ -68,7 +68,7 @@ content:
     third_party_settings: {  }
     type: string
   address_zip:
-    weight: 12
+    weight: 7
     region: content
     label: inline
     settings:
@@ -76,14 +76,14 @@ content:
     third_party_settings: {  }
     type: string
   amount:
-    weight: 3
+    weight: 0
     region: content
     label: inline
     settings: {  }
     third_party_settings: {  }
     type: give_cents_to_dollars
   card_brand:
-    weight: 15
+    weight: 10
     region: content
     label: inline
     settings:
@@ -91,7 +91,7 @@ content:
     third_party_settings: {  }
     type: string
   card_funding:
-    weight: 14
+    weight: 9
     region: content
     label: inline
     settings:
@@ -99,7 +99,7 @@ content:
     third_party_settings: {  }
     type: string
   card_last4:
-    weight: 16
+    weight: 11
     region: content
     label: inline
     settings:
@@ -107,63 +107,25 @@ content:
       prefix_suffix: true
     third_party_settings: {  }
     type: number_integer
-  complete:
-    weight: 6
-    region: content
-    label: inline
-    settings:
-      format: yes-no
-      format_custom_true: ''
-      format_custom_false: ''
-    third_party_settings: {  }
-    type: boolean
-  created:
-    weight: 5
-    region: content
-    label: above
-    settings:
-      date_format: medium
-      custom_date_format: ''
-      timezone: ''
-    third_party_settings: {  }
-    type: timestamp
   give_form:
-    weight: 7
-    region: content
-    label: inline
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-  label:
     weight: 2
     region: content
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-  mail:
-    weight: 1
-    region: content
-    label: inline
-    settings: {  }
-    third_party_settings: {  }
-    type: email_mailto
-  name:
-    weight: 0
-    region: content
     label: inline
     settings:
-      link_to_entity: false
+      link: false
     third_party_settings: {  }
-    type: string
+    type: entity_reference_label
   recurring:
-    weight: 4
+    weight: 1
     region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: give_recurrence
 hidden:
+  complete: true
+  created: true
+  label: true
+  mail: true
+  name: true
   stripe_token: true
