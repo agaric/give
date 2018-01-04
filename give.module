@@ -6,7 +6,9 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Url;
 use Drupal\Component\Utility\Xss;
 
 /**
@@ -119,6 +121,29 @@ function give_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity
       $i++;
     }
   }
+}
+
+/**
+ * Implements hook_entity_operation().
+ */
+function give_entity_operation(EntityInterface $entity) {
+  $operations = [];
+  $info = $entity->getEntityType();
+  // Add preview e-mails link to Give (donation) forms.
+  if ($info->getBundleOf() == 'give_donation') {
+    $account = \Drupal::currentUser();
+    if ($account->hasPermission('create and edit give forms')) {
+      $operations['preview-reply'] = [
+        'title' => t('Preview e-mails'),
+        'weight' => 15,
+        'url' => Url::fromRoute("entity.give_form.preview_reply", [
+          $entity->getEntityTypeId() => $entity->id(),
+        ]),
+      ];
+    }
+  }
+
+  return $operations;
 }
 
 /**
