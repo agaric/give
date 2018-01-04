@@ -176,10 +176,6 @@ function give_mail($key, &$message, $params) {
       $message['body'][] = t("@donor-name (@donor-url) gave a donation through form @form-url.", $variables, $options);
       $markup = entity_view($give_donation, 'notice');
       $message['body'][] = render($markup);
-      $markup = ['#markup' => '<strong>oooh</strong>'];
-      $message['body'][] = render($markup);
-      $markup = ['#markup' => "<strong>We do HTML</strong>"];
-      $message['body'][] = render($markup);
       break;
 
     case 'donation_receipt':
@@ -189,8 +185,6 @@ function give_mail($key, &$message, $params) {
       $message['body'][] = render($markup);
 
       $markup = entity_view($give_donation, 'receipt');
-      $message['body'][] = render($markup);
-      $markup = ['#markup' => '<strong>oooh</strong>'];
       $message['body'][] = render($markup);
       break;
 
