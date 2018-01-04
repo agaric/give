@@ -249,5 +249,5 @@ function give_auto_paragraph_text($text) {
   $filters = $bag->getAll();
   $filter = $filters['filter_autop'];
   $filtered = $filter->process($text, $filter)->getProcessedText();
-  return ['#markup' => $filtered, '#allowed_tags' => Xss::getHtmlTagList()];
+  return ['#markup' => $filtered, '#allowed_tags' => Xss::getAdminTagList()];
 }
