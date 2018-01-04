@@ -248,6 +248,6 @@ function give_auto_paragraph_text($text) {
   $bag = new \Drupal\filter\FilterPluginCollection($manager, []);
   $filters = $bag->getAll();
   $filter = $filters['filter_autop'];
-  $filtered = $filter->process($source, $filter)->getProcessedText();
+  $filtered = $filter->process($text, $filter)->getProcessedText();
   return ['#markup' => $filtered, '#allowed_tags' => Xss::getHtmlTagList()];
 }
