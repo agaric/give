@@ -174,7 +174,7 @@ function give_mail($key, &$message, $params) {
       $options = ['langcode' => $language->getId()];
       $message['subject'] .= t('[@form] @label', $variables, $options);
       $message['body'][] = t("@donor-name (@donor-url) gave a donation through form @form-url.", $variables, $options);
-      $markup = entity_view($give_donation, 'email');
+      $markup = entity_view($give_donation, 'notice');
       $message['body'][] = render($markup);
       $markup = ['#markup' => '<strong>oooh</strong>'];
       $message['body'][] = render($markup);
@@ -188,7 +188,7 @@ function give_mail($key, &$message, $params) {
       $markup = give_auto_paragraph_text(give_replace_donation_tokens($params['give_form']->getReply(), $give_donation));
       $message['body'][] = render($markup);
 
-      $markup = entity_view($give_donation, 'email');
+      $markup = entity_view($give_donation, 'receipt');
       $message['body'][] = render($markup);
       $markup = ['#markup' => '<strong>oooh</strong>'];
       $message['body'][] = render($markup);
