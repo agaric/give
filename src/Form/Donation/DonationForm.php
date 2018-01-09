@@ -160,6 +160,7 @@ class DonationForm extends ContentEntityForm {
       '#type' => 'radios',
       '#default_value' => 'once',
       '#options' => $options,
+      '#required' => TRUE,
     ];
 
     return $form;
