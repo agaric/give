@@ -158,7 +158,6 @@ class DonationForm extends ContentEntityForm {
     }
     $form['recurring_fieldset']['recurring'] = [
       '#type' => 'radios',
-      '#default_value' => 'once',
       '#options' => $options,
       '#required' => TRUE,
     ];
