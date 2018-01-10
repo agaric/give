@@ -434,8 +434,6 @@ class Donation extends ContentEntityBase implements DonationInterface {
     $this->setCardFunding($funding);
     $this->setCardBrand($brand);
     $return = $this->setCardLast4($last4);
-    // \Drupal::logger('portside')->error('Var %var.', ['%var' => var_export($return, TRUE)]);
-    // drupal_set_message(var_export($return, TRUE));
   }
 
   /**
