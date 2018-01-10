@@ -53,7 +53,7 @@ class GiveStripe Implements GiveStripeInterface {
       throw new \Exception(t('Error: %e', ['%e' => $e->getMessage()]));
     }
     // Check if the plan was created or retrieved correctly.
-    if (!($plan instanceof Plan)) {
+    if (!($this->plan instanceof Plan)) {
       throw new \Exception(t("Unable to create subscription plan for recurring donation. Could not complete donation."));
     }
     return $plan;
