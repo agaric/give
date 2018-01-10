@@ -141,11 +141,11 @@ class MailHandler implements MailHandlerInterface {
     $to = implode(', ', $give_form->getRecipients());
 
     // Send email to the configured recipient(s) (usually admin users).
-    $admin_notice = $this->mailManager->doMail('give', 'donation_notice', $to, $recipient_langcode, $params, $donor_cloned->getEmail());
+    $admin_notice = $this->mailManager->doMail('give', 'donation_notice', $to, $recipient_langcode, $params, $donor_cloned->getEmail(), FALSE);
 
     // If configured, send auto-reply receipt to donor, using current language.
     if ($give_form->getReply()) {
-      $receipt = $this->mailManager->doMail('give', 'donation_receipt', $donor_cloned->getEmail(), $current_langcode, $params);
+      $receipt = $this->mailManager->doMail('give', 'donation_receipt', $donor_cloned->getEmail(), $current_langcode, $params, NULL, FALSE);
     }
 
     return ['receipt' => $receipt, 'admin_notice' => $admin_notice];
