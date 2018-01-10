@@ -300,6 +300,7 @@ class PaymentForm extends ContentEntityForm {
     // Get the token for use in processing the donation; throw error if missing.
     if (!$token = $donation->getStripeToken()) {
       $form_state->setErrorByName('stripe_errors', $this->t("Could not retrieve token from Stripe."));
+      \Drupal::logger('give')->error('Stripe error: %msg.', ['%msg' => "Could not retrieve token from Stripe."]);
     }
 
     $this->giveStripe->setApiKey(\Drupal::config('give.settings')->get('stripe_secret_key'));
@@ -318,6 +319,7 @@ class PaymentForm extends ContentEntityForm {
         $plan = $this->giveStripe->createPlan($plan_data);
       } catch (\Exception $e) {
         $form_state->setErrorByName('stripe_errors', $this->t($e->getMessage()));
+        \Drupal::logger('give')->error('Stripe errors %msg.', ['%msg' => $e->getMessage()]);
         return;
       }
 
@@ -340,6 +342,7 @@ class PaymentForm extends ContentEntityForm {
         }
       } catch (\Exception $e) {
         $form_state->setErrorByName('stripe_errors', $e->getMessage());
+        \Drupal::logger('give')->error('Stripe error: %msg.', ['%msg' => $e->getMessage()]);
       }
     } else {
       // If the donation is *not* recurring, only in this case do we create a charge ourselves.
@@ -364,6 +367,7 @@ class PaymentForm extends ContentEntityForm {
         }
       } catch (\Exception $e) {
         $form_state->setErrorByName('stripe_errors', $e->getMessage());
+        \Drupal::logger('give')->error('Stripe error: %msg.', ['%msg' => $e->getMessage()]);
       }
     }
   }
