@@ -512,6 +512,18 @@ class Donation extends ContentEntityBase implements DonationInterface {
       ->setLabel(t('Created time'))
       ->setDescription(t('The time that the donation was created.'));
 
+    $fields['method'] = BaseFieldDefinition::create('integer')
+      ->setLabel(t('Method'))
+      ->setDescription(t('The donation method (payment card, check pledge).'))
+      ->setDisplayOptions('form', [
+        'type' => 'list_integer',
+        'settings' => [
+          'display_label' => TRUE,
+        ],
+        'weight' => 20,
+      ])
+      ->setDisplayConfigurable('form', TRUE);
+
     $fields['changed'] = BaseFieldDefinition::create('changed')
       ->setLabel(t('Changed'))
       ->setDescription(t('The time that the donation was last edited.'));
