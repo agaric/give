@@ -500,7 +500,7 @@ class Donation extends ContentEntityBase implements DonationInterface {
       ->setLabel(t('Recurring'))
       ->setDescription(t('The interval counts (in number of months) at which the donation should recur, or negative one if not recurring.'))
       ->setDisplayOptions('form', [
-        'type' => 'list_integer',
+        'type' => 'list_integer', // wrong, so wrong.  TODO fix
         'settings' => [
           'display_label' => TRUE,
         ],
