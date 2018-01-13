@@ -524,6 +524,16 @@ class Donation extends ContentEntityBase implements DonationInterface {
       ])
       ->setDisplayConfigurable('form', TRUE);
 
+    $fields['telephone'] = BaseFieldDefinition::create('string')
+      ->setLabel(t('Phone'))
+      ->setDescription(t('The telephone number of the donor.'))
+      ->setSetting('max_length', 30);
+
+    $fields['check_or_other_information'] = BaseFieldDefinition::create('string')
+      ->setLabel(t(''))
+      ->setDescription(t('The phone number of the donor.'))
+      ->setSetting('max_length', 2000);
+
     $fields['changed'] = BaseFieldDefinition::create('changed')
       ->setLabel(t('Changed'))
       ->setDescription(t('The time that the donation was last edited.'));
