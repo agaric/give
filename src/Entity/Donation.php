@@ -505,8 +505,7 @@ class Donation extends ContentEntityBase implements DonationInterface {
           'display_label' => TRUE,
         ],
         'weight' => 15,
-      ])
-      ->setDisplayConfigurable('form', TRUE);
+      ]);
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created time'))
@@ -521,8 +520,7 @@ class Donation extends ContentEntityBase implements DonationInterface {
           'display_label' => TRUE,
         ],
         'weight' => 20,
-      ])
-      ->setDisplayConfigurable('form', TRUE);
+      ]);
 
     $fields['telephone'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Phone'))
@@ -544,23 +542,28 @@ class Donation extends ContentEntityBase implements DonationInterface {
 
     $fields['address_line2'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Address line 2'))
-      ->setDescription(t('Optional apartment/suite/unit of the donor; used in billing address.'));
+      ->setDescription(t('Optional apartment/suite/unit of the donor; used in billing address.'))
+      ->setSetting('max_length', 100);
 
     $fields['address_city'] = BaseFieldDefinition::create('string')
       ->setLabel(t('City or district'))
-      ->setDescription(t('The town of the donor; used in billing address.'));
+      ->setDescription(t('The town of the donor; used in billing address.'))
+      ->setSetting('max_length', 100);
 
     $fields['address_zip'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Postal code'))
-      ->setDescription(t('ZIP or postal code of the donor; used in billing address.'));
+      ->setDescription(t('ZIP or postal code of the donor; used in billing address.'))
+      ->setSetting('max_length', 100);
 
     $fields['address_state'] = BaseFieldDefinition::create('string')
       ->setLabel(t('State or province'))
-      ->setDescription(t('The state/province/region of the donor; used in billing address.'));
+      ->setDescription(t('The state/province/region of the donor; used in billing address.'))
+      ->setSetting('max_length', 100);
 
     $fields['address_country'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Country'))
-      ->setDescription(t('The country the donor; used in billing address.'));
+      ->setDescription(t('The country the donor; used in billing address.'))
+      ->setSetting('max_length', 100);
 
     $fields['complete'] = BaseFieldDefinition::create('boolean')
       ->setLabel(t('Completed donation'))
@@ -568,19 +571,30 @@ class Donation extends ContentEntityBase implements DonationInterface {
 
     $fields['stripe_token'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Stripe token'))
-      ->setDescription(t('The token returned by Stripe used to tell Stripe to process the donation.'));
+      ->setDescription(t('The token returned by Stripe used to tell Stripe to process the donation.'))
+      ->setSetting('max_length', 56);
 
     $fields['card_brand'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Card brand'))
-      ->setDescription(t('The card brand (Visa, MasterCard, etc).'));
+      ->setDescription(t('The card brand (Visa, MasterCard, etc).'))
+      ->setSetting('max_length', 30);
 
     $fields['card_funding'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Card funding'))
-      ->setDescription(t('The card funding type (credit, debit).'));
+      ->setDescription(t('The card funding type (credit, debit).'))
+      ->setSetting('max_length', 30);
 
     $fields['card_last4'] = BaseFieldDefinition::create('integer')
       ->setLabel(t('Last four'))
       ->setDescription(t('The last four digits of the credit/debit card, if applicable.'));
+
+    // Set all fields to be configurable and to have explicit weights in order.
+    $weight = -10;
+    foreach ($fields as &$field) {
+      $field->setDisplayConfigurable('form', TRUE);
+      $field->setDisplayOptions('view', ['weight' => $weight]);
+      $weight++;
+    }
 
     return $fields;
   }
