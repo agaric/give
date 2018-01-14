@@ -525,7 +525,7 @@ class Donation extends ContentEntityBase implements DonationInterface {
     $fields['telephone'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Phone'))
       ->setDescription(t('The telephone number of the donor.'))
-      ->setSetting('max_length', 30);
+      ->setSetting('max_length', 20);
 
     $fields['check_or_other_information'] = BaseFieldDefinition::create('string')
       ->setLabel(t(''))
