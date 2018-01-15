@@ -210,6 +210,33 @@ interface DonationInterface extends ContentEntityInterface {
   public function setUpdatedTime($timestamp);
 
   /**
+   * Sets the method the donor chose to use to make a donation.
+   *
+   * @param int $method
+   *   The constant defining the donation method.
+   *
+   * @return \Drupal\give\DonationInterface
+   *   The called donation entity.
+   */
+  public function setMethod($method);
+
+  /**
+   * Gets the method the donor chose to use to make a donation.
+   *
+   * @return int
+   *   The constant defining the donation method.
+   */
+  public function getMethod();
+
+  /**
+   * Gets the human-readable text name version of the donation method.
+   *
+   * @return string
+   *   The text string corresponding to donation's integer (constant) method.
+   */
+  public function getMethodName();
+
+  /**
    * Returns the Stripe token for the donation.
    *
    * @return string
