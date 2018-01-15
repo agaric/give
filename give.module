@@ -101,9 +101,15 @@ function give_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity
       'mail',
       'give_form',
       'label',
+      'uuid',
+      'id',
+      'langcode',
       'amount',
       'recurring',
       'created',
+      'method',
+      'telephone',
+      'check_or_other_information',
       'complete',
       'address_line1',
       'address_line2',
@@ -115,6 +121,7 @@ function give_entity_base_field_info_alter(&$fields, EntityTypeInterface $entity
       'card_funding',
       'card_brand',
       'card_last4',
+      'changed',
     ] as $field_name) {
       $fields[$field_name]->setDisplayConfigurable('view', TRUE);
       $fields[$field_name]->setDisplayOptions('view', ['weight' => $i]);
