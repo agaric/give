@@ -204,6 +204,33 @@ class Donation extends ContentEntityBase implements DonationInterface {
 
   /**
    * {@inheritdoc}
+   */
+  public function setMethod($method) {
+    $this->set('method', $method);
+    return $this;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getMethod() {
+    return $this->get('method');
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getMethodName() {
+    $method = $this->getMethod();
+    if ($method === NULL) {
+      return "No method chosen";
+    }
+    $methods = give_methods();
+    return $methods[$method];
+  }
+
+  /**
+   * {@inheritdoc}
    *
    * Note that currency is hard-coded to US Dollars as elsewhere in the
    * application, but it would not be difficult to change.
