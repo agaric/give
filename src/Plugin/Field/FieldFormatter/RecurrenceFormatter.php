@@ -23,31 +23,6 @@ class RecurrenceFormatter extends FormatterBase {
 
   /**
    * {@inheritdoc}
-  public static function defaultSettings() {
-    $options = parent::defaultSettings();
-
-    $options['link_to_entity'] = TRUE;
-    return $options;
-  }
-   */
-
-  /**
-   * {@inheritdoc}
-  public function settingsForm(array $form, FormStateInterface $form_state) {
-    $form = parent::settingsForm($form, $form_state);
-
-    $form['link_to_entity'] = [
-      '#type' => 'checkbox',
-      '#title' => $this->t('Link to the user'),
-      '#default_value' => $this->getSetting('link_to_entity'),
-    ];
-
-    return $form;
-  }
-   */
-
-  /**
-   * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
