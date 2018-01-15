@@ -500,14 +500,7 @@ class Donation extends ContentEntityBase implements DonationInterface {
 
     $fields['recurring'] = BaseFieldDefinition::create('integer')
       ->setLabel(t('Recurring'))
-      ->setDescription(t('The interval counts (in number of months) at which the donation should recur, or negative one if not recurring.'))
-      ->setDisplayOptions('form', [
-        'type' => 'list_integer', // wrong, so wrong.  TODO fix
-        'settings' => [
-          'display_label' => TRUE,
-        ],
-        'weight' => 15,
-      ]);
+      ->setDescription(t('The interval counts (in number of months) at which the donation should recur, or negative one if not recurring.'));
 
     $fields['created'] = BaseFieldDefinition::create('created')
       ->setLabel(t('Created time'))
@@ -515,14 +508,7 @@ class Donation extends ContentEntityBase implements DonationInterface {
 
     $fields['method'] = BaseFieldDefinition::create('list_integer')
       ->setLabel(t('Method'))
-      ->setDescription(t('The donation method (payment card, check pledge).'))
-      ->setDisplayOptions('form', [
-        'type' => 'options_radio',
-        'settings' => [
-          'display_label' => TRUE,
-        ],
-        'weight' => 20,
-      ]);
+      ->setDescription(t('The donation method (payment card, check pledge).'));
 
     $fields['telephone'] = BaseFieldDefinition::create('string')
       ->setLabel(t('Phone'))
