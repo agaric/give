@@ -93,7 +93,9 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       '#required' => TRUE,
     ];
     $form['reply'] = [
-      '#type' => 'textarea',
+      '#type' => 'text_format',
+      '#format' => 'full_html',
+      '#allowed_formats' => ['full_html'],
       '#title' => $this->t('Auto-reply with receipt'),
       '#default_value' => $give_form->getReply(),
       '#description' => $this->t('Optionally send a receipt confirming the donation (including amount) with this text, which should include your organization name and any relevant tax information. Leave empty if you do not want to send the donor an auto-reply message and receipt.  Tokens available: @tokens.', ['@tokens' => implode(give_donation_tokens(), ', ')]),
@@ -259,6 +261,10 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
+
+    // We hard-code the format to just one option, so throw it out 
+    $reply_array = $form_state->getValue('reply');
+    $form_state->setValue('reply', $reply_array['value']);
 
     // Validate and each email recipient.
     $recipients = explode(',', $form_state->getValue('recipients'));
