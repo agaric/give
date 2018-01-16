@@ -120,8 +120,10 @@ class PaymentForm extends ContentEntityForm {
       '#title' => t('Choose donation method'),
       '#options' => [
         // GIVE_WITH_DWOLLA => $this->t('By bank transfer')
+        // Stripe is added, below, only if the API key is present.
         GIVE_WITH_CHECK => $this->t('By check or other'),
       ],
+      // Default is unset, below, if Stripe available and so there are options.
       '#default_value' => GIVE_WITH_CHECK,
       '#required' => TRUE,
       '#weight' => 0,
