@@ -262,7 +262,7 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
   public function validateForm(array &$form, FormStateInterface $form_state) {
     parent::validateForm($form, $form_state);
 
-    // We hard-code the format to just one option, so throw it out 
+    // We hard-code the format to just one option, so throw it out.
     $reply_array = $form_state->getValue('reply');
     $form_state->setValue('reply', $reply_array['value']);
 
