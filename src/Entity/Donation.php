@@ -55,6 +55,9 @@ class Donation extends ContentEntityBase implements DonationInterface {
 
   /**
    * {@inheritdoc}
+   *
+   * NOTE: This seems to only be used in our notification e-mail subject so
+   * it's probably redundant with a built-in method.
    */
   public function getLabel() {
     return $this->get('label')->value;
