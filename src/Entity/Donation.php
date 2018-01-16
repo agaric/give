@@ -214,7 +214,7 @@ class Donation extends ContentEntityBase implements DonationInterface {
    * {@inheritdoc}
    */
   public function getMethod() {
-    return $this->get('method');
+    return $this->get('method')->value;
   }
 
   /**
