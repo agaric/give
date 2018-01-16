@@ -37,6 +37,29 @@ const GIVE_WITH_DWOLLA = 2;
 const GIVE_WITH_CHECK = 3;
 
 /**
+ * Return array of donation method constants with human-readable, text names.
+ *
+ * @param bool $long
+ */
+function give_methods($long = FALSE) {
+  if ($long !== TRUE) {
+    $pairs = [
+      GIVE_WITH_STRIPE => t('Card'),
+      GIVE_WITH_CHECK => t('Check'),
+      GIVE_WITH_DWOLLA => t('Bank transfer'),
+    ];
+  }
+  else {
+    $pairs = [
+      GIVE_WITH_STRIPE => t('Payment card (Stripe)'),
+      GIVE_WITH_CHECK => t('Check pledge'),
+      GIVE_WITH_DWOLLA => t('Bank transfer (Dwolla)'),
+    ];
+  }
+  return $pairs;
+}
+
+/**
  * Implements hook_help().
  */
 function give_help($route_name, RouteMatchInterface $route_match) {
