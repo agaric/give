@@ -26,6 +26,7 @@
   },
   "license": "GPL-2.0+",
   "require": {
-    "stripe/stripe-php": "^5.1.1"
+    "stripe/stripe-php": "^5.1.1",
+    "drupal/minimalhtml": "^1.0"
   }
 }
