@@ -223,9 +223,21 @@ class Donation extends ContentEntityBase implements DonationInterface {
   public function getMethodName() {
     $method = $this->getMethod();
     if ($method === NULL) {
-      return "No method chosen";
+      return "None";
     }
     $methods = give_methods();
+    return $methods[$method];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getMethodLongName() {
+    $method = $this->getMethod();
+    if ($method === NULL) {
+      return "No method chosen";
+    }
+    $methods = give_methods(TRUE);
     return $methods[$method];
   }
 
