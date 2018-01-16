@@ -229,12 +229,20 @@ interface DonationInterface extends ContentEntityInterface {
   public function getMethod();
 
   /**
-   * Gets the human-readable text name version of the donation method.
+   * Gets the short human-readable text name version of the donation method.
    *
    * @return string
    *   The text string corresponding to donation's integer (constant) method.
    */
   public function getMethodName();
+
+  /**
+   * Gets the long human-readable text name version of the donation method.
+   *
+   * @return string
+   *   The text string corresponding to donation's integer (constant) method.
+   */
+  public function getMethodLongName();
 
   /**
    * Returns the Stripe token for the donation.
