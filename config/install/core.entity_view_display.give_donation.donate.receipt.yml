@@ -116,7 +116,7 @@ content:
     third_party_settings: {  }
     type: string
   give_form:
-    weight: 3
+    weight: 2
     region: content
     label: inline
     settings:
@@ -124,12 +124,13 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
   method:
-    weight: 2
+    weight: 3
     region: content
     label: inline
-    settings: {  }
+    settings:
+      long: '1'
     third_party_settings: {  }
-    type: list_default
+    type: give_method
   recurring:
     weight: 1
     region: content
