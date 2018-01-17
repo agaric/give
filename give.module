@@ -267,15 +267,3 @@ function give_get_default_frequencies() {
     3 => ['interval' => 'month', 'interval_count' => '12', 'description' => 'Every year (annually)'],
   ];
 }
-
-/**
- * Return administrator text filtered to have line breaks and paragraphs.
- */
-function give_auto_paragraph_text($text) {
-  $manager = \Drupal::service('plugin.manager.filter');
-  $bag = new \Drupal\filter\FilterPluginCollection($manager, []);
-  $filters = $bag->getAll();
-  $filter = $filters['filter_autop'];
-  $filtered = $filter->process($text, $filter)->getProcessedText();
-  return ['#markup' => $filtered, '#allowed_tags' => Xss::getAdminTagList()];
-}
