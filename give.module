@@ -210,8 +210,13 @@ function give_mail($key, &$message, $params) {
     case 'donation_receipt':
       $message['subject'] .= give_replace_donation_tokens($params['give_form']->getSubject(), $give_donation);
 
-      $markup = give_auto_paragraph_text(give_replace_donation_tokens($params['give_form']->getReply(), $give_donation));
-      $message['body'][] = render($markup);
+      $render_array = [
+        "#type" => "processed_text",
+        "#text" => give_replace_donation_tokens($params['give_form']->getReply(), $give_donation),
+        "#format" => "full_html",
+        "#langcode" => "en",
+      ];
+      $message['body'][] = render($render_array);
 
       $markup = entity_view($give_donation, 'receipt');
       $message['body'][] = render($markup);
