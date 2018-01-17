@@ -226,6 +226,22 @@ function give_mail($key, &$message, $params) {
 }
 
 /**
+ * Implement hook_theme_suggestions_HOOK_alter() for fields.
+ *
+ * Provide an alternate suggestion for fields in our donation e-mail view modes.
+ */
+function give_theme_suggestions_field_alter(array &$suggestions, array $variables) {
+  // If it's not from our module, don't mess with it.
+  if ($variables['element']['#entity_type'] !== 'give_donation' || $variables['element']['#bundle'] !== 'donate') {
+    return;
+  }
+
+  if (in_array($variables['element']['#view_mode'], ['notice', 'receipt'], TRUE)) {
+    $suggestions[] = 'field__give_donation__mail';
+  }
+}
+
+/**
  * Simple no-dependency token replacement.  More robust would be better.
  */
 function give_replace_donation_tokens($message, \Drupal\give\DonationInterface $donation) {
