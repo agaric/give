@@ -226,6 +226,19 @@ function give_mail($key, &$message, $params) {
 }
 
 /**
+ * Implements hook_theme().
+ */
+function give_theme($existing, $type, $theme, $path) {
+  return [
+    // Make Drupal aware of our field template for our view mode.
+    // @see give_theme_suggestions_field_alter().
+    'field__give_donation__mail' => [
+      'base hook' => 'field',
+    ],
+  ];
+}
+
+/**
  * Implement hook_theme_suggestions_HOOK_alter() for fields.
  *
  * Provide an alternate suggestion for fields in our donation e-mail view modes.
