@@ -618,14 +618,6 @@ class Donation extends ContentEntityBase implements DonationInterface {
       ->setLabel(t('Last four'))
       ->setDescription(t('The last four digits of the credit/debit card, if applicable.'));
 
-    // Set all fields to be configurable and to have explicit weights in order.
-    $weight = -10;
-    foreach ($fields as &$field) {
-      $field->setDisplayConfigurable('form', TRUE);
-      $field->setDisplayOptions('view', ['weight' => $weight]);
-      $weight++;
-    }
-
     return $fields;
   }
 
