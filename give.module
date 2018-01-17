@@ -213,8 +213,8 @@ function give_mail($key, &$message, $params) {
       $render_array = [
         "#type" => "processed_text",
         "#text" => give_replace_donation_tokens($params['give_form']->getReply(), $give_donation),
-        "#format" => "full_html",
-        "#langcode" => "en",
+        "#format" => "minimalhtml",
+        "#langcode" => $language->getId(),
       ];
       $message['body'][] = render($render_array);
 
