@@ -33,7 +33,7 @@ entity.give_form.edit_form:
 entity.give_form.preview_reply:
   path: '/admin/structure/give/manage/{give_form}/preview-reply'
   defaults:
-    _title: 'Preview automatic reply acknowledgement'
+    _title: 'Preview automated receipts and notifications'
     _controller: '\Drupal\give\Controller\GiveController::givePreviewReply'
   requirements:
     _entity_access: 'give_form.update'
