@@ -136,6 +136,7 @@ class GiveController extends ControllerBase {
         'give_form' => $give_form->id(),
       ]);
     $donation->setAmount(12300);
+    $donation->set('recurring', 0);
     $donation->setDonorName('Bud Philanthropist');
     $donation->setDonorMail('bud@example.com');
     $donation->setAddressLine1('1980 Nebraska Ave');
