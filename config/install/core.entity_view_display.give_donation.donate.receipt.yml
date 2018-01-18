@@ -28,7 +28,7 @@ content:
     third_party_settings: {  }
     type: string
   address_city:
-    weight: 8
+    weight: 11
     region: content
     label: hidden
     settings:
@@ -36,30 +36,14 @@ content:
     third_party_settings: {  }
     type: string
   address_country:
-    weight: 11
+    weight: 14
     region: content
-    label: inline
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
     type: string
   address_line1:
-    weight: 6
-    region: content
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-  address_line2:
-    weight: 7
-    region: content
-    label: hidden
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    type: string
-  address_state:
     weight: 9
     region: content
     label: hidden
@@ -67,10 +51,26 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
-  address_zip:
+  address_line2:
     weight: 10
     region: content
-    label: inline
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  address_state:
+    weight: 12
+    region: content
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+  address_zip:
+    weight: 13
+    region: content
+    label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
@@ -83,7 +83,7 @@ content:
     third_party_settings: {  }
     type: give_cents_to_dollars
   card_brand:
-    weight: 13
+    weight: 5
     region: content
     label: inline
     settings:
@@ -91,7 +91,7 @@ content:
     third_party_settings: {  }
     type: string
   card_funding:
-    weight: 12
+    weight: 4
     region: content
     label: inline
     settings:
@@ -99,7 +99,7 @@ content:
     third_party_settings: {  }
     type: string
   card_last4:
-    weight: 14
+    weight: 6
     region: content
     label: inline
     settings:
@@ -108,7 +108,7 @@ content:
     third_party_settings: {  }
     type: number_integer
   check_or_other_information:
-    weight: 4
+    weight: 7
     region: content
     label: above
     settings:
@@ -134,12 +134,12 @@ content:
   recurring:
     weight: 1
     region: content
-    label: hidden
+    label: inline
     settings: {  }
     third_party_settings: {  }
     type: give_recurrence
   telephone:
-    weight: 5
+    weight: 8
     region: content
     label: inline
     settings:
