@@ -489,11 +489,6 @@ class Donation extends ContentEntityBase implements DonationInterface {
       ->setLabel(t('Donation ID'))
       ->setDescription(t('The donation ID.'))
       ->setReadOnly(TRUE)
-      // Explicitly set this to 'give' so that
-      // ContentEntityDatabaseStorage::usesDedicatedTable() doesn't attempt to
-      // put the ID in a dedicated table.
-      // @todo Remove when https://www.drupal.org/node/1498720 is in.
-      ->setProvider('give')
       ->setSetting('unsigned', TRUE);
 
     $fields['created'] = BaseFieldDefinition::create('created')
