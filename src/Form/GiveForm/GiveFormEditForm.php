@@ -137,6 +137,7 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       '#default_value' => $give_form->getCollectAddress(),
       '#description' => $this->t('Require the donor to provide their address information.  This is not needed for credit card or other processing.'),
     ];
+    // @TODO use a text_format and minimalhtml here too
     $form['check_or_other_text'] = [
       '#type' => 'textarea',
       '#title' => $this->t('Text to show for check or other'),
