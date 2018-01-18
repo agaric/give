@@ -65,16 +65,31 @@
     {% endfor %}
   {% endif %}
 {% else %}
-  <div{{ attributes.addClass(classes) }}>
-    <div{{ title_attributes.addClass(title_classes) }}><em><strong class="hey">{{ label }}</strong></em></div>
-    {% if multiple %}
-      <div class="field__items">
-    {% endif %}
-    {% for item in items %}
-      <div{{ item.attributes.addClass('field__item') }}>{{ item.content }}</div>
-    {% endfor %}
-    {% if multiple %}
-      </div>
-    {% endif %}
-  </div>
+  {% if label_display == 'inline' %}
+    <div{{ attributes.addClass(classes) }}>
+      <strong{{ title_attributes }}>{{ label }}</strong>:
+      {% if multiple %}
+        <div class="field__items">
+      {% endif %}
+      {% for item in items %}
+        <span{{ item.attributes.addClass('field__item') }}>{{ item.content }}</span>
+      {% endfor %}
+      {% if multiple %}
+        </div>
+      {% endif %}
+    </div>
+  {% else %}
+    <div{{ attributes.addClass(classes) }}>
+      <div{{ title_attributes.addClass(title_classes) }}><em><strong class="hey">{{ label }}</strong></em></div>
+      {% if multiple %}
+        <div class="field__items">
+      {% endif %}
+      {% for item in items %}
+        <div{{ item.attributes.addClass('field__item') }}>{{ item.content }}</div>
+      {% endfor %}
+      {% if multiple %}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
 {% endif %}
