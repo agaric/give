@@ -22,26 +22,13 @@ class DonationViewBuilder extends EntityViewBuilder {
     unset($build['#theme']);
     return $build;
   }
+   */
 
   /**
    * {@inheritdoc}
    */
   public function buildComponents(array &$build, array $entities, array $displays, $view_mode) {
     parent::buildComponents($build, $entities, $displays, $view_mode);
-
-    /*
-    foreach ($entities as $id => $entity) {
-      // Add the donation extra field, if enabled.
-      $display = $displays[$entity->bundle()];
-      if ($entity->getDonation() && $display->getComponent('donation')) {
-        $build[$id]['donation'] = array(
-          '#type' => 'item',
-          '#title' => t('Donation'),
-          '#plain_text' => $entity->getDonation(),
-        );
-      }
-    }
-    */
   }
 
   /**
