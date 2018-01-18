@@ -295,8 +295,10 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
     parent::validateForm($form, $form_state);
 
     // We hard-code the format to just one option, so throw it out.
-    $reply_array = $form_state->getValue('reply');
-    $form_state->setValue('reply', $reply_array['value']);
+    foreach (['reply', 'reply_recurring', 'reply_pledge'] as $wysiwygd_field) {
+      $reply_array = $form_state->getValue($wysiwygd_field);
+      $form_state->setValue($wysiwygd_field, $reply_array['value']);
+    }
 
     // Validate and each email recipient.
     $recipients = explode(',', $form_state->getValue('recipients'));
