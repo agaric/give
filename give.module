@@ -10,6 +10,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
 use Drupal\Core\Url;
 use Drupal\Component\Utility\Xss;
+use Drupal\filter\Entity\FilterFormat;
 
 /**
  * Denotes that the donation is not completed.
@@ -295,4 +296,21 @@ function give_get_default_frequencies() {
     2 => ['interval' => 'month', 'interval_count' => '6', 'description' => 'Every 6 months (semi-annually)'],
     3 => ['interval' => 'month', 'interval_count' => '12', 'description' => 'Every year (annually)'],
   ];
+}
+
+/**
+ * Get the text format used for processing administrator-entered messages.
+ *
+ * Give module requires Minimal HTML module, which sets up the minimalhtml text
+ * format, but there's no guarantee in Drupal that a text format won't have its
+ * name changed or be deleted, so if necessary complain and use a fallback.
+ */
+function give_format() {
+  if (FilterFormat::load('minimalhtml')) {
+    return 'minimalhtml';
+  }
+  else {
+     \Drupal::logger('give')->error('Missing format <em>minimalhtml</em>; administrator-defined messages on the donation form and receipts may lack formatting. Make sure <a href="https://www.drupal.org/project/minimalhtml">Minimal HTML</a> module is enabled and an appropriate format called <em>minimalhtml</em> is present.');
+    return filter_fallback_format();
+  }
 }
