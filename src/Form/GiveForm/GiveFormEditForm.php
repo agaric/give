@@ -85,12 +85,24 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       '#description' => $this->t("Provide who should be notified when a donation is received. Example: 'donations@example.org' or 'fund@example.org,staff@example.org' . To specify multiple recipients, separate each email address with a comma."),
       '#required' => TRUE,
     ];
+    $form['autoreply'] = [
+      '#type' => 'checkbox',
+      '#title' => $this->t('Send automatic replies'),
+      '#default_value' => $give_form->get('autoreply'),
+      '#description' => $this->t('As soon as a donation is complete, send a receipt with configurable messages below.'),
+    ];
+    $form['_available_tokens'] = [
+      '#type' => 'item',
+      '#description' => $this->t('The following tokens are available for all automatic replies and subjects: @tokens.', ['@tokens' => implode(give_donation_tokens(), ', ')]),
+      '#states' => ['visible' => [':input[name="autoreply"]' => ['checked' => TRUE],],],
+    ];
     $form['subject'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Acknowledgement e-mail subject'),
       '#default_value' => $give_form->getSubject(),
       '#description' => $this->t('Subject used for e-mail response to donor (if Auto-reply with receipt is set below).  Tokens available: @tokens.', ['@tokens' => implode(give_donation_tokens(), ', ')]),
       '#required' => TRUE,
+      '#states' => ['visible' => [':input[name="autoreply"]' => ['checked' => TRUE],],],
     ];
     $form['reply'] = [
       '#type' => 'text_format',
@@ -99,6 +111,25 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       '#title' => $this->t('Auto-reply with receipt'),
       '#default_value' => $give_form->getReply(),
       '#description' => $this->t('Optionally send a receipt confirming the donation (including amount) with this text, which should include your organization name and any relevant tax information. Leave empty if you do not want to send the donor an auto-reply message and receipt.  Tokens available: @tokens.', ['@tokens' => implode(give_donation_tokens(), ', ')]),
+      '#states' => ['visible' => [':input[name="autoreply"]' => ['value' => TRUE],],],
+    ];
+    $form['reply_recurring'] = [
+      '#type' => 'text_format',
+      '#format' => 'minimalhtml',
+      '#allowed_formats' => ['minimalhtml'],
+      '#title' => $this->t('Auto-reply to recurring donation with receipt'),
+      '#default_value' => $give_form->get('reply_recurring'),
+      '#description' => $this->t('Optionally send a receipt confirming the donation (including amount) with this text, which should include your organization name and any relevant tax information. Leave empty if you do not want to send the donor an auto-reply message and receipt.  Tokens available: @tokens.', ['@tokens' => implode(give_donation_tokens(), ', ')]),
+      '#states' => ['visible' => [':input[name="autoreply"]' => ['value' => TRUE],],],
+    ];
+    $form['reply_pledge'] = [
+      '#type' => 'text_format',
+      '#format' => 'minimalhtml',
+      '#allowed_formats' => ['minimalhtml'],
+      '#title' => $this->t('Auto-reply with receipt'),
+      '#default_value' => $give_form->get('reply_pledge'),
+      '#description' => $this->t('Optionally send a receipt confirming the donation (including amount) with this text, which should include your organization name and any relevant tax information. Leave empty if you do not want to send the donor an auto-reply message and receipt.  Tokens available: @tokens.', ['@tokens' => implode(give_donation_tokens(), ', ')]),
+      '#states' => ['visible' => [':input[name="autoreply"]' => ['value' => TRUE],],],
     ];
     $form['collect_address'] = [
       '#type' => 'checkbox',
