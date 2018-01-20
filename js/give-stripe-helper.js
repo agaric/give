@@ -41,6 +41,8 @@
     errorElement.classList.remove('visible');
 
     if (result.token) {
+      // Prevent duplicate submissions by double-clickers.
+      document.getElementById('edit-submit').disabled = true;
       // Insert the token ID into the form so it gets submitted to the server.
       var form = document.querySelector('.give-donation-form');
       form.querySelector('input[name=stripe_token]').value = result.token.id;
