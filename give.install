@@ -19,7 +19,7 @@ function give_install() {
   $mail = \Drupal::config('system.site')->get('mail');
   $donate_form = GiveForm::load($default_donate_form_id);
 
-  // Check that form module exists before to try set it as default.
+  // Check that form exists before trying to set it as default.
   if (!$donate_form) {
     return;
   }
