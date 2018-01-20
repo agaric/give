@@ -54,7 +54,6 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
    */
   public function form(array $form, FormStateInterface $form_state) {
     $form = parent::form($form, $form_state);
-    $form['#tree'] = TRUE;
 
     /** @var \Drupal\give\Entity\GiveForm $give_form */
     $give_form = $this->entity;
@@ -100,41 +99,71 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
     $form['onetime'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('One-time donation reply'),
-      '#collapsible' => TRUE,
+      '#open' => TRUE,
+      '#collapsible' => TRUE, // TODO figure out why this isn't working
+      '#states' => ['visible' => [':input[name="autoreply"]' => ['checked' => TRUE],],],
     ];
     $form['onetime']['subject'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Subject'),
       '#default_value' => $give_form->getSubject(),
-      '#description' => $this->t('One-time donation acknowledgement e-mail subject line.'),
+      '#description' => $this->t('Acknowledgement e-mail subject line for one-time donations.'),
       '#required' => TRUE,
       '#states' => ['visible' => [':input[name="autoreply"]' => ['checked' => TRUE],],],
     ];
     $form['onetime']['reply'] = [
       '#type' => 'text_format',
-      '#format' => 'minimalhtml',
-      '#allowed_formats' => ['minimalhtml'],
+      '#format' => give_format(),
+      '#allowed_formats' => [give_format()],
       '#title' => $this->t('Message'),
       '#default_value' => $give_form->getReply(),
       '#description' => $this->t('This should include your organization name and any relevant tax information.'),
       '#states' => ['visible' => [':input[name="autoreply"]' => ['checked' => TRUE],],],
     ];
-    $form['reply_recurring'] = [
-      '#type' => 'text_format',
-      '#format' => 'minimalhtml',
-      '#allowed_formats' => ['minimalhtml'],
-      '#title' => $this->t('Auto-reply to recurring donation with receipt'),
-      '#default_value' => $give_form->get('reply_recurring'),
-      '#description' => $this->t('Optionally send a receipt confirming the donation (including amount) with this text, which should include your organization name and any relevant tax information. Leave empty if you do not want to send the donor an auto-reply message and receipt.  Tokens available: @tokens.', ['@tokens' => implode(give_donation_tokens(), ', ')]),
+    $form['recurring'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Recurring donation reply'),
+      '#collapsible' => TRUE,
       '#states' => ['visible' => [':input[name="autoreply"]' => ['checked' => TRUE],],],
     ];
-    $form['reply_pledge'] = [
+    $form['recurring']['subject_recurring'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Subject'),
+      '#default_value' => $give_form->get('subject_recurring'),
+      '#description' => $this->t('Acknowledgement e-mail subject line for recurring donations.'),
+      '#required' => TRUE,
+      '#states' => ['visible' => [':input[name="autoreply"]' => ['checked' => TRUE],],],
+    ];
+    $form['recurring']['reply_recurring'] = [
       '#type' => 'text_format',
-      '#format' => 'minimalhtml',
-      '#allowed_formats' => ['minimalhtml'],
+      '#format' => give_format(),
+      '#allowed_formats' => [give_format()],
+      '#title' => $this->t('Auto-reply to recurring donation with receipt'),
+      '#default_value' => $give_form->get('reply_recurring'),
+      '#description' => $this->t('This should include your organization name and any relevant tax information.'),
+      '#states' => ['visible' => [':input[name="autoreply"]' => ['checked' => TRUE],],],
+    ];
+    $form['pledge'] = [
+      '#type' => 'fieldset',
+      '#title' => $this->t('Check (pledged) donation reply'),
+      '#collapsible' => TRUE,
+      '#states' => ['visible' => [':input[name="autoreply"]' => ['checked' => TRUE],],],
+    ];
+    $form['pledge']['subject_pledge'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Subject'),
+      '#default_value' => $give_form->get('subject_pledge'),
+      '#description' => $this->t('Acknowledgement e-mail subject line for a pledge to donate by check.'),
+      '#required' => TRUE,
+      '#states' => ['visible' => [':input[name="autoreply"]' => ['checked' => TRUE],],],
+    ];
+    $form['pledge']['reply_pledge'] = [
+      '#type' => 'text_format',
+      '#format' => give_format(),
+      '#allowed_formats' => [give_format()],
       '#title' => $this->t('Auto-reply with receipt'),
       '#default_value' => $give_form->get('reply_pledge'),
-      '#description' => $this->t('Optionally send a receipt confirming the donation (including amount) with this text, which should include your organization name and any relevant tax information. Leave empty if you do not want to send the donor an auto-reply message and receipt.  Tokens available: @tokens.', ['@tokens' => implode(give_donation_tokens(), ', ')]),
+      '#description' => $this->t('This should include your organization name and any relevant tax information, and an indication of how you will follow up to help them complete the donation.'),
       '#states' => ['visible' => [':input[name="autoreply"]' => ['checked' => TRUE],],],
     ];
     $form['collect_address'] = [
@@ -190,6 +219,7 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
     $form['frequency'] = [
       '#type' => 'fieldset',
       '#title' => $this->t('Frequency Intervals (Plans)'),
+      '#tree' => TRUE,
     ];
     $form['frequency']['frequency_intervals_table'] = [
       '#type' => 'table',
