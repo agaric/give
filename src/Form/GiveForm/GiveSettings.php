@@ -89,6 +89,8 @@ class GiveSettings extends ConfigFormBase {
     $config->set('stripe_secret_key', $form_state->getValue('stripe_secret_key'));
     $config->set('log_problems', $form_state->getValue('log_problems'));
     $config->save();
+
+    drupal_set_message('Updated Give settings.');
   }
 
 }
