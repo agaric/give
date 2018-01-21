@@ -6,41 +6,44 @@
   loadStripe();
 
   function loadStripe() {
-    if (settings.give.stripe_publishable_key) {
-      if (typeof(Stripe) === 'undefined') {
-        // "1" is the value of the constant GIVE_WITH_STRIPE.
-        $('#edit-method-1').attr('disabled', true);
-        $('label[for="edit-method-1"]').append('<div class="form--inline-feedback form--inline-feedback--error visible">Your browser appears to be blocking Stripe.com, which must be enabled for us to process debit or credit card donations.  Please check any tracker blockers such as Privacy Badger or uBlock Origin and be sure to allow js.stripe.com.  Then reload this page and be sure to allow all additional stripe.com domains which request connection.</div>');
-        return;
+    if (!settings.give.stripe_publishable_key) {
+      // "1" is the value of the constant GIVE_WITH_STRIPE.
+      $('#edit-method-1').attr('disabled', true);
+      $('label[for="edit-method-1"]').append('<div class="form--inline-feedback form--inline-feedback--error visible">This form cannot take credit/debit card payments until the Stripe publishable key is set by the site administrator.</div>');
+      console.log('Administrator has not set Stripe publishable key.');
+      return;
+    }
+    if (typeof(Stripe) === 'undefined') {
+      // "1" is the value of the constant GIVE_WITH_STRIPE.
+      $('#edit-method-1').attr('disabled', true);
+      $('label[for="edit-method-1"]').append('<div class="form--inline-feedback form--inline-feedback--error visible">Your browser appears to be blocking Stripe.com, which must be enabled for us to process debit or credit card donations.  Please check any tracker blockers such as Privacy Badger or uBlock Origin and be sure to allow js.stripe.com.  Then reload this page and be sure to allow all additional stripe.com domains which request connection.</div>');
+      var donation_uuid = settings.give.donation_uuid;
+      console.log(donation_uuid + ': Stripe did not load; showed user error message with mention of tracker blockers.');
+      return;
+    }
+    var stripe = Stripe(settings.give.stripe_publishable_key);
+    var elements = stripe.elements();
+    var card = elements.create('card', {
+      hidePostalCode: true,
+      style: {
+        base: {
+          iconColor: 'red',
+          color: 'green',
+          lineHeight: '2em',
+          fontWeight: 400,
+          fontFamily: '"Helvetica Neue", "Helvetica", sans-serif',
+          fontSize: '15px',
+          '::placeholder': {
+            color: '#ccc',
+          }
+        },
       }
-      var stripe = Stripe(settings.give.stripe_publishable_key);
-      var elements = stripe.elements();
-      var card = elements.create('card', {
-        hidePostalCode: true,
-        style: {
-          base: {
-            iconColor: 'red',
-            color: 'green',
-            lineHeight: '2em',
-            fontWeight: 400,
-            fontFamily: '"Helvetica Neue", "Helvetica", sans-serif',
-            fontSize: '15px',
-            '::placeholder': {
-              color: '#ccc',
-            }
-          },
-        }
-      });
-      card.mount('#stripe-card-element');
-      card.on('change', function(event) {
-        handleResponse(event);
-      });
-    }
-    else {
-      alert('This form cannot take credit/debit card payments until the Stripe publishable key is set.');
-    }
+    });
+    card.mount('#stripe-card-element');
+    card.on('change', function(event) {
+      handleResponse(event);
+    });
   }
-
 
   function handleResponse(result) {
     var successElement = document.querySelector('#stripe-card-success');

@@ -142,6 +142,7 @@ class PaymentForm extends ContentEntityForm {
         'drupalSettings' => [
           'give' => [
             'stripe_publishable_key' => $publishable_key,
+            'donation_uuid' => $donation->uuid(),
           ],
           'http_header' => [
             ['Content-Security-Policy' => "connect-src 'https://api.stripe.com'"],
