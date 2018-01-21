@@ -33,6 +33,66 @@ function give_install() {
 }
 
 /**
+ * Implements hook_schema().
+ *
+ * Defines a supplementary database tables used to record problems, if any,
+ * encountered during a donation attempt.
+ *
+ * Note that the main information about donations is stored directly in the
+ * donation entity, and as such the database schema for donation entity fields
+ * is defined in Drupal\give\Entity\Donation.php baseFieldDefinitions().
+ *
+ * @see hook_schema()
+ */
+function give_schema() {
+  $schema['give_problem'] = [
+    'description' => 'Stores a log identifiable errors and issues encountered during a donation attempt.',
+    'fields' => [
+      'pid' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique problem ID.',
+      ],
+      'donation_uuid' => [
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Foreign key to {give_donation}.uuid; uniquely identifies a Give donation to which this log message applies.',
+      ],
+      'type' => [
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'A rough categorization of the problem.',
+      ],
+      'detail' => [
+        'type' => 'varchar',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Detail regarding the problem.',
+      ],
+      'timestamp' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The Unix timestamp when this problem was logged.',
+      ],
+    ],
+    'primary key' => ['pid'],
+    'indexes' => [
+      'type' => ['type'],
+      'donation_uuid' => ['donation_uuid'],
+      'timestamp' => ['timestamp'],
+    ],
+  ];
+
+  return $schema;
+}
+
+/**
  * Add 'stripe_token' field to 'donation' entities.
  */
 function give_update_8001() {
