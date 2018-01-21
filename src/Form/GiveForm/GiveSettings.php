@@ -38,6 +38,17 @@ class GiveSettings extends ConfigFormBase {
       '#description' => $this->t('Enter the value for the "Secret key" token from your <a href="https://dashboard.stripe.com/account/apikeys">Stripe dashboard</a>.  This is required to take donations via credit or debit card with Stripe.'),
     ];
 
+    $form['advanced'] = [
+      '#type' => 'details',
+      '#title' => t('Advanced settings'),
+    ];
+    $form['advanced']['log_problems'] = [
+      '#type' => 'checkbox',
+      '#title' => t('Enable problem logging'),
+      '#default_value' => $config->get('log_problems'),
+      '#description' => $this->t('Some issues which people may run into trying to donate, such as their browser blocking the external stripe.com scripts, can be spotted and added to the information stored with donation attempts.'),
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -76,6 +87,7 @@ class GiveSettings extends ConfigFormBase {
     $config = \Drupal::service('config.factory')->getEditable('give.settings');
     $config->set('stripe_publishable_key', $form_state->getValue('stripe_publishable_key'));
     $config->set('stripe_secret_key', $form_state->getValue('stripe_secret_key'));
+    $config->set('log_problems', $form_state->getValue('log_problems'));
     $config->save();
   }
 
