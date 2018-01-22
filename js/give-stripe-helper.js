@@ -65,6 +65,18 @@
     }
   }
 
+  function logProblem(type, detail) {
+    $.ajax({
+      type: 'POST',
+      cache: false,
+      url: drupalSettings.give.problem_log.url,
+      data: {
+        'donation_uuid': drupalSettings.give.problem_log.donation_uuid,
+        'type': type,
+        'detail': detail
+      }
+    });
+  }
 
   document.querySelector('.give-donation-form').addEventListener('submit', function(e) {
     // Only try to process the card if card method ('1') is selected.
