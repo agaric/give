@@ -39,7 +39,7 @@ class ProblemLog {
    *
    * @see db_insert()
    */
-  public static function log($donation_uuid, $type, $detail) {
+  public function log($donation_uuid, $type, $detail) {
     $return_value = NULL;
     $entry = [
       'donation_uuid' => $donation_uuid,
@@ -48,7 +48,7 @@ class ProblemLog {
       'timestamp' => time(),
     ];
     try {
-      $return_value = db_insert('give_problem')
+      $return_value = $this->connection->insert('give_problem')
         ->fields($entry)
         ->execute();
     }
