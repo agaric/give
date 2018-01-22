@@ -193,3 +193,54 @@ function give_update_8004() {
   \Drupal::entityDefinitionUpdateManager()
       ->updateFieldStorageDefinition($field_storage_definition);
 }
+
+/**
+ * Add problem log table.
+ */
+function give_update_8005() {
+  $schema = [];
+  $schema['give_problem'] = [
+    'description' => 'Stores a log identifiable errors and issues encountered during a donation attempt.',
+    'fields' => [
+      'pid' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'Primary Key: Unique problem ID.',
+      ],
+      'donation_uuid' => [
+        'type' => 'varchar_ascii',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Foreign key to {give_donation}.uuid; uniquely identifies a Give donation to which this log message applies.',
+      ],
+      'type' => [
+        'type' => 'varchar_ascii',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'A rough categorization of the problem.',
+      ],
+      'detail' => [
+        'type' => 'varchar_ascii',
+        'length' => 255,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'Detail regarding the problem.',
+      ],
+      'timestamp' => [
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The Unix timestamp when this problem was logged.',
+      ],
+    ],
+    'primary key' => ['pid'],
+    'indexes' => [
+      'type' => ['type'],
+      'donation_uuid' => ['donation_uuid'],
+      'timestamp' => ['timestamp'],
+    ],
+  ];
+  db_create_table('give_problem', $schema['give_problem']);
+}
