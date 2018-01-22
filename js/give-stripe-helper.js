@@ -10,7 +10,8 @@
       // "1" is the value of the constant GIVE_WITH_STRIPE.
       $('#edit-method-1').attr('disabled', true);
       $('label[for="edit-method-1"]').append('<div class="form--inline-feedback form--inline-feedback--error visible">This form cannot take credit/debit card payments until the Stripe publishable key is set by the site administrator.</div>');
-      console.log('Administrator has not set Stripe publishable key.');
+      console.log('Misconfiguration: Administrator has not set Stripe publishable key.');
+      logProblem('Misconfiguration', 'Administrator must set a Stripe publishable key to use Stripe.');
       return;
     }
     if (typeof(Stripe) === 'undefined') {
