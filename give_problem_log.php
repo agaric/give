@@ -36,12 +36,11 @@ $log = $container
   ->get('give.settings')
   ->get('log_problems');
 
-print $log;
-
-if ($views) {
-  $nid = filter_input(INPUT_POST, 'nid', FILTER_VALIDATE_INT);
-  if ($nid) {
-    $container->get('request_stack')->push(Request::createFromGlobals());
-    $container->get('statistics.storage.node')->recordView($nid);
+if ($log) {
+  $donation_uuid = filter_input(INPUT_POST, 'donation_uuid');
+  $type = filter_input(INPUT_POST, 'type');
+  $detail = filter_input(INPUT_POST, 'detail');
+  if ($donation_uuid && $type && $detail) {
+    $container->get('give.problem_log')->log($donation_uuid, $type, $detail);
   }
 }
