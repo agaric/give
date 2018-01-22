@@ -39,7 +39,7 @@ class ProblemLog {
    *
    * @see db_insert()
    */
-  public static function log(string $donation_uuid, string $type, string $detail) {
+  public static function log($donation_uuid, $type, $detail) {
     $return_value = NULL;
     $entry = [
       'donation_uuid' => $donation_uuid,
@@ -70,7 +70,7 @@ class ProblemLog {
    * @return object
    *   An object containing the loaded entries if found.
    */
-  public static function load(string $donation_uuid) {
+  public static function load($donation_uuid) {
     return db_query('SELECT type, detail, timestamp FROM give_problem WHERE donation_uuid = :donation_uuid', [':donation_uuid' => $donation_uuid])->fetchAll();
   }
 
