@@ -1,11 +1,23 @@
 <?php
 
-namespace Drupal\give\ProblemLog;
+namespace Drupal\give;
+
+use Drupal\Core\Database\Connection;
 
 /**
  * Class ProblemLog.
  */
 class ProblemLog {
+
+  /**
+   * Constructs the statistics storage.
+   *
+   * @param \Drupal\Core\Database\Connection $connection
+   *   The database connection for the node view storage.
+   */
+  public function __construct(Connection $connection) {
+    $this->connection = $connection;
+  }
 
   /**
    * Log a problem.
