@@ -45,6 +45,7 @@ function give_install() {
  * @see hook_schema()
  */
 function give_schema() {
+  $schema = [];
   $schema['give_problem'] = [
     'description' => 'Stores a log identifiable errors and issues encountered during a donation attempt.',
     'fields' => [
@@ -54,21 +55,21 @@ function give_schema() {
         'description' => 'Primary Key: Unique problem ID.',
       ],
       'donation_uuid' => [
-        'type' => 'varchar',
+        'type' => 'varchar_ascii',
         'length' => 128,
         'not null' => TRUE,
-        'default' => 0,
+        'default' => '',
         'description' => 'Foreign key to {give_donation}.uuid; uniquely identifies a Give donation to which this log message applies.',
       ],
       'type' => [
-        'type' => 'varchar',
+        'type' => 'varchar_ascii',
         'length' => 32,
         'not null' => TRUE,
         'default' => '',
         'description' => 'A rough categorization of the problem.',
       ],
       'detail' => [
-        'type' => 'varchar',
+        'type' => 'varchar_ascii',
         'length' => 255,
         'not null' => TRUE,
         'default' => '',
