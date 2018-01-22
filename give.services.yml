@@ -4,6 +4,9 @@ services:
   give.mail_handler:
     class: Drupal\give\MailHandler
     arguments: ['@plugin.manager.mail', '@language_manager', '@logger.channel.give', '@string_translation', '@entity.manager']
+  give.problem_log:
+    class: Drupal\give\ProblemLog
+    arguments: ['@database']
   logger.channel.give:
     class: Drupal\Core\Logger\LoggerChannel
     factory: logger.factory:get
