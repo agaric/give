@@ -142,7 +142,6 @@ class PaymentForm extends ContentEntityForm {
         'drupalSettings' => [
           'give' => [
             'stripe_publishable_key' => $publishable_key,
-            'donation_uuid' => $donation->uuid(),
           ],
           'http_header' => [
             ['Content-Security-Policy' => "connect-src 'https://api.stripe.com'"],
@@ -151,6 +150,11 @@ class PaymentForm extends ContentEntityForm {
           ],
         ],
       ];
+      if (\Drupal::config('give.settings')->get('log_problems')) {
+        $form['#attached']['drupalSettings']['give']['problem_log'] = [
+          'donation_uuid' => $donation->uuid(),
+          'url' => Url::fromUri('base:' . drupal_get_path('module', 'give') . '/give_problem_log.php')->toString()];
+      }
     }
 
     $form['stripe_errors'] = [
