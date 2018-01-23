@@ -87,7 +87,7 @@ class MailHandler implements MailHandlerInterface {
 
     $this->sendDonationNotice($donation, $donor_cloned);
     // If configured, send auto-reply receipt to donor, using current language.
-    if ($give_form->get('autoreply')) {
+    if ($donation->getGiveForm()->get('autoreply')) {
       $this->sendDonationReceipt($donation, $donor_cloned);
     }
 
@@ -95,7 +95,7 @@ class MailHandler implements MailHandlerInterface {
     $this->logger->notice('%donor-name (@donor-from) gave via %give_form.', [
       '%donor-name' => $donor_cloned->getUsername(),
       '@donor-from' => $donor_cloned->getEmail(),
-      '%give_form' => $give_form->label(),
+      '%give_form' => $donation->getGiveForm()->label(),
     ]);
   }
 
