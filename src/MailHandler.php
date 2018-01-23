@@ -70,13 +70,9 @@ class MailHandler implements MailHandlerInterface {
   /**
    * {@inheritdoc}
    */
-  public function sendDonationNotice(DonationInterface $donation, AccountInterface $donor) {
+  public function sendDonationNotices(DonationInterface $donation, AccountInterface $donor) {
     // Clone the donor, as we make changes to mail and name properties.
     $donor_cloned = clone $this->userStorage->load($donor->id());
-    $params = [];
-    $current_langcode = $this->languageManager->getCurrentLanguage()->getId();
-    $recipient_langcode = $this->languageManager->getDefaultLanguage()->getId();
-    $give_form = $donation->getGiveForm();
 
     if ($donor_cloned->isAnonymous()) {
       // At this point, $donor contains an anonymous user, so we need to take
@@ -89,29 +85,80 @@ class MailHandler implements MailHandlerInterface {
       $donor_cloned->name = $this->t('@name (not verified)', ['@name' => $donation->getDonorName()]);
     }
 
-    // Build email parameters.
-    $params['give_donation'] = $donation;
-    $params['donor'] = $donor_cloned;
-
-    // Send to the form recipient(s), using the site's default language.
-    $params['give_form'] = $give_form;
-
-    $to = implode(', ', $give_form->getRecipients());
-
-    // Send email to the configured recipient(s) (usually admin users).
-    $this->mailManager->mail('give', 'donation_notice', $to, $recipient_langcode, $params, $donor_cloned->getEmail());
-
+    $this->sendDonationNotice($donation, $donor_cloned);
     // If configured, send auto-reply receipt to donor, using current language.
-    if ($give_form->getReply()) {
-      $this->mailManager->mail('give', 'donation_receipt', $donor_cloned->getEmail(), $current_langcode, $params);
-      drupal_set_message($this->t("We have e-mailed a receipt to <em>:mail</em>.", [':mail' => $donation->getDonorMail()]));
-    }
+    if ($give_form->get('autoreply')) {
+      $this->sendDonationReceipt($donation, $donor_cloned);
 
+    // Probably doesn't belong here but we have a logger so away we go.
     $this->logger->notice('%donor-name (@donor-from) gave via %give_form.', [
       '%donor-name' => $donor_cloned->getUsername(),
       '@donor-from' => $donor_cloned->getEmail(),
       '%give_form' => $give_form->label(),
     ]);
+  }
+
+  /**
+   * Send donation notice to the form recipient(s), using the site's default language.
+   */
+  private function sendDonationNotice(DonationInterface $donation, AccountInterface $donor) {
+    $current_langcode = $this->languageManager->getCurrentLanguage()->getId();
+    $default_langcode = $this->languageManager->getDefaultLanguage()->getId();
+    $give_form = $donation->getGiveForm();
+    // Build email parameters.
+    $params = [];
+    $params['give_donation'] = $donation;
+    $params['donor'] = $donor_cloned;
+
+    $params['give_form'] = $give_form;
+
+    $to = implode(', ', $give_form->getRecipients());
+
+    // Send email to the configured recipient(s) (usually admin users).
+    $this->mailManager->mail('give', 'donation_notice', $to, $default_langcode, $params, $donor_cloned->getEmail());
+  }
+
+  /**
+   * Send donation notice to the form recipient(s), using the site's default language.
+   */
+  private function sendDonationNotice(DonationInterface $donation, AccountInterface $donor) {
+    $current_langcode = $this->languageManager->getCurrentLanguage()->getId();
+    $default_langcode = $this->languageManager->getDefaultLanguage()->getId();
+    $give_form = $donation->getGiveForm();
+    // Build email parameters.
+    $params = [];
+    $params['give_donation'] = $donation;
+    $params['donor'] = $donor_cloned;
+
+    $params['give_form'] = $give_form;
+
+    $to = implode(', ', $give_form->getRecipients());
+
+    switch ($donation->getReplyType()) {
+      case 'onetime':
+        $params['reply'] = $give_form->get('reply');
+        $params['subject'] = $give_form->get('subject');
+        break;
+      case 'recurring':
+        $params['reply'] = $give_form->get('reply_recurring');
+        $params['subject'] = $give_form->get('subject_recurring');
+        break;
+      case 'pledge':
+        $params['reply'] = $give_form->get('reply_pledge');
+        $params['subject'] = $give_form->get('subject_pledge');
+        break;
+      default:
+        $this->logger->notice('Unknown reply type %type triggered for %donor-name (@donor-from) via %give_form; no message sent.', [
+          '%donor-name' => $donor_cloned->getUsername(),
+          '@donor-from' => $donor_cloned->getEmail(),
+          '%give_form' => $give_form->label(),
+          '%type' => $donation->getReplyType(),
+        ];
+        return;
+    }
+    $this->mailManager->mail('give', 'donation_receipt', $donor_cloned->getEmail(), $current_langcode, $params);
+    drupal_set_message($this->t("We have e-mailed a receipt to <em>:mail</em>.", [':mail' => $donation->getDonorMail()]));
+
   }
 
   /**

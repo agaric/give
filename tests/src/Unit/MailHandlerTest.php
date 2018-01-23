@@ -92,11 +92,11 @@ class MailHandlerTest extends UnitTestCase {
   }
 
   /**
-   * Tests the sendDonationNotice method.
+   * Tests the sendDonationNotices method.
    *
    * @dataProvider getSendMailDonations
    *
-   * @covers ::sendDonationNotice
+   * @covers ::sendDonationNotices
    */
   public function testSendMailDonations(DonationInterface $donation, AccountInterface $donor, $results) {
     $this->logger->expects($this->once())
@@ -130,7 +130,7 @@ class MailHandlerTest extends UnitTestCase {
     $this->userStorage->expects($this->any())
       ->method('load')
       ->willReturn(clone $donor);
-    $this->giveMailHandler->sendDonationNotice($donation, $donor);
+    $this->giveMailHandler->sendDonationNotices($donation, $donor);
   }
 
   /**

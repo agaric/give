@@ -22,6 +22,6 @@ interface MailHandlerInterface {
    * @param \Drupal\Core\Session\AccountInterface $sender
    *   User that submitted the donation entity form.
    */
-  public function sendDonationNotice(DonationInterface $donation, AccountInterface $sender);
+  public function sendDonationNotices(DonationInterface $donation, AccountInterface $sender);
 
 }
