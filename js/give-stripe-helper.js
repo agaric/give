@@ -42,6 +42,22 @@
     card.on('change', function(event) {
       handleResponse(event);
     });
+
+    document.querySelector('.give-donation-form').addEventListener('submit', function(e) {
+      // Only try to process the card if card method ('1') is selected.
+      if ($('input[name=method]:checked').val() == 1) {
+        e.preventDefault();
+        var form = document.querySelector('.give-donation-form');
+        var extraDetails = {
+          name: form.querySelector('input[name=donor_name_for_stripe]').value
+        };
+        var address_zip = form.querySelector('input[name=address-zip]');
+        if (address_zip) {
+          extraDetails.address_zip = address_zip.value;
+        }
+        stripe.createToken(card, extraDetails).then(handleResponse);
+      }
+    });
   }
 
   function handleResponse(result) {
@@ -76,22 +92,5 @@
       }
     });
   }
-
-  document.querySelector('.give-donation-form').addEventListener('submit', function(e) {
-    // Only try to process the card if card method ('1') is selected.
-    if ($('input[name=method]:checked').val() == 1) {
-      e.preventDefault();
-      var form = document.querySelector('.give-donation-form');
-      var extraDetails = {
-        name: form.querySelector('input[name=donor_name_for_stripe]').value
-      };
-      var address_zip = form.querySelector('input[name=address-zip]');
-      if (address_zip) {
-        extraDetails.address_zip = address_zip.value;
-      }
-      var stripe = Stripe(settings.give.stripe_publishable_key);
-      stripe.createToken(card, extraDetails).then(handleResponse);
-    }
-  });
 
 })(Drupal, drupalSettings, jQuery);
