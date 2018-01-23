@@ -118,6 +118,7 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       '#title' => $this->t('Message'),
       '#default_value' => $give_form->getReply(),
       '#description' => $this->t('This should include your organization name and any relevant tax information.'),
+      '#required' => TRUE,
       '#states' => ['visible' => [':input[name="autoreply"]' => ['checked' => TRUE],],],
     ];
     $form['recurring'] = [
@@ -141,6 +142,7 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       '#title' => $this->t('Auto-reply to recurring donation with receipt'),
       '#default_value' => $give_form->get('reply_recurring'),
       '#description' => $this->t('This should include your organization name and any relevant tax information.'),
+      '#required' => TRUE,
       '#states' => ['visible' => [':input[name="autoreply"]' => ['checked' => TRUE],],],
     ];
     $form['pledge'] = [
@@ -164,6 +166,7 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       '#title' => $this->t('Auto-reply with receipt'),
       '#default_value' => $give_form->get('reply_pledge'),
       '#description' => $this->t('This should include your organization name and any relevant tax information, and an indication of how you will follow up to help them complete the donation.'),
+      '#required' => TRUE,
       '#states' => ['visible' => [':input[name="autoreply"]' => ['checked' => TRUE],],],
     ];
     $form['collect_address'] = [
