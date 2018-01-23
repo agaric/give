@@ -89,6 +89,7 @@
       if (address_zip) {
         extraDetails.address_zip = address_zip.value;
       }
+      var stripe = Stripe(settings.give.stripe_publishable_key);
       stripe.createToken(card, extraDetails).then(handleResponse);
     }
   });
