@@ -10,7 +10,6 @@
       // "1" is the value of the constant GIVE_WITH_STRIPE.
       $('#edit-method-1').attr('disabled', true);
       $('label[for="edit-method-1"]').append('<div class="form--inline-feedback form--inline-feedback--error visible">This form cannot take credit/debit card payments until the Stripe publishable key is set by the site administrator.</div>');
-      console.log('Misconfiguration: Administrator has not set Stripe publishable key.');
       logProblem('Misconfiguration', 'Administrator must set a Stripe publishable key to use Stripe.');
       return;
     }
@@ -18,8 +17,7 @@
       // "1" is the value of the constant GIVE_WITH_STRIPE.
       $('#edit-method-1').attr('disabled', true);
       $('label[for="edit-method-1"]').append('<div class="form--inline-feedback form--inline-feedback--error visible">Your browser appears to be blocking Stripe.com, which must be enabled for us to process debit or credit card donations.  Please check any tracker blockers such as Privacy Badger or uBlock Origin and be sure to allow js.stripe.com.  Then reload this page and be sure to allow all additional stripe.com domains which request connection.</div>');
-      var donation_uuid = settings.give.donation_uuid;
-      console.log(donation_uuid + ': Stripe did not load; showed user error message with mention of tracker blockers.');
+      logProblem('Stripe blocked', 'Stripe did not load; showed user error message with mention of tracker blockers.');
       return;
     }
     var stripe = Stripe(settings.give.stripe_publishable_key);
