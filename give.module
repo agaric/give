@@ -209,12 +209,12 @@ function give_mail($key, &$message, $params) {
       break;
 
     case 'donation_receipt':
-      $message['subject'] .= give_replace_donation_tokens($params['give_form']->getSubject(), $give_donation);
+      $message['subject'] .= give_replace_donation_tokens($params['subject'], $give_donation);
 
       $render_array = [
         "#type" => "processed_text",
-        "#text" => give_replace_donation_tokens($params['give_form']->getReply(), $give_donation),
-        "#format" => "minimalhtml",
+        "#text" => give_replace_donation_tokens($params['reply'], $give_donation),
+        "#format" => give_format(),
         "#langcode" => $language->getId(),
       ];
       $message['body'][] = render($render_array);
