@@ -298,7 +298,8 @@ class PaymentForm extends ContentEntityForm {
     /** @var \Drupal\give\Entity\Donation $donation */
     $donation = parent::validateForm($form, $form_state);
     if ($donation->isCompleted()) {
-      $form_state->setErrorByName('stripe_errors', $this->t("You have already completed this donation. Thank you! Please initiate a new donation if you wish to donate more."));
+      $donate_path = Url::fromRoute('entity.give_form.canonical', ['give_form' => $donation->getGiveForm()->id()])->toString();
+      $form_state->setErrorByName('stripe_errors', $this->t('You have already completed this donation. Thank you! Please <a href=":donate_path">donate again</a> if you wish to give more.', [':donate_path' => $donate_path]));
     }
 
     if ($form_state->getValue('method') != GIVE_WITH_STRIPE) {
