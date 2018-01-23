@@ -89,6 +89,7 @@ class MailHandler implements MailHandlerInterface {
     // If configured, send auto-reply receipt to donor, using current language.
     if ($give_form->get('autoreply')) {
       $this->sendDonationReceipt($donation, $donor_cloned);
+    }
 
     // Probably doesn't belong here but we have a logger so away we go.
     $this->logger->notice('%donor-name (@donor-from) gave via %give_form.', [
@@ -102,7 +103,6 @@ class MailHandler implements MailHandlerInterface {
    * Send donation notice to the form recipient(s), using the site's default language.
    */
   private function sendDonationNotice(DonationInterface $donation, AccountInterface $donor) {
-    $current_langcode = $this->languageManager->getCurrentLanguage()->getId();
     $default_langcode = $this->languageManager->getDefaultLanguage()->getId();
     $give_form = $donation->getGiveForm();
     // Build email parameters.
@@ -119,11 +119,10 @@ class MailHandler implements MailHandlerInterface {
   }
 
   /**
-   * Send donation notice to the form recipient(s), using the site's default language.
+   * Send appropriate donation receipt to donor, using the current language.
    */
-  private function sendDonationNotice(DonationInterface $donation, AccountInterface $donor) {
+  private function sendDonationReceipt(DonationInterface $donation, AccountInterface $donor) {
     $current_langcode = $this->languageManager->getCurrentLanguage()->getId();
-    $default_langcode = $this->languageManager->getDefaultLanguage()->getId();
     $give_form = $donation->getGiveForm();
     // Build email parameters.
     $params = [];
@@ -153,7 +152,7 @@ class MailHandler implements MailHandlerInterface {
           '@donor-from' => $donor_cloned->getEmail(),
           '%give_form' => $give_form->label(),
           '%type' => $donation->getReplyType(),
-        ];
+        ]);
         return;
     }
     $this->mailManager->mail('give', 'donation_receipt', $donor_cloned->getEmail(), $current_langcode, $params);

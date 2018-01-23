@@ -250,7 +250,7 @@ class Donation extends ContentEntityBase implements DonationInterface {
   public function getReplyType() {
     if ($this->getMethod() == GIVE_WITH_STRIPE) {
       if ($this->recurring()) {
-        return 'recurring'
+        return 'recurring';
       }
       else {
         return 'onetime';
@@ -258,7 +258,7 @@ class Donation extends ContentEntityBase implements DonationInterface {
     }
 
     if ($this->getMethod() == GIVE_WITH_CHECK) {
-      return 'pledge'
+      return 'pledge';
     }
 
     return NULL;
