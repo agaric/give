@@ -169,7 +169,7 @@ class MailHandler implements MailHandlerInterface {
     $donor_cloned = clone $this->userStorage->load($donor->id());
     $params = [];
     $current_langcode = $this->languageManager->getCurrentLanguage()->getId();
-    $recipient_langcode = $this->languageManager->getDefaultLanguage()->getId();
+    $default_langcode = $this->languageManager->getDefaultLanguage()->getId();
     $give_form = $donation->getGiveForm();
 
     $donor_cloned->name = $donation->getDonorName();
@@ -189,7 +189,7 @@ class MailHandler implements MailHandlerInterface {
     $to = implode(', ', $give_form->getRecipients());
 
     // Send email to the configured recipient(s) (usually admin users).
-    $admin_notice = $this->mailManager->doMail('give', 'donation_notice', $to, $recipient_langcode, $params, $donor_cloned->getEmail(), FALSE);
+    $admin_notice = $this->mailManager->doMail('give', 'donation_notice', $to, $default_langcode, $params, $donor_cloned->getEmail(), FALSE);
 
     // If configured, send auto-reply receipt to donor, using current language.
     if ($give_form->getReply()) {
