@@ -102,7 +102,7 @@ class MailHandler implements MailHandlerInterface {
   /**
    * Send donation notice to the form recipient(s), using the site's default language.
    */
-  private function sendDonationNotice(DonationInterface $donation, AccountInterface $donor) {
+  private function sendDonationNotice(DonationInterface $donation, AccountInterface $donor_cloned) {
     $default_langcode = $this->languageManager->getDefaultLanguage()->getId();
     $give_form = $donation->getGiveForm();
     // Build email parameters.
@@ -121,7 +121,7 @@ class MailHandler implements MailHandlerInterface {
   /**
    * Send appropriate donation receipt to donor, using the current language.
    */
-  private function sendDonationReceipt(DonationInterface $donation, AccountInterface $donor) {
+  private function sendDonationReceipt(DonationInterface $donation, AccountInterface $donor_cloned) {
     $current_langcode = $this->languageManager->getCurrentLanguage()->getId();
     $give_form = $donation->getGiveForm();
     // Build email parameters.
