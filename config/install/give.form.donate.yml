@@ -3,7 +3,7 @@ dependencies: {  }
 id: donate
 label: Donate
 recipients: {  }
-autoreply: true
+autoreply: false
 subject: 'Thank you for your donation'
 reply: "Dear [donor_name],\r\n\r\nThank you for your donation of [dollar_amount] through our [give_label] form. Your contribution helps us fulfill our mission. Below is a receipt for your records."
 subject_recurring: 'Thank you for your donation'
