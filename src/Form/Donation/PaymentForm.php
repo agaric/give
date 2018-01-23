@@ -399,9 +399,9 @@ class PaymentForm extends ContentEntityForm {
     );
 
     $user = $this->currentUser();
-    $this->mailHandler->sendDonationNotice($donation, $user);
+    $this->mailHandler->sendDonationNotices($donation, $user);
 
-    drupal_set_message($this->t('Your donation has been received.  Thank you!'));
+    // drupal_set_message($this->t('Your donation has been received.  Thank you!'));
 
     $donation->save();
   }
