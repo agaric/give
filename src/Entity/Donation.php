@@ -244,6 +244,9 @@ class Donation extends ContentEntityBase implements DonationInterface {
     return $methods[$method];
   }
 
+  /**
+   * {@inheritdoc}
+   */
   public function getReplyType() {
     if ($this->getMethod() == GIVE_WITH_STRIPE) {
       if ($this->recurring()) {

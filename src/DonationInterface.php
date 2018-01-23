@@ -245,6 +245,23 @@ interface DonationInterface extends ContentEntityInterface {
   public function getMethodLongName();
 
   /**
+   * Gets a string indication of the type of reply that should be sent.
+   *
+   * Corresponds to:
+   *
+   *     "subject", (onetime)
+   *     "reply",
+   *     "subject_recurring",
+   *     "reply_recurring",
+   *     "subject_pledge",
+   *     "reply_pledge",
+   *
+   * @return string
+   *   A text string corresponding to the reply/subject pair.
+   */
+  public function getReplyType();
+
+  /**
    * Returns the Stripe token for the donation.
    *
    * @return string
