@@ -104,6 +104,7 @@ class MailHandler implements MailHandlerInterface {
     // If configured, send auto-reply receipt to donor, using current language.
     if ($give_form->getReply()) {
       $this->mailManager->mail('give', 'donation_receipt', $donor_cloned->getEmail(), $current_langcode, $params);
+      drupal_set_message($this->t("We have e-mailed a receipt to <em>:mail</em>.", [':mail' => $donation->getDonorMail()]));
     }
 
     $this->logger->notice('%donor-name (@donor-from) gave via %give_form.', [

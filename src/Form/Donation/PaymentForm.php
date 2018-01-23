@@ -391,16 +391,15 @@ class PaymentForm extends ContentEntityForm {
     $url = Url::fromUserInput($give_form->getRedirectUri());
     $form_state->setRedirectUrl($url);
 
-    $user = $this->currentUser();
-    $this->mailHandler->sendDonationNotice($donation, $user);
-
     drupal_set_message(
       $this->t("Thank you, :donor_name, for your donation of :amount",
       [
         ':donor_name' => $donation->getDonorName(),
         ':amount' => $donation->recurring() ? $this->t(':plan', [':plan' => $donation->getPlanName()]) : $donation->getDollarAmount()])
     );
-    drupal_set_message($this->t("We have e-mailed a receipt to <em>:mail</em>.", [':mail' => $donation->getDonorMail()]));
+
+    $user = $this->currentUser();
+    $this->mailHandler->sendDonationNotice($donation, $user);
 
     drupal_set_message($this->t('Your donation has been received.  Thank you!'));
 
