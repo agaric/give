@@ -244,6 +244,23 @@ class Donation extends ContentEntityBase implements DonationInterface {
     return $methods[$method];
   }
 
+  public function getReplyType() {
+    if ($this->getMethod() == GIVE_WITH_STRIPE) {
+      if ($this->recurring()) {
+        return 'recurring'
+      }
+      else {
+        return 'onetime';
+      }
+    }
+
+    if ($this->getMethod() == GIVE_WITH_CHECK) {
+      return 'pledge'
+    }
+
+    return NULL;
+  }
+
   /**
    * {@inheritdoc}
    *
