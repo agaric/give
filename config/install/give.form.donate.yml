@@ -7,7 +7,7 @@ autoreply: false
 subject: 'Thank you for your donation'
 reply: "Dear [donor_name],\r\n\r\nThank you for your donation of [dollar_amount] through our [give_label] form. Your contribution helps us fulfill our mission. Below is a receipt for your records."
 subject_recurring: 'Thank you for your donation'
-reply_recurring: "Dear [donor_name],\r\n\r\nThank you for your recurring donation of [dollar_amount] every [recurring]. Your contribution helps us fulfill our mission. Below is a receipt for your records.\r\n\r\n"
+reply_recurring: "Dear [donor_name],\r\n\r\nThank you for your recurring donation of [dollar_amount] [recurrence]. Your contribution helps us fulfill our mission. Below is a receipt for your records.\r\n\r\n"
 subject_pledge: 'Thank you for your pledge'
 reply_pledge: "Dear [donor_name],\r\n\r\nThank you for your donation by check of [dollar_amount] on [donation_date]. Your contribution helps us fulfill our mission. Attached is a summary of your pledge to donate by check.  We will send confirmation for your donation once we have received and processed your check.\r\n"
 check_or_other_text: ''
