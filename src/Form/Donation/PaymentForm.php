@@ -238,6 +238,7 @@ class PaymentForm extends ContentEntityForm {
     $form['check_or_other_text'] = [
       '#type' => 'item',
       '#description' => $donation->getGiveForm()->getCheckOrOtherText(),
+      '#maxlength' => 2000,
       '#states' => [
         'visible' => [
           ':input[name="method"]' => ['value' => GIVE_WITH_CHECK],
@@ -248,6 +249,7 @@ class PaymentForm extends ContentEntityForm {
     $form['telephone'] = [
       '#type' => 'tel',
       '#title' => t('Telephone number'),
+      '#maxlength' => 20,
       '#states' => [
         'visible' => [
           ':input[name="method"]' => ['value' => GIVE_WITH_CHECK],
