@@ -265,7 +265,7 @@ function give_update_8006() {
     'reply_pledge',
   ];
 
-  // Find all views configs.
+  // Find all give_form configs.
   foreach ($config_factory->listAll('give.form.') as $give_form) {
     $give_form = $config_factory->getEditable($give_form);
 
