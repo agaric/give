@@ -138,6 +138,13 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
   protected $frequencies = [];
 
   /**
+   * Whether or not to collect addresses.
+   *
+   * @var bool
+   */
+  protected $collect_address = FALSE;
+
+  /**
    * {@inheritdoc}
    */
   public function getFrequencies() {
