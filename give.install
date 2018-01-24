@@ -7,6 +7,7 @@
 
 use Drupal\Core\Field\BaseFieldDefinition;
 use Drupal\give\Entity\GiveForm;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Implements hook_install().
@@ -243,4 +244,38 @@ function give_update_8005() {
     ],
   ];
   db_create_table('give_problem', $schema['give_problem']);
+}
+
+/**
+ * Set default values for the new fields.
+ */
+function give_update_8006() {
+  $module_path = drupal_get_path('module', 'give');
+  $default_config = Yaml::parse(file_get_contents($module_path . '/config/install/give.form.donate.yml'));
+  $config_factory = \Drupal::configFactory();
+
+  $default_values = [
+    'autoreply',
+    'collect_address',
+    'subject_recurring',
+    'reply_recurring',
+    'subject',
+    'reply',
+    'subject_pledge',
+    'reply_pledge',
+  ];
+
+  // Find all views configs.
+  foreach ($config_factory->listAll('give.form.') as $give_form) {
+    $give_form = $config_factory->getEditable($give_form);
+
+    // Check if the give_form has default values for the new fields and if not
+    // we set them.
+    foreach ($default_values as $default_value) {
+      if (empty($give_form->get($default_value))) {
+        $give_form->set($default_value, $default_config[$default_value]);
+      }
+    }
+    $give_form->save();
+  }
 }
