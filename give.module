@@ -265,7 +265,7 @@ function give_replace_donation_tokens($message, \Drupal\give\DonationInterface $
     '[give_label]' => $donation->getGiveForm()->label(),
     '[dollar_amount]' => $donation->getDollarAmount(),
     '[recurring]' => $donation->recurring() ? 'recurring ' : '',
-    '[recurrence'] => strtolower($donation->getRecurrence()),
+    '[recurrence]' => strtolower($donation->getRecurrence()),
     '[today_date]' => strftime('%B %e, %Y'),
     '[date]' => strftime('%B %e, %Y', $donation->getUpdatedTime()),
   ];
