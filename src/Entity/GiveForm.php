@@ -103,7 +103,7 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
   protected $check_or_other_text = '';
 
   /**
-   * The weight of the category.
+   * The weight of the form.
    *
    * @var int
    */
