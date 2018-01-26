@@ -200,8 +200,12 @@ class Donation extends ContentEntityBase implements DonationInterface {
   public function getRecurrence() {
     $give_form = $this->getGiveForm();
     $frequencies = $give_form->getFrequencies();
-    $recurrence = $frequencies[$this->get('recurring')->value]['description'];
     // As all of this function, below is a temporary cludge until values saved right.
+    $value = $this->get('recurring')->value;
+    if ($value === -1) {
+      return 'No';
+    }
+    $recurrence = $frequencies[$value]['description'];
     return ($recurrence) ? $recurrence : 'No';
   }
 
