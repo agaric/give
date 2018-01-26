@@ -211,9 +211,10 @@ class DonationForm extends ContentEntityForm {
     $donation = parent::validateForm($form, $form_state);
 
     // Check if flood control has been activated for sending donations.
+    // If flood isn't configured at all, fall back on defaults.
     if (!$this->currentUser()->hasPermission('administer give forms')) {
-      $limit = $this->config('give.settings')->get('flood.limit');
-      $interval = $this->config('give.settings')->get('flood.interval');
+      $limit = $this->config('give.settings')->get('flood.limit') ?: 50;
+      $interval = $this->config('give.settings')->get('flood.interval') ?: 3600;
 
       if (!$this->flood->isAllowed('give', $limit, $interval)) {
         $form_state->setErrorByName('', $this->t('You cannot send more than %limit donations in @interval. Try again later.', [
