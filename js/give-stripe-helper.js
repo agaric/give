@@ -77,6 +77,7 @@
     } else if (result.error) {
       errorElement.textContent = result.error.message;
       errorElement.classList.add('visible');
+      logProblem('Stripe returned error', result.error.message);
     }
   }
 
