@@ -4,8 +4,6 @@ namespace Drupal\give;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityViewBuilder;
-use Drupal\Core\Mail\MailFormatHelper;
-use Drupal\Core\Render\Element;
 
 /**
  * Render controller for give donations.
@@ -17,30 +15,6 @@ class DonationViewBuilder extends EntityViewBuilder {
    */
   public function buildComponents(array &$build, array $entities, array $displays, $view_mode) {
     parent::buildComponents($build, $entities, $displays, $view_mode);
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function view(EntityInterface $entity, $view_mode = 'full', $langcode = NULL) {
-    $build = parent::view($entity, $view_mode, $langcode);
-
-    if ($view_mode == 'mail') {
-      // Convert field labels into headings.
-      // @todo Improve \Drupal\Core\Mail\MailFormatHelper::htmlToText() to
-      // convert DIVs correctly.
-      foreach (Element::children($build) as $key) {
-        if (isset($build[$key]['#label_display']) && $build[$key]['#label_display'] == 'above') {
-          $build[$key] += ['#prefix' => ''];
-          $build[$key]['#prefix'] = $build[$key]['#title'] . ":\n";
-          $build[$key]['#label_display'] = 'hidden';
-        }
-      }
-      $build['#post_render'][] = function ($html, array $elements) {
-        return MailFormatHelper::htmlToText($html);
-      };
-    }
-    return $build;
   }
 
 }
