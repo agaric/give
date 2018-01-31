@@ -10,6 +10,7 @@ use Drupal\Core\Language\LanguageManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\give\MailHandlerInterface;
 use Drupal\give\GiveStripeInterface;
+use Drupal\give\ProblemLog;
 use Drupal\Core\Url;
 
 /**
@@ -66,12 +67,13 @@ class PaymentForm extends ContentEntityForm {
    * @param \Drupal\give\GiveStripeInterface $give_stripe
    *   The GiveStripe service.
    */
-  public function __construct(EntityTypeManagerInterface $entity_type_manager, LanguageManagerInterface $language_manager, MailHandlerInterface $mail_handler, DateFormatterInterface $date_formatter, GiveStripeInterface $give_stripe) {
+  public function __construct(EntityTypeManagerInterface $entity_type_manager, LanguageManagerInterface $language_manager, MailHandlerInterface $mail_handler, DateFormatterInterface $date_formatter, GiveStripeInterface $give_stripe, $problem_log) {
     parent::__construct($entity_type_manager);
     $this->languageManager = $language_manager;
     $this->mailHandler = $mail_handler;
     $this->dateFormatter = $date_formatter;
     $this->giveStripe = $give_stripe;
+    $this->problemLog = $problem_log;
   }
 
   /**
@@ -83,7 +85,8 @@ class PaymentForm extends ContentEntityForm {
       $container->get('language_manager'),
       $container->get('give.mail_handler'),
       $container->get('date.formatter'),
-      $container->get('give.stripe')
+      $container->get('give.stripe'),
+      $container->get('give.problem_log')
     );
   }
 
@@ -311,6 +314,7 @@ class PaymentForm extends ContentEntityForm {
     if (!$token = $donation->getStripeToken()) {
       $form_state->setErrorByName('stripe_errors', $this->t("Could not retrieve token from Stripe."));
       \Drupal::logger('give')->error('Stripe error: %msg.', ['%msg' => "Could not retrieve token from Stripe."]);
+      $this->problemLog->log($donation->uuid(), 'Stripe server-side', 'Could not retrieve token from Stripe');
     }
 
     $this->giveStripe->setApiKey(\Drupal::config('give.settings')->get('stripe_secret_key'));
@@ -330,6 +334,7 @@ class PaymentForm extends ContentEntityForm {
       } catch (\Exception $e) {
         $form_state->setErrorByName('stripe_errors', $this->t($e->getMessage()));
         \Drupal::logger('give')->error('Stripe errors %msg.', ['%msg' => $e->getMessage()]);
+        $this->problemLog->log($donation->uuid(), 'Stripe server-side', $e->getMessage());
         return;
       }
 
@@ -353,6 +358,7 @@ class PaymentForm extends ContentEntityForm {
       } catch (\Exception $e) {
         $form_state->setErrorByName('stripe_errors', $e->getMessage());
         \Drupal::logger('give')->error('Stripe error: %msg.', ['%msg' => $e->getMessage()]);
+        $this->problemLog->log($donation->uuid(), 'Stripe server-side', $e->getMessage());
       }
     } else {
       // If the donation is *not* recurring, only in this case do we create a charge ourselves.
@@ -378,6 +384,7 @@ class PaymentForm extends ContentEntityForm {
       } catch (\Exception $e) {
         $form_state->setErrorByName('stripe_errors', $e->getMessage());
         \Drupal::logger('give')->error('Stripe error: %msg.', ['%msg' => $e->getMessage()]);
+        $this->problemLog->log($donation->uuid(), 'Stripe server-side', $e->getMessage());
       }
     }
   }
