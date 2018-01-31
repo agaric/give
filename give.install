@@ -279,3 +279,31 @@ function give_update_8006() {
     $give_form->save();
   }
 }
+
+/**
+ * Add new fields.
+ *
+ * Per https://www.drupal.org/node/2554097
+ */
+function give_update_8007() {
+  $fields = [];
+
+  $fields['method'] = BaseFieldDefinition::create('list_integer')
+    ->setLabel(t('Method'))
+    ->setDescription(t('The donation method (payment card, check pledge).'));
+
+  $fields['telephone'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Phone'))
+    ->setDescription(t('The telephone number of the donor.'))
+    ->setSetting('max_length', 20);
+
+  $fields['check_or_other_information'] = BaseFieldDefinition::create('string')
+    ->setLabel(t('Further information'))
+    ->setDescription(t('Any questions or explain anything needed to arrange for giving donation.'))
+    ->setSetting('max_length', 2000);
+
+  foreach ($fields as $field => $storage_definition) {
+    \Drupal::entityDefinitionUpdateManager()
+      ->installFieldStorageDefinition($field, 'give_donation', 'give', $storage_definition);
+  }
+}
