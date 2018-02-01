@@ -130,27 +130,7 @@ class GiveController extends ControllerBase {
 
     $render['title']['#markup'] = '<h2>' . $this->t('Preview of automatic donation confirmation e-mail for @label forms', ['@label' => $give_form->label()]) . '</h2>';
 
-    $donation = $this->entityTypeManager()
-      ->getStorage('give_donation')
-      ->create([
-        'give_form' => $give_form->id(),
-      ]);
-    $donation->setAmount(12300);
-    $donation->set('recurring', 0);
-    $donation->setDonorName('Bud Philanthropist');
-    $donation->setDonorMail('bud@example.com');
-    $donation->setAddressLine1('1980 Nebraska Ave');
-    $donation->setAddressCity('Los Angeles');
-    $donation->setAddressState('CA');
-    $donation->setAddressCountry('United States');
-    $donation->setCardFunding('credit');
-    $donation->setCardBrand('Visa');
-    $donation->setCardLast4(9876);
-    $donation->setLabel();
-    $donation->setCompleted();
-    $mail_handler = \Drupal::service('give.mail_handler');
-    $user = $this->currentUser();
-    $email = $mail_handler->makeDonationReceiptPreview($donation, $user);
+    $previews = $mail_handler->makeDonationReceiptPreviews();
 
     if ($email['receipt']) {
       $rndr = [];

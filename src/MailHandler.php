@@ -161,9 +161,33 @@ class MailHandler implements MailHandlerInterface {
   }
 
   /**
-   * {@inheritdoc}
+   * Make previews for the donation notice and donation receipts.
    */
-  public function makeDonationReceiptPreview(DonationInterface $donation, AccountInterface $donor) {
+  public function makeDonationReceiptPreviews() {
+    // DonationInterface
+    $donation = $this->entityTypeManager()
+      ->getStorage('give_donation')
+      ->create([
+        'give_form' => $give_form->id(),
+      ]);
+    $donation->setAmount(12300);
+    $donation->set('recurring', 0);
+    $donation->setDonorName('Bud Philanthropist');
+    $donation->setDonorMail('bud@example.com');
+    $donation->setAddressLine1('1980 Nebraska Ave');
+    $donation->setAddressCity('Los Angeles');
+    $donation->setAddressState('CA');
+    $donation->setAddressCountry('United States');
+    $donation->setCardFunding('credit');
+    $donation->setCardBrand('Visa');
+    $donation->setCardLast4(9876);
+    $donation->setLabel();
+    $donation->setCompleted();
+    $mail_handler = \Drupal::service('give.mail_handler');
+
+    // AccountInterface.
+    $user = $this->currentUser();
+
     // Clone the donor, as we make changes to mail and name properties.
     $donor_cloned = clone $this->userStorage->load($donor->id());
     $params = [];
