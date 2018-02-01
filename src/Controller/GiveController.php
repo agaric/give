@@ -130,12 +130,13 @@ class GiveController extends ControllerBase {
 
     $render['title']['#markup'] = '<h2>' . $this->t('Preview of automatic donation confirmation e-mail for @label forms', ['@label' => $give_form->label()]) . '</h2>';
 
-    $previews = $mail_handler->makeDonationReceiptPreviews();
+    $mail_handler = \Drupal::service('give.mail_handler');
+    $previews = $mail_handler->makeDonationReceiptPreviews($give_form, $this->entityTypeManager());
 
-    if ($email['receipt']) {
+    if ($previews['receipt']) {
       $rndr = [];
-      $rndr['subject']['#markup'] = '<p>' . $this->t('<strong>Subject:</strong> @subject', ['@subject' => $email['receipt']['subject']]) . '</p>';
-      $rndr['body']['#markup'] = $email['receipt']['body'];
+      $rndr['subject']['#markup'] = '<p>' . $this->t('<strong>Subject:</strong> @subject', ['@subject' => $previews['receipt']['subject']]) . '</p>';
+      $rndr['body']['#markup'] = $previews['receipt']['body'];
       $render['receipt'] = $rndr;
     }
     else {
@@ -145,8 +146,8 @@ class GiveController extends ControllerBase {
     $render['separator']['#markup'] = '<hr />';
 
     $rndr = [];
-    $rndr['subject']['#markup'] = '<p>' . $this->t('<strong>Subject:</strong> @subject', ['@subject' => $email['admin_notice']['subject']]) . '</p>';
-    $rndr['body']['#markup'] = $email['admin_notice']['body'];
+    $rndr['subject']['#markup'] = '<p>' . $this->t('<strong>Subject:</strong> @subject', ['@subject' => $previews['admin_notice']['subject']]) . '</p>';
+    $rndr['body']['#markup'] = $previews['admin_notice']['body'];
 
     $render['notice_email'] = $rndr;
 

@@ -163,9 +163,9 @@ class MailHandler implements MailHandlerInterface {
   /**
    * Make previews for the donation notice and donation receipts.
    */
-  public function makeDonationReceiptPreviews() {
+  public function makeDonationReceiptPreviews($give_form, $entity_type_manager) {
     // DonationInterface
-    $donation = $this->entityTypeManager()
+    $donation = $entity_type_manager
       ->getStorage('give_donation')
       ->create([
         'give_form' => $give_form->id(),
@@ -183,13 +183,9 @@ class MailHandler implements MailHandlerInterface {
     $donation->setCardLast4(9876);
     $donation->setLabel();
     $donation->setCompleted();
-    $mail_handler = \Drupal::service('give.mail_handler');
-
-    // AccountInterface.
-    $user = $this->currentUser();
 
     // Clone the donor, as we make changes to mail and name properties.
-    $donor_cloned = clone $this->userStorage->load($donor->id());
+    $donor_cloned = clone $this->userStorage->load(0);
     $params = [];
     $current_langcode = $this->languageManager->getCurrentLanguage()->getId();
     $default_langcode = $this->languageManager->getDefaultLanguage()->getId();
