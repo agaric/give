@@ -54,6 +54,7 @@ class DonationViewBuilder extends EntityViewBuilder {
       ],
       '#rows' => $rows,
       '#empty' => $this->t('No problems recorded.'),
+      '#weight' => 200,
     ];
 
     return $build;
