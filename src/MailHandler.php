@@ -195,7 +195,7 @@ class MailHandler implements MailHandlerInterface {
     $previews['receipt_card_recurring'] = $this->mailManager->doMail('give', 'donation_receipt', $donor_cloned->getEmail(), $current_langcode, $params, NULL, FALSE);
 
     $donation->setMethod(GIVE_WITH_CHECK);
-    $params['give_donation']->set('recurring', 0);
+    $params['give_donation']->set('recurring', -1);
     // Unset completed which isn't set for checks.
     $params['give_donation']->set('complete', FALSE);
     $previews['receipt_check'] = $this->mailManager->doMail('give', 'donation_receipt', $donor_cloned->getEmail(), $current_langcode, $params, NULL, FALSE);
