@@ -24,6 +24,11 @@ class DonationViewBuilder extends EntityViewBuilder {
   public function view(EntityInterface $entity, $view_mode = 'full', $langcode = NULL) {
     $build = parent::view($entity, $view_mode, $langcode);
 
+    // We only add the problem log to view modes shown to administrators.
+    if (!in_array($view_mode, ['full', 'notice'])) {
+      return $build;
+    }
+
     $result = ProblemLog::load($entity->uuid());
 
     if (!$result) {
