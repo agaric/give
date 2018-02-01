@@ -133,37 +133,17 @@ class MailHandler implements MailHandlerInterface {
 
     $to = implode(', ', $give_form->getRecipients());
 
-    switch ($donation->getReplyType()) {
-      case 'onetime':
-        $params['reply'] = $give_form->get('reply');
-        $params['subject'] = $give_form->get('subject');
-        break;
-      case 'recurring':
-        $params['reply'] = $give_form->get('reply_recurring');
-        $params['subject'] = $give_form->get('subject_recurring');
-        break;
-      case 'pledge':
-        $params['reply'] = $give_form->get('reply_pledge');
-        $params['subject'] = $give_form->get('subject_pledge');
-        break;
-      default:
-        $this->logger->notice('Unknown reply type %type triggered for %donor-name (@donor-from) via %give_form; no message sent.', [
-          '%donor-name' => $donor_cloned->getUsername(),
-          '@donor-from' => $donor_cloned->getEmail(),
-          '%give_form' => $give_form->label(),
-          '%type' => $donation->getReplyType(),
-        ]);
-        return;
-    }
     $this->mailManager->mail('give', 'donation_receipt', $donor_cloned->getEmail(), $current_langcode, $params);
-    drupal_set_message($this->t("We have e-mailed a receipt to <em>:mail</em>.", [':mail' => $donation->getDonorMail()]));
 
+    drupal_set_message($this->t("We have e-mailed a receipt to <em>:mail</em>.", [':mail' => $donation->getDonorMail()]));
   }
 
   /**
    * Make previews for the donation notice and donation receipts.
    */
   public function makeDonationReceiptPreviews($give_form, $entity_type_manager) {
+    $previews = [];
+
     // DonationInterface
     $donation = $entity_type_manager
       ->getStorage('give_donation')
@@ -171,7 +151,8 @@ class MailHandler implements MailHandlerInterface {
         'give_form' => $give_form->id(),
       ]);
     $donation->setAmount(12300);
-    $donation->set('recurring', 0);
+    $donation->set('recurring', -1);
+    $donation->setMethod(GIVE_WITH_STRIPE);
     $donation->setDonorName('Bud Philanthropist');
     $donation->setDonorMail('bud@example.com');
     $donation->setAddressLine1('1980 Nebraska Ave');
@@ -207,18 +188,23 @@ class MailHandler implements MailHandlerInterface {
 
     $to = implode(', ', $give_form->getRecipients());
 
-    // Send email to the configured recipient(s) (usually admin users).
-    $admin_notice = $this->mailManager->doMail('give', 'donation_notice', $to, $default_langcode, $params, $donor_cloned->getEmail(), FALSE);
+    // Preview auto-reply receipts to donor, using current language.
+    $previews['receipt_card'] = $this->mailManager->doMail('give', 'donation_receipt', $donor_cloned->getEmail(), $current_langcode, $params, NULL, FALSE);
 
-    // If configured, send auto-reply receipt to donor, using current language.
-    if ($give_form->get('autoreply')) {
-      $receipt_card = $this->mailManager->doMail('give', 'donation_receipt', $donor_cloned->getEmail(), $current_langcode, $params, NULL, FALSE);
-    }
+    $params['give_donation']->set('recurring', 1);
+    $previews['receipt_card_recurring'] = $this->mailManager->doMail('give', 'donation_receipt', $donor_cloned->getEmail(), $current_langcode, $params, NULL, FALSE);
 
-    return [
-      'receipt_card' => $receipt_card,
-      'admin_notice' => $admin_notice,
-    ];
+    $donation->setMethod(GIVE_WITH_CHECK);
+    $params['give_donation']->set('recurring', 0);
+    // Unset completed which isn't set for checks.
+    $params['give_donation']->set('complete', FALSE);
+    $previews['receipt_check'] = $this->mailManager->doMail('give', 'donation_receipt', $donor_cloned->getEmail(), $current_langcode, $params, NULL, FALSE);
+
+    // Preview email to the configured recipient(s) (usually admin users).
+    $previews['admin_notice'] = $this->mailManager->doMail('give', 'donation_notice', $to, $default_langcode, $params, $donor_cloned->getEmail(), FALSE);
+
+
+    return $previews;
 
   }
 

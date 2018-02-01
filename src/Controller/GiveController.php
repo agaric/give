@@ -128,28 +128,31 @@ class GiveController extends ControllerBase {
   public function givePreviewReply(GiveFormInterface $give_form) {
     $render = [];
 
-    $render['title']['#markup'] = '<h2>' . $this->t('Preview of automatic donation confirmation e-mail for @label forms', ['@label' => $give_form->label()]) . '</h2>';
-
     $mail_handler = \Drupal::service('give.mail_handler');
     $previews = $mail_handler->makeDonationReceiptPreviews($give_form, $this->entityTypeManager());
 
-    if ($previews['receipt']) {
-      $rndr = [];
-      $rndr['subject']['#markup'] = '<p>' . $this->t('<strong>Subject:</strong> @subject', ['@subject' => $previews['receipt']['subject']]) . '</p>';
-      $rndr['body']['#markup'] = $previews['receipt']['body'];
-      $render['receipt'] = $rndr;
+    if ($give_form->get('autoreply')) {
+      $render['autoreply_status']['#markup'] = '<p>' . $this->t('<strong>Autoreply status: On.</strong> Receipts are enabled.') . '</h2>';
     }
     else {
-      $render['noreply']['#markup'] = '<p>' . $this->t('This donation form has no automatic acknowledgement reply configured.  <a href="@url">Edit it to add one</a>.', ['@url' => $give_form->toUrl('edit-form')->toString()]) . '</p>';
+      $render['autoreply_status']['#markup'] = '<p>' . $this->t('<strong>Autoreply status: Off.</strong> This donation form will <strong>not</strong> send automatic acknowledgement replies.  <a href="@url">Edit it to enable autoreplies</a>.', ['@url' => $give_form->toUrl('edit-form')->toString()]) . '</p>';
     }
 
-    $render['separator']['#markup'] = '<hr />';
+    $titles = [
+      'receipt_card' => $this->t('Preview of One-time donation reply e-mail for @label forms', ['@label' => $give_form->label()]),
+      'receipt_card_recurring' => $this->t('Preview of Recurring donation reply e-mail for @label forms', ['@label' => $give_form->label()]),
+      'receipt_check' => $this->t('Preview of Check (pledged) donation reply e-mail for @label forms', ['@label' => $give_form->label()]),
+      'admin_notice' => $this->t('Preview of (admin) recipients\' notification e-mail for @label forms', ['@label' => $give_form->label()]),
+    ];
 
-    $rndr = [];
-    $rndr['subject']['#markup'] = '<p>' . $this->t('<strong>Subject:</strong> @subject', ['@subject' => $previews['admin_notice']['subject']]) . '</p>';
-    $rndr['body']['#markup'] = $previews['admin_notice']['body'];
-
-    $render['notice_email'] = $rndr;
+    foreach ($previews as $key => $email) {
+      $rndr = [];
+      $rndr['title']['#markup'] = '<h2>' . $titles[$key] . '</h2>';
+      $rndr['subject']['#markup'] = '<p>' . $this->t('<strong>Subject:</strong> @subject', ['@subject' => $email['subject']]) . '</p>';
+      $rndr['body']['#markup'] = $email['body'];
+      $rndr['separator']['#markup'] = '<hr />';
+      $render[$key] = $rndr;
+    }
 
     return $render;
   }

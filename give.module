@@ -209,6 +209,30 @@ function give_mail($key, &$message, $params) {
       break;
 
     case 'donation_receipt':
+
+      $give_form = $params['give_form'];
+      switch ($give_donation->getReplyType()) {
+        case 'onetime':
+          $params['reply'] = $give_form->get('reply');
+          $params['subject'] = $give_form->get('subject');
+          break;
+        case 'recurring':
+          $params['reply'] = $give_form->get('reply_recurring');
+          $params['subject'] = $give_form->get('subject_recurring');
+          break;
+        case 'pledge':
+          $params['reply'] = $give_form->get('reply_pledge');
+          $params['subject'] = $give_form->get('subject_pledge');
+          break;
+        default:
+          $this->logger->notice('Unknown reply type %type triggered for %donor-name (@donor-from) via %give_form; no message sent.', [
+            '%donor-name' => $donor->getUsername(),
+            '@donor-from' => $donor->getEmail(),
+            '%give_form' => $give_form->label(),
+            '%type' => $give_donation->getReplyType(),
+          ]);
+      }
+
       $message['subject'] .= give_replace_donation_tokens($params['subject'], $give_donation);
 
       $render_array = [
@@ -222,7 +246,6 @@ function give_mail($key, &$message, $params) {
       $markup = entity_view($give_donation, 'receipt');
       $message['body'][] = render($markup);
       break;
-
   }
 }
 
