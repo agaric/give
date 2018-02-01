@@ -24,10 +24,16 @@ class DonationViewBuilder extends EntityViewBuilder {
   public function view(EntityInterface $entity, $view_mode = 'full', $langcode = NULL) {
     $build = parent::view($entity, $view_mode, $langcode);
 
-    $build['extra'] = [
-      '#type' => 'markup',
-      '#markup' => '<p>Well this would be awkward if it is sent every time.</p>',
-    ];
+    $result = ProblemLog::load($entity->uuid());
+
+    if (!$result) {
+      $build['extra'] = [
+        '#type' => 'markup',
+        '#markup' => '<p>No problems recorded.</p>',
+        '#weight' => 199,
+      ];
+      return $build;
+    }
 
     $result = ProblemLog::load($entity->uuid());
     $rows = [];
