@@ -43,6 +43,27 @@
       handleResponse(event);
     });
 
+    // Wrap in a try / catch because there's some fear older browsers could break on this.
+    try {
+      document.addEventListener('invalid', function(e) {
+        var message = e.target.validationMessage;
+        var name = e.target.name;
+        logProblem('Form validation', 'Donor told "' + message + '" for input ' + name);
+      }, true);
+    }
+    catch (e) {
+      var message = 'Undefined exception.';
+      if (typeof e != "undefined") {
+        if (typeof e == "string") {
+          message = e;
+        }
+        else if (typeof e.message == "string") {
+          message = e.message;
+        }
+      }
+      logProblem('Problem logging form validation', 'Browser (likely IE11) lacks event listening: ' + message);
+    }
+
     document.querySelector('.give-donation-form').addEventListener('submit', function(e) {
       // Only try to process the card if card method ('1') is selected.
       if ($('input[name=method]:checked').val() == 1) {
