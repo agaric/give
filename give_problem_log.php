@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 // This next bit was done without Internet and apparently i don't have a PHP
 // manual locally.  @TODO at least make sure i'm using safe globals.
 
-$script_name = trim($GLOBALS['_SERVER']['SCRIPT_NAME'], '/');
+$script_name = trim($_SERVER['SCRIPT_NAME'], '/');
 $count = substr_count($script_name, '/');
 $chdir = '';
 for ($i=1; $i < $count; $i++) {
