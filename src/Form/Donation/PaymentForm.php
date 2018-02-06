@@ -305,6 +305,7 @@ class PaymentForm extends ContentEntityForm {
     $errors = $form_state->getErrors();
     if ($errors) {
       foreach ($errors as $error) {
+        // Drupal\Core\StringTranslation implements magic __toString() method.
         \Drupal::logger('give')->error('Server-side form validation: %err_msg.', ['%err_msg' => $error]);
         $this->problemLog->log($donation->uuid(), 'Server-side form validation', $error);
       }
