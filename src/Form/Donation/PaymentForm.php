@@ -302,6 +302,13 @@ class PaymentForm extends ContentEntityForm {
   public function validateForm(array &$form, FormStateInterface $form_state) {
     /** @var \Drupal\give\Entity\Donation $donation */
     $donation = parent::validateForm($form, $form_state);
+    $errors = $form_state->getErrors();
+    if ($errors) {
+      foreach ($errors as $error) {
+        \Drupal::logger('give')->error('Server-side form validation: %err_msg.', ['%err_msg' => $error]);
+        $this->problemLog->log($donation->uuid(), 'Server-side form validation', $error);
+      }
+    }
     if ($donation->isCompleted()) {
       $donate_path = Url::fromRoute('entity.give_form.canonical', ['give_form' => $donation->getGiveForm()->id()])->toString();
       $form_state->setErrorByName('stripe_errors', $this->t('You have already completed this donation. Thank you! Please <a href=":donate_path">donate again</a> if you wish to give more.', [':donate_path' => $donate_path]));
