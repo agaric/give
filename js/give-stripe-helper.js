@@ -20,7 +20,15 @@
       logProblem('Stripe blocked', 'Stripe did not load; showed user error message with mention of tracker blockers.');
       return;
     }
-    var stripe = Stripe(settings.give.stripe_publishable_key);
+    try {
+      var stripe = Stripe(settings.give.stripe_publishable_key);
+    }
+    catch (e) {
+      $('#edit-method-1').attr('disabled', true);
+      $('label[for="edit-method-1"]').append('<div class="error messages--error form--inline-feedback form--inline-feedback--error visible">' + e.message + '</div>');
+      logProblem('Stripe error', e.message);
+      return;
+    }
     var elements = stripe.elements();
     var card = elements.create('card', {
       hidePostalCode: true,
