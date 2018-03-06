@@ -199,6 +199,9 @@ function give_update_8004() {
  * Add problem log table.
  */
 function give_update_8005() {
+  if (tableExists('give_problem')) {
+    return;
+  }
   $schema = [];
   $schema['give_problem'] = [
     'description' => 'Stores a log identifiable errors and issues encountered during a donation attempt.',
