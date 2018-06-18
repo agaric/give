@@ -5,7 +5,7 @@ core: 8.x
 package: Give
 configure: give.settings
 dependencies:
-  - minimalhtml
-  - field
-  - entity_reference
-  - views
+  - minimalhtml:minimalhtml
+  - drupal:field
+  - drupal:entity_reference
+  - drupal:views
