@@ -74,6 +74,9 @@ give.form.*:
     payment_submit_text:
       type: string
       label: 'Submit payment button text'
+    donate_encouragement_text:
+      type: string
+      label: 'Donate encouragement text'
     frequencies:
       type: sequence
       label: 'Frequencies'

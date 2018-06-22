@@ -53,6 +53,7 @@ use Drupal\give\GiveFormInterface;
  *     "redirect_uri",
  *     "submit_text",
  *     "payment_submit_text",
+ *     "donate_encouragement_text",
  *     "frequencies"
  *   }
  * )
@@ -129,6 +130,13 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
    * @var string
    */
   protected $payment_submit_text = 'Give';
+
+  /**
+   * The text displayed in the donate encouragement on the second, payment page.
+   *
+   * @var string
+   */
+  protected $donate_encouragement_text = 'Thank you for supporting';
 
   /**
    * Frequency intervals (Stripe Plans).
@@ -309,4 +317,18 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
     return $this;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getDonateEncouragementText() {
+    return $this->donate_encouragement_text;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setDonateEncouragementText($donate_encouragement_text) {
+    $this->donate_encouragement_text = $donate_encouragement_text;
+    return $this;
+  }
 }

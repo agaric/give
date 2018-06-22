@@ -16,6 +16,7 @@ weight: 0
 redirect_uri: /
 submit_text: Give
 payment_submit_text: Give
+donate_encouragement_text: Thank you for supporting
 frequencies:
   -
     interval: month
