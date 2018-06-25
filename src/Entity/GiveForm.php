@@ -53,7 +53,7 @@ use Drupal\give\GiveFormInterface;
  *     "redirect_uri",
  *     "submit_text",
  *     "payment_submit_text",
- *     "donate_encouragement_text",
+ *     "payment_page_title",
  *     "frequencies"
  *   }
  * )
@@ -132,11 +132,11 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
   protected $payment_submit_text = 'Give';
 
   /**
-   * The text displayed in the donate encouragement on the second, payment page.
+   * The text displayed in the payment page title on the second, payment page.
    *
    * @var string
    */
-  protected $donate_encouragement_text = 'Thank you for supporting';
+  protected $payment_page_title = 'Thank you for supporting';
 
   /**
    * Frequency intervals (Stripe Plans).
@@ -320,15 +320,15 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
   /**
    * {@inheritdoc}
    */
-  public function getDonateEncouragementText() {
-    return $this->donate_encouragement_text;
+  public function getPaymentPageTitle() {
+    return $this->payment_page_title;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function setDonateEncouragementText($donate_encouragement_text) {
-    $this->donate_encouragement_text = $donate_encouragement_text;
+  public function setPaymentPageTitle($payment_page_title) {
+    $this->payment_page_title = $payment_page_title;
     return $this;
   }
 }
