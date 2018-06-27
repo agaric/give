@@ -104,11 +104,12 @@ class PaymentForm extends ContentEntityForm {
 
     $form['thanks'] = [
       '#markup' => $this->t(
-        "<h3>Thank you for supporting :sitename, :name!</h3>",
+        "<h3>" . $donation->getGiveForm()->getPaymentPageTitle() . "</h3>",
         [':name' => $donation->getDonorName(), ':sitename' => \Drupal::config('system.site')->get('name')]
       ),
       '#weight' => -50,
     ];
+
     $form['show_amount'] = [
       '#type' => 'item',
       '#title' => $this->t('Amount you pledged'),

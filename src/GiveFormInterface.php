@@ -201,4 +201,19 @@ interface GiveFormInterface extends ConfigEntityInterface {
    */
   public function setPaymentSubmitText($text);
 
+  /**
+   * The text displayed in the Donate Encouragement in the payment form.
+   */
+  public function getPaymentPageTitle();
+
+  /**
+   * Set the text displayed in the Donate Encouragement in the payment form.
+   *
+   * @param string $text
+   *   The text displayed in the Donate Encouragement.
+   *
+   * @return $this
+   */
+  public function setPaymentPageTitle($text);
+
 }

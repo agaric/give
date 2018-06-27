@@ -218,6 +218,12 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       '#description' => t("Override the payment page submit button's default <em>Give</em> text."),
       '#default_value' => $give_form->getPaymentSubmitText(),
     ];
+    $form['payment_page_title'] = [
+      '#type' => 'textfield',
+      '#title' => t('Payment page title'),
+      '#description' => t("This text is shown on the second page of the donation process, after an amount has been selected but before a payment method chosen and finalized.  The tokens :name and :sitename will be replaced with the name the donor entered on the first page and the name of the site, respectively"),
+      '#default_value' => $give_form->getPaymentPageTitle(),
+    ];
     $name_field = $form_state->get('num_intervals');
     $form['frequency'] = [
       '#type' => 'fieldset',

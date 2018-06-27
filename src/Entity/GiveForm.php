@@ -53,6 +53,7 @@ use Drupal\give\GiveFormInterface;
  *     "redirect_uri",
  *     "submit_text",
  *     "payment_submit_text",
+ *     "payment_page_title",
  *     "frequencies"
  *   }
  * )
@@ -129,6 +130,13 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
    * @var string
    */
   protected $payment_submit_text = 'Give';
+
+  /**
+   * The text displayed in the payment page title on the second, payment page.
+   *
+   * @var string
+   */
+  protected $payment_page_title = 'Thank you for supporting :sitename, :name!';
 
   /**
    * Frequency intervals (Stripe Plans).
@@ -309,4 +317,18 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
     return $this;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function getPaymentPageTitle() {
+    return $this->payment_page_title;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function setPaymentPageTitle($payment_page_title) {
+    $this->payment_page_title = $payment_page_title;
+    return $this;
+  }
 }

@@ -16,6 +16,7 @@ weight: 0
 redirect_uri: /
 submit_text: Give
 payment_submit_text: Give
+payment_page_title: Payment page title
 frequencies:
   -
     interval: month
