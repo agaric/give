@@ -103,7 +103,10 @@ class PaymentForm extends ContentEntityForm {
     $form['#attributes']['class'][] = 'give-form give-form-payment flow-middle';
 
     $form['thanks'] = [
-      '#markup' => "<h3>" . $donation->getGiveForm()->getPaymentPageTitle() . "</h3>",
+      '#markup' => $this->t(
+        "<h3>" . $donation->getGiveForm()->getPaymentPageTitle() . "</h3>",
+        [':name' => $donation->getDonorName(), ':sitename' => \Drupal::config('system.site')->get('name')]
+      ),
       '#weight' => -50,
     ];
 

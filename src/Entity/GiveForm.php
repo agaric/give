@@ -136,7 +136,7 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
    *
    * @var string
    */
-  protected $payment_page_title = 'Thank you for supporting';
+  protected $payment_page_title = 'Thank you for supporting :sitename, :name!';
 
   /**
    * Frequency intervals (Stripe Plans).
