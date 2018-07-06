@@ -226,7 +226,7 @@ function give_mail($key, &$message, $params) {
           break;
         default:
           $this->logger->notice('Unknown reply type %type triggered for %donor-name (@donor-from) via %give_form; no message sent.', [
-            '%donor-name' => $donor->getUsername(),
+            '%donor-name' => $donor->getDisplayName(),
             '@donor-from' => $donor->getEmail(),
             '%give_form' => $give_form->label(),
             '%type' => $give_donation->getReplyType(),

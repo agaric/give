@@ -93,7 +93,7 @@ class MailHandler implements MailHandlerInterface {
 
     // Probably doesn't belong here but we have a logger so away we go.
     $this->logger->notice('%donor-name (@donor-from) gave via %give_form.', [
-      '%donor-name' => $donor_cloned->getUsername(),
+      '%donor-name' => $donor_cloned->getDisplayName(),
       '@donor-from' => $donor_cloned->getEmail(),
       '%give_form' => $donation->getGiveForm()->label(),
     ]);
