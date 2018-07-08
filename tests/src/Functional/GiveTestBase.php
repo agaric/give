@@ -125,7 +125,7 @@ abstract class GiveTestBase extends BrowserTestBase {
     $this->assertTrue($this->getSession()->getPage()->hasContent("Your email address"));
     $this->assertTrue($this->getSession()->getPage()->hasContent($this->adminUser->getEmail()));
     $this->assertTrue($this->getSession()->getPage()->hasContent("Your name"));
-    $this->assertTrue($this->getSession()->getPage()->hasContent($this->adminUser->getUsername()));
+    $this->assertTrue($this->getSession()->getPage()->hasContent($this->adminUser->getDisplayName()));
     $this->assertTrue($this->getSession()->getPage()->findField('Amount to give'));
     $this->getSession()->getPage()->fillField('amount', $amount);
     $this->submitForm([], 'edit-submit');
