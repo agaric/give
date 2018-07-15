@@ -62,9 +62,6 @@ give.form.*:
     collect_address:
       type: boolean
       label: 'Collect address with credit card, check, or other'
-    weight:
-      type: integer
-      label: 'Weight'
     redirect_uri:
       type: string
       label: 'Redirect page'

@@ -188,12 +188,6 @@ class GiveFormEditForm extends EntityForm implements ContainerInjectionInterface
       '#default_value' => $give_form->getCreditCardExtraText(),
       '#description' => $this->t('Optional message to show above credit card form for potential givers who select the "Credit card" donation method.'),
     ];
-    $form['weight'] = [
-      '#type' => 'weight',
-      '#title' => $this->t('Weight'),
-      '#default_value' => $give_form->getWeight(),
-      '#description' => $this->t('When listing forms, those with lighter (smaller) weights get listed before forms with heavier (larger) weights. Forms with equal weights are sorted alphabetically.'),
-    ];
     $form['selected'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Make this the default form'),

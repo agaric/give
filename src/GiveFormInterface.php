@@ -62,14 +62,6 @@ interface GiveFormInterface extends ConfigEntityInterface {
   public function getCheckOrOtherText();
 
   /**
-   * Returns the weight of this category (used for sorting).
-   *
-   * @return int
-   *   The weight of this category.
-   */
-  public function getWeight();
-
-  /**
    * Sets list of recipient email addresses.
    *
    * @param array $recipients
@@ -145,16 +137,6 @@ interface GiveFormInterface extends ConfigEntityInterface {
    * @return $this
    */
   public function setReply($reply);
-
-  /**
-   * Sets the weight.
-   *
-   * @param int $weight
-   *   The desired weight.
-   *
-   * @return $this
-   */
-  public function setWeight($weight);
 
   /**
    * Gets the uri where the user will be redirected after the donate.
