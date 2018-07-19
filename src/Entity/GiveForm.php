@@ -49,7 +49,6 @@ use Drupal\give\GiveFormInterface;
  *     "check_or_other_text",
  *     "credit_card_extra_text",
  *     "collect_address",
- *     "weight",
  *     "redirect_uri",
  *     "submit_text",
  *     "payment_submit_text",
@@ -102,13 +101,6 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
    * @var string
    */
   protected $check_or_other_text = '';
-
-  /**
-   * The weight of the form.
-   *
-   * @var int
-   */
-  protected $weight = 0;
 
   /**
    * The uri where the user will go after to donate.
@@ -254,21 +246,6 @@ class GiveForm extends ConfigEntityBundleBase implements GiveFormInterface {
    */
   public function setCollectAddress($collect_address) {
     $this->collect_address = $collect_address;
-    return $this;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function getWeight() {
-    return $this->weight;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function setWeight($weight) {
-    $this->weight = $weight;
     return $this;
   }
 

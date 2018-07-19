@@ -49,7 +49,6 @@ class GiveFormAndDonationEntityTest extends EntityKernelTestBase {
     $this->assertEquals('', $giveForm->getSubject());
     $this->assertEquals('', $giveForm->getReply());
     $this->assertEquals('', $giveForm->getCheckOrOtherText());
-    $this->assertEquals(0, $giveForm->getWeight());
 
     // Check for default values.
     $this->assertEquals('/', $giveForm->getRedirectUri());
@@ -60,7 +59,6 @@ class GiveFormAndDonationEntityTest extends EntityKernelTestBase {
     $giveForm->setSubject('Mail Subject');
     $giveForm->setReply('reply@mail.com');
     $giveForm->setCheckOrOtherText('Message');
-    $giveForm->setWeight(10);
     $giveForm->setRedirectUri("entity:node/10");
     $giveForm->setSubmitText("Donate");
 
@@ -68,7 +66,6 @@ class GiveFormAndDonationEntityTest extends EntityKernelTestBase {
     $this->assertEquals('Mail Subject', $giveForm->getSubject());
     $this->assertEquals('reply@mail.com', $giveForm->getReply());
     $this->assertEquals('Message', $giveForm->getCheckOrOtherText());
-    $this->assertEquals(10, $giveForm->getWeight());
     $this->assertEquals("entity:node/10", $giveForm->getRedirectUri());
     $this->assertEquals("Donate", $giveForm->getSubmitText());
 
