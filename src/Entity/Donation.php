@@ -286,7 +286,7 @@ class Donation extends ContentEntityBase implements DonationInterface {
   public function getStatementDescriptor() {
      // TODO allow setting of organization name in Give config and only using sitename as a fallback.
      $config_system_site = \Drupal::config('system.site');
-     $short_sitename = substr($config_system_site->get('name'), 0, 12);
+     $short_sitename = trim(substr($config_system_site->get('name'), 0, 12));
      return strtoupper(substr($short_sitename . ' ' . $this->getProductName(), 0, 22));
   }
 
