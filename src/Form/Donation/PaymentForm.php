@@ -115,7 +115,7 @@ class PaymentForm extends ContentEntityForm {
       '#title' => $this->t('Amount you pledged'),
       '#value' => $donation->getAmount(),
       '#plain_text' => $donation->recurring() ? $this->t(':plan',
-        [':plan' => $donation->getPlanName()]) : $donation->getDollarAmount(),
+        [':plan' => $donation->getProductName()]) : $donation->getDollarAmount(),
       '#weight' => -40,
     ];
 
@@ -336,7 +336,9 @@ class PaymentForm extends ContentEntityForm {
         "currency" => "usd",
         "interval" => $donation->getRecurrenceIntervalUnit(),
         "interval_count" => $donation->getRecurrenceIntervalCount(),
-        "name" => $donation->getPlanName(),
+	"product" => [
+          "name" => $donation->getProductName(),
+        ],
       ];
       try {
         $plan = $this->giveStripe->createPlan($plan_data);
@@ -413,7 +415,7 @@ class PaymentForm extends ContentEntityForm {
       $this->t("Thank you, :donor_name, for your donation of :amount",
       [
         ':donor_name' => $donation->getDonorName(),
-        ':amount' => $donation->recurring() ? $this->t(':plan', [':plan' => $donation->getPlanName()]) : $donation->getDollarAmount()])
+        ':amount' => $donation->recurring() ? $this->t(':plan', [':plan' => $donation->getProductName()]) : $donation->getDollarAmount()])
     );
 
     $user = $this->currentUser();

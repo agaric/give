@@ -150,7 +150,10 @@ interface DonationInterface extends ContentEntityInterface {
   public function getRecurrenceIntervalCount();
 
   /**
-   * Returns a plan name based on currency, amount, interval, and interval count.
+   * Returns a product name based on currency, amount, interval, and interval count.
+   *
+   * Formerly this was a plan name, before Stripe changed their API:
+   * https://stripe.com/docs/upgrades#2018-02-05
    *
    * Note that interval count is the number of intervals between donations, not
    * the number of times the payment should be made.  Recurring payments go on
@@ -158,7 +161,7 @@ interface DonationInterface extends ContentEntityInterface {
    *
    * @return string
    */
-  public function getPlanName();
+  public function getProductName();
 
   /**
    * Gets the donation creation timestamp.
