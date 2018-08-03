@@ -274,17 +274,6 @@ class Donation extends ContentEntityBase implements DonationInterface {
    * Note that currency is hard-coded to US Dollars as elsewhere in the
    * application, but it would not be difficult to change.
    */
-  public function getPlanId() {
-    $give_form = $this->getGiveForm();
-    $frequencies = $give_form->getFrequencies();
-    $interval = $frequencies[$this->get('recurring')->value]['interval'];
-    $interval_count = $frequencies[$this->get('recurring')->value]['interval_count'];
-    return 'usd' . $this->getAmount() . '_' . $interval . '_' . $interval_count;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
   public function getPlanName() {
     $give_form = $this->getGiveForm();
     $frequencies = $give_form->getFrequencies();

@@ -332,7 +332,6 @@ class PaymentForm extends ContentEntityForm {
     // If the donation is recurring, we create a plan and a customer.
     if ($donation->recurring()) {
       $plan_data = [
-        "id" => $donation->getPlanId(),
         "amount" => $donation->getAmount(),
         "currency" => "usd",
         "interval" => $donation->getRecurrenceIntervalUnit(),
