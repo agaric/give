@@ -64,7 +64,7 @@ class GiveStripe Implements GiveStripeInterface {
     if (!($this->plan instanceof Plan)) {
       throw new \Exception(t("Unable to create subscription plan for recurring donation. Could not complete donation."));
     }
-    return $plan;
+    return $this->plan;
   }
 
   /**
