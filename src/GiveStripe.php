@@ -9,7 +9,18 @@ use \Stripe\Customer;
 use \Stripe\Charge;
 
 
+
 class GiveStripe Implements GiveStripeInterface {
+
+
+  /**
+   * Stripe API version.
+   *
+   * The API version, which Stripe expresses as a date, which Give module has
+   * been tested and works with.  The Stripe PHP library will send this as the
+   * default Stripe-Version header.
+   */
+  const GIVE_STRIPE_API_VERSION = '2018-07-27';
 
   /**
    * The plan, if any, associated with a donation.
@@ -30,6 +41,9 @@ class GiveStripe Implements GiveStripeInterface {
    */
   public function setApiKey($stripeSecretKey) {
     Stripe::setApiKey($stripeSecretKey);
+    // Since we can't do anything without the API key, we're safe piggybacking
+    // on here to set the API version Give module works with.
+    Stripe::setApiVersion(self::GIVE_STRIPE_API_VERSION);
   }
 
   /**
