@@ -42,15 +42,9 @@ class GiveStripe Implements GiveStripeInterface {
     } catch(Error\ApiConnection $e) {
       throw new \Exception(t('Could not connect to payment processer. More information: %e', ['%e' => $e->getMessage()]));
     } catch(Error\InvalidRequest $e) {
-      if ($e->getMessage() === 'Plan already exists.') {
-        // If the plan already exists, lets retrieve it.
-        $this->plan = Plan::retrieve($plan_data['id']);
-      }
-      else {
-        throw new \Exception(t('Invalid request: %e', ['%e' => $e->getMessage()]));
-      }
+      throw new \Exception(t('Failed to create plan.  Invalid request: %e', ['%e' => $e->getMessage()]));
     } catch(Error\Base $e) {
-      throw new \Exception(t('Error: %e', ['%e' => $e->getMessage()]));
+      throw new \Exception(t('Failed to create plan.  Error: %e', ['%e' => $e->getMessage()]));
     }
     // Check if the plan was created or retrieved correctly.
     if (!($this->plan instanceof Plan)) {
