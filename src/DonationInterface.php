@@ -164,6 +164,19 @@ interface DonationInterface extends ContentEntityInterface {
   public function getProductName();
 
   /**
+   * Returns a short text string which will show on donors' bank statements.
+   *
+   * Limited to 22 ASCII characters and printed in uppercase.  Recommended to
+   * include the organization name.
+   *
+   * See https://stripe.com/docs/api#create_plan-product-statement_descriptor
+   * and https://stripe.com/blog/dynamic-descriptors
+   *
+   * @return string
+   */
+  public function getStatementDescriptor();
+
+  /**
    * Gets the donation creation timestamp.
    *
    * @return int

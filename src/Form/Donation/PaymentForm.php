@@ -338,6 +338,7 @@ class PaymentForm extends ContentEntityForm {
         "interval_count" => $donation->getRecurrenceIntervalCount(),
 	"product" => [
           "name" => $donation->getProductName(),
+          "statement_descriptor" => $donation->getStatementDescriptor(),
         ],
       ];
       try {
