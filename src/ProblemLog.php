@@ -71,7 +71,7 @@ class ProblemLog {
    *   An object containing the loaded entries if found.
    */
   public static function load($donation_uuid) {
-    return db_query('SELECT type, detail, timestamp FROM give_problem WHERE donation_uuid = :donation_uuid', [':donation_uuid' => $donation_uuid])->fetchAll();
+    return db_query('SELECT type, detail, timestamp FROM {give_problem} WHERE donation_uuid = :donation_uuid', [':donation_uuid' => $donation_uuid])->fetchAll();
   }
 
   /**
