@@ -54,7 +54,7 @@ class GiveStripe Implements GiveStripeInterface {
       // Try to create the plan.
       $this->plan = Plan::create($plan_data);
     } catch(Error\ApiConnection $e) {
-      throw new \Exception(t('Could not connect to payment processer. More information: %e', ['%e' => $e->getMessage()]));
+      throw new \Exception(t('Could not connect to payment processor. More information: %e', ['%e' => $e->getMessage()]));
     } catch(Error\InvalidRequest $e) {
       throw new \Exception(t('Failed to create plan.  Invalid request: %e', ['%e' => $e->getMessage()]));
     } catch(Error\Base $e) {
@@ -76,7 +76,7 @@ class GiveStripe Implements GiveStripeInterface {
     } catch(Error\Card $e) {
       throw new \Exception("Could not process card: " . $e->getMessage());
     } catch(Error\ApiConnection $e) {
-      throw new \Exception("Could not connect to payment processer. More information: " . $e->getMessage());
+      throw new \Exception("Could not connect to payment processor. More information: " . $e->getMessage());
     } catch(Error\Base $e) {
       throw new \Exception('Error: ' . $e->getMessage());
     }
@@ -94,7 +94,7 @@ class GiveStripe Implements GiveStripeInterface {
     try {
       $customer = Customer::create($customer_data);
     } catch(Error\ApiConnection $e) {
-      throw new \Exception('Could not connect to payment processer. More information: ' . $e->getMessage());
+      throw new \Exception('Could not connect to payment processor. More information: ' . $e->getMessage());
     } catch(Error\Card $e) {
       throw new \Exception("Could not process card: " . $e->getMessage());
     } catch(Error\Base $e) {
