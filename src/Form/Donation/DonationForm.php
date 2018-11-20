@@ -155,6 +155,7 @@ class DonationForm extends ContentEntityForm {
       '#title' => $this->t('Make this a recurring donation:'),
       '#type' => 'radios',
       '#options' => $options,
+      '#default_value' => '-1',
       '#required' => TRUE,
     ];
 

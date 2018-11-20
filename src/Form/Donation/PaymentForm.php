@@ -161,6 +161,11 @@ class PaymentForm extends ContentEntityForm {
       }
     }
 
+    // The default payment method will be first array option
+    reset($form['method']['#options']);
+    $first_option_key = key($form['method']['#options']);
+    $form['method']['#default_value'] = $first_option_key;
+
     $form['stripe_errors'] = [
       '#markup' => '<span class="payment-errors"></span>',
       '#weight' => 10,
